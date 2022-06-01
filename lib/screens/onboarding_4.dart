@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jbs_app/employee_screens/employee_welcome_1.dart';
+import 'package:jbs_app/manager/home.dart';
 
 import '../admin/admin1.dart';
 
@@ -45,6 +46,11 @@ class _onBoardingState extends State<onBoarding> {
             SizedBox(height: 30,),
 
             GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder:
+                        (context) => Home2()));
+              },
               child: Text("Manager", style: TextStyle(
                   color: Colors.white, letterSpacing: 1,
                   fontSize: 50,
