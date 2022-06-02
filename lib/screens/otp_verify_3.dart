@@ -28,8 +28,8 @@ class _otpVerifyState extends State<otpVerify> {
                 fontWeight: FontWeight.bold
               ),
               colors: [
-                Color(0xffFFC700),
-                Color(0xffFF0000),
+                Color(0xff005993).withOpacity(0.6),
+                Color(0xff005993)
               ],
             ),
            // Image.asset("assets/images/jbs.jpg"),
@@ -116,10 +116,10 @@ class _otpVerifyState extends State<otpVerify> {
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0),
-                            side: BorderSide(color: Color(0xffFF0000))
+                            side: BorderSide(color: Color(0xff005993))
                         )
                     ),
-                    backgroundColor: MaterialStateProperty.all(Color(0xffFF0000),)
+                    backgroundColor: MaterialStateProperty.all(Color(0xff005993),)
                 ),
               ),
             )

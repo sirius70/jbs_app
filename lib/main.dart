@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jbs_app/manager/approvereq.dart';
 import 'package:jbs_app/screens/splash_screen_1.dart';
 
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       ),
         // debugShowCheckedModeBanner: false,
         // home: const MyHomePage(),
-     home:
+     home: //Approve_req()
       splash1()
     );
   }

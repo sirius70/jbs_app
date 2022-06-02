@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:jbs_app/admin/admin1.dart';
+import 'package:jbs_app/employee_screens/employee_welcome_1.dart';
+import 'package:jbs_app/employee_screens/widgets/egg.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'approvereq.dart';
@@ -9,9 +12,16 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'more.dart';
 
-class Home2 extends StatelessWidget {
+class Home2 extends StatefulWidget {
   const Home2({Key? key}) : super(key: key);
 
+  @override
+  State<Home2> createState() => _Home2State();
+}
+
+class _Home2State extends State<Home2> {
+  List dismiss = [
+  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -143,7 +153,7 @@ class Home2 extends StatelessWidget {
                                       //    MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Divider(
-                                          thickness: 5,
+                                          thickness: 3,
                                           color: Colors.blue.shade900,
                                           height: 1,
                                           endIndent: 120,
@@ -153,31 +163,51 @@ class Home2 extends StatelessWidget {
                                           height: 25,
                                         ),
                                         GestureDetector(
-                                            child: ListTile(
-                                          leading: Image(
-                                              image: AssetImage(
-                                                  'lib/images/face.png')),
-                                          title: Text('Manager',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.blue.shade900)),
-                                        )),
+                                          onTap: (){
+                                            Navigator.pushReplacement(
+                                                (context as Element),
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext context) => Home2()));
+                                          },
+                                          child: ListTile(
+                                            leading: Image(
+                                                image: AssetImage(
+                                                    'lib/images/face.png')),
+                                            title: Text('Manager',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.blue.shade900)),
+                                          ),),
                                         SizedBox(
                                           height: 25,
                                         ),
-                                        ListTile(
-                                          leading: Image(
-                                              image: AssetImage(
-                                                  'lib/images/face.png')),
-                                          title: Text('Admin',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Colors.blue.shade900)),
+                                        GestureDetector(
+                                          onTap: (){
+                                            Navigator.pushReplacement(
+                                                (context as Element),
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext context) => Admin1()));
+                                          },
+                                          child: ListTile(
+                                            leading: Image(
+                                                image: AssetImage(
+                                                    'lib/images/face.png')),
+                                            title: Text('Admin',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.blue.shade900)),
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 25,
                                         ),
                                         GestureDetector(
+                                          onTap: (){
+                                            Navigator.pushReplacement(
+                                                (context as Element),
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext context) => employeeWelcome()));
+                                          },
                                             child: ListTile(
                                           leading: Image(
                                               image: AssetImage(
@@ -309,14 +339,23 @@ class Home2 extends StatelessWidget {
                         )
                       ])),
             ),
-            Text('Approve Request',
+            Text("Approve Request's",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
             SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               GestureDetector(
                   child: Container(
+                    padding: EdgeInsets.all(20),
                     height: 150,
                     width: 150,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [new BoxShadow(
+                          color: Colors.grey.withOpacity(0.4),
+                          blurRadius: 5.0,
+                        ),]
+                    ),
                     child: Center(
                       child: Text(
                         'Request For Leave',
@@ -335,8 +374,17 @@ class Home2 extends StatelessWidget {
                   }),
               GestureDetector(
                   child: Container(
+                    padding: EdgeInsets.all(20),
                     height: 150,
                     width: 150,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [new BoxShadow(
+                          color: Colors.grey.withOpacity(0.4),
+                          blurRadius: 5.0,
+                        ),]
+                    ),
                     child: Center(
                       child: Text(
                         'Request to regularize',
@@ -420,3 +468,4 @@ class Home2 extends StatelessWidget {
     );
   }
 }
+

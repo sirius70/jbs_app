@@ -14,7 +14,7 @@ class _loginScreenState extends State<loginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffFECE2F),
+      backgroundColor: Colors.white,
       body: Center(
         child: Stack(
           children: [
@@ -29,7 +29,7 @@ class _loginScreenState extends State<loginScreen> {
                     decoration: BoxDecoration(
                      // shape: BoxShape.circle,
                         borderRadius: BorderRadius.circular(300),
-                        color: Colors.white
+                        color: Color(0xff005993)
                     ),
                   ),
                 )
@@ -45,7 +45,7 @@ class _loginScreenState extends State<loginScreen> {
                     height: 370,
                     decoration: BoxDecoration(
                       // shape: BoxShape.circle,
-                      border: Border.all(color: Color(0xffFECE2F)),
+                      border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(300),
                     ),
                   ),
@@ -63,7 +63,7 @@ class _loginScreenState extends State<loginScreen> {
                     decoration: BoxDecoration(
                       // shape: BoxShape.circle,
                         borderRadius: BorderRadius.circular(300),
-                        color: Colors.white
+                        color: Color(0xff005993)
                     ),
                   ),
                 )
@@ -79,7 +79,7 @@ class _loginScreenState extends State<loginScreen> {
                     height: 370,
                     decoration: BoxDecoration(
                       // shape: BoxShape.circle,
-                      border: Border.all(color: Color(0xffFECE2F)),
+                      border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(300),
                     ),
                   ),
@@ -96,18 +96,18 @@ class _loginScreenState extends State<loginScreen> {
                   TextField(
                     decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Color(0xff005993)),
                         ),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Color(0xff005993)),
                         ),
-                        focusColor: Colors.white,
+                        focusColor: Color(0xff005993),
                         label: Text("Name", style: TextStyle(
-                          color: Colors.white,)
+                          color: Color(0xff005993),)
                         )
                     ),
-                    style: TextStyle(color: Colors.white),
-                    cursorColor: Colors.white,
+                    style: TextStyle(color: Color(0xff005993)),
+                    cursorColor: Color(0xff005993),
                   ),
 
                   SizedBox(height: 20,),
@@ -115,18 +115,18 @@ class _loginScreenState extends State<loginScreen> {
                   TextField(
                     decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Color(0xff005993)),
                         ),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Color(0xff005993)),
                         ),
-                        focusColor: Colors.white,
+                        focusColor: Color(0xff005993),
                         label: Text("Email/phone", style: TextStyle(
-                          color: Colors.white,)
+                          color:Color(0xff005993),)
                         )
                     ),
-                    style: TextStyle(color: Colors.white),
-                    cursorColor: Colors.white,
+                    style: TextStyle(color: Color(0xff005993)),
+                    cursorColor: Color(0xff005993),
                   ),
                 ],
               ),
@@ -144,17 +144,17 @@ class _loginScreenState extends State<loginScreen> {
                       MaterialPageRoute(builder: (context)=>otpVerify()));
                 },
                 child: Text("Generate OTP", style: TextStyle(
-                    color: Color(0xffFECE2F),
+                    color: Colors.white,
                   fontSize: 16
                 ),),
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0),
-                            side: BorderSide(color: Colors.white)
+                            side: BorderSide(color: Color(0xff005993))
                         )
                     ),
-                    backgroundColor: MaterialStateProperty.all(Colors.white,)
+                    backgroundColor: MaterialStateProperty.all(Color(0xff005993),)
                 ),
               ),
             ),

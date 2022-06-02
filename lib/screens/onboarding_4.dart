@@ -17,14 +17,14 @@ class _onBoardingState extends State<onBoarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffFECE2F),
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
               child: Text("Select Mode", style: TextStyle(
-                  color: Colors.white, letterSpacing: 1,
+                  color: Color(0xff005993), letterSpacing: 1,
                   fontSize: 18
               ),),
             ),
@@ -38,7 +38,7 @@ class _onBoardingState extends State<onBoarding> {
                         (context)=>employeeWelcome()));
               },
               child: Text("Employee", style: TextStyle(
-                  color: Colors.white, letterSpacing: 1,
+                  color: Color(0xff005993), letterSpacing: 1,
                   fontSize: 40
               ),),
             ),
@@ -52,7 +52,7 @@ class _onBoardingState extends State<onBoarding> {
                         (context) => Home2()));
               },
               child: Text("Manager", style: TextStyle(
-                  color: Colors.white, letterSpacing: 1,
+                  color: Color(0xff005993), letterSpacing: 1,
                   fontSize: 50,
                   fontWeight: FontWeight.bold
               ),),
@@ -67,7 +67,7 @@ class _onBoardingState extends State<onBoarding> {
                   (context) => Admin1()));
         },
               child: Text("Admin", style: TextStyle(
-                  color: Colors.white, letterSpacing: 1,
+                  color: Color(0xff005993), letterSpacing: 1,
                   fontSize: 40
               ),),
             ),

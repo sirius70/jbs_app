@@ -193,7 +193,7 @@ class _AttendanceState extends State<Attendance> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
+                    children:const [
                       SizedBox(
                         width: 70,
                       ),
@@ -223,7 +223,7 @@ class _AttendanceState extends State<Attendance> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.0),
                     color: Colors.white,
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.grey,
                         offset: Offset(0.0, 1.0),
@@ -242,14 +242,14 @@ class _AttendanceState extends State<Attendance> {
                             color: Colors.blue.shade900,
                             fontSize: 20),
                       ),
-                      Center(
-                        child: Image(
+                      const Center(
+                        child:  Image(
                           image: AssetImage('lib/images/bars2.png'),
                           height: 100,
                         ),
                       ),
                       Row(
-                        children: [
+                        children: const [
                           CircleAvatar(
                             backgroundColor: Colors.red,
                             radius: 5,
