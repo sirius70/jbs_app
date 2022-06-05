@@ -6,6 +6,7 @@ class Create_user extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -18,20 +19,22 @@ class Create_user extends StatelessWidget {
           ],
         ),
         title: Text(
-          'Users',
+          'Add user',
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+        //mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Text(
               'Create User\nAccount',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: Color(0xff005993),
+                  fontSize: 35),
             ),
           ),
           Padding(
@@ -73,10 +76,10 @@ class Create_user extends StatelessWidget {
           Center(
             child: TextButton(
               onPressed: () {},
-              child: Text('Done', style: TextStyle(color: Colors.black)),
+              child: Text('Done', style: TextStyle(color: Colors.white)),
               style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all(Colors.grey.shade300)),
+                      MaterialStateProperty.all(Color(0xff005993))),
             ),
           )
         ],

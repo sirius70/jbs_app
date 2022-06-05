@@ -21,11 +21,13 @@ class _MoreState extends State<More> {
                   child: ListTile(
                     leading: GestureDetector(
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              _buildPopupDialog(context),
-                        );
+                        // showDialog(
+                        //   context: context,
+                        //   builder: (BuildContext context) =>
+                        //
+                        //      _buildPopupDialog(context),
+                        // );
+                        _showEditProfileDialogue(context);
                       },
                       child: Image(
                         image: AssetImage('lib/images/face.png'),
@@ -207,8 +209,104 @@ class _MoreState extends State<More> {
         ));
   }
 
-  Widget _buildPopupDialog(BuildContext context) {
+  _showEditProfileDialogue(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
+              content: Container(
+                padding: EdgeInsets.all(30),
+                width: 425.0,
+                height: 450.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: const Color(0xFFFFFF),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 200,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        //  borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                              image: AssetImage("assets/images/loki.jpg"),
+                              fit: BoxFit.fill
+                          )
+                      ),
+                    ),
+
+                    SizedBox(height: 20),
+                    Text("Caroline Rose",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 20
+                      ),),
+
+                    SizedBox(height: 30),
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.call, color: Color(0xff009AFF),),
+                          Text(" +9112345 67890"),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 10),
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.mail, color: Color(0xff009AFF),),
+                          Text(" caroline@gmail.com"),
+
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 10,),
+                    SizedBox(
+                      width: 80,
+                      child: TextButton(
+                          onPressed: () {},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                'Edit',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Icon(
+                                Icons.edit, size: 15,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor:
+                              MaterialStateProperty.all(Color(0xff005993)),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  )))),
+                    )
+
+                  ],
+                ),
+              ));
+        });
+  }
+}
+
+
+Widget _buildPopupDialog(BuildContext context) {
     return new AlertDialog(
+
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(18.0))),
       content: new Column(
@@ -280,4 +378,3 @@ class _MoreState extends State<More> {
       ),
     );
   }
-}
