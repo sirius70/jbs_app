@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jbs_app/admin/usersList.dart';
 
 import 'add_user.dart';
 import 'admin_disable.dart';
@@ -11,6 +12,7 @@ class Appdrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+          backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -30,177 +32,113 @@ class Appdrawer extends StatelessWidget {
       ),
       body: Column(children: [
         Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10),
+          padding: const EdgeInsets.all(15),
           child: Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 0.1)),
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(color: Color(0xffE9E9E9))
+            ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(width: 5),
                 Text(
                   'Create User',
-                  style: TextStyle(fontSize: 20, color: Colors.lightBlue),
+                  style: TextStyle(fontSize: 20, color: Color(0xff092F52)),
                 ),
-                SizedBox(
-                  width: 200,
-                ),
-                Container(
-                  height: 35,
-                  width: 40,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
+
+                IconButton(onPressed: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) {
                         return Create_user();
                       }));
-                    },
-                    child: Icon(
-                      Icons.arrow_right,
-                      color: Colors.blue.shade400,
-                    ),
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(0),
-                      padding:
-                          MaterialStateProperty.all(EdgeInsets.only(bottom: 3)),
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                    ),
-                  ),
-                )
+                }, icon: Icon(Icons.arrow_forward_ios),color: Color(0xff005993)),
+
               ],
             ),
           ),
         ),
-        SizedBox(
-          height: 5,
-        ),
         Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10),
+          padding: const EdgeInsets.all(15),
           child: Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 0.1)),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Color(0xffE9E9E9))
+            ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(width: 5),
                 Text(
-                  'Disabled User',
-                  style: TextStyle(fontSize: 20, color: Colors.lightBlue),
+              'Disabled User',
+                  style: TextStyle(fontSize: 20, color: Color(0xff092F52)),
                 ),
-                SizedBox(
-                  width: 183,
-                ),
-                Container(
-                  height: 35,
-                  width: 40,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
+
+                IconButton(onPressed: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) {
                         return Deleted_users();
                       }));
-                    },
-                    child: Icon(Icons.arrow_right, color: Colors.blue.shade400),
-                    style: ButtonStyle(
-                      padding:
-                          MaterialStateProperty.all(EdgeInsets.only(bottom: 3)),
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                    ),
-                  ),
-                )
+                }, icon: Icon(Icons.arrow_forward_ios),color: Color(0xff005993)),
+
+
               ],
             ),
           ),
         ),
-        SizedBox(
-          height: 5,
-        ),
         Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10),
+          padding: const EdgeInsets.all(15),
           child: Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 0.1)),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Color(0xffE9E9E9))
+            ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(width: 5),
                 Text(
-                  'Deleted User',
-                  style: TextStyle(fontSize: 20, color: Colors.lightBlue),
+                  'Deleted Users',
+                  style: TextStyle(fontSize: 20, color: Color(0xff092F52)),
                 ),
-                SizedBox(
-                  width: 192,
-                ),
-                Container(
-                  height: 35,
-                  width: 40,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
+
+                IconButton(onPressed: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) {
                         return Users();
                       }));
-                    },
-                    child: Icon(
-                      Icons.arrow_right,
-                      color: Colors.blue.shade400,
-                    ),
-                    style: ButtonStyle(
-                      padding:
-                          MaterialStateProperty.all(EdgeInsets.only(bottom: 3)),
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                    ),
-                  ),
-                )
+                }, icon: Icon(Icons.arrow_forward_ios),color: Color(0xff005993)),
               ],
             ),
           ),
         ),
 
-        SizedBox(
-          height: 5,
-        ),
         Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10),
+          padding: const EdgeInsets.all(15),
           child: Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 0.1)),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Color(0xffE9E9E9))
+            ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(width: 5),
                 Text(
-                  'View all users',
-                  style: TextStyle(fontSize: 20, color: Colors.lightBlue),
+                  'View all Users',
+                  style: TextStyle(fontSize: 20, color: Color(0xff092F52)),
                 ),
-                SizedBox(
-                  width: 192,
-                ),
-                Container(
-                  height: 35,
-                  width: 40,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                            return Users();
-                          }));
-                    },
-                    child: Icon(
-                      Icons.arrow_right,
-                      color: Colors.blue.shade400,
-                    ),
-                    style: ButtonStyle(
-                      padding:
-                      MaterialStateProperty.all(EdgeInsets.only(bottom: 3)),
-                      backgroundColor:
-                      MaterialStateProperty.all(Colors.transparent),
-                    ),
-                  ),
-                )
+
+                IconButton(onPressed: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) {
+                        return UsersLists();
+                      }));
+                }, icon: Icon(Icons.arrow_forward_ios),color: Color(0xff005993)),
               ],
             ),
           ),
-        )
+        ),
       ]),
     ));
   }

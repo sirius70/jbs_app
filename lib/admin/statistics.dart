@@ -22,48 +22,95 @@ class stats extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.all(10),
-            child: Row(children: [
-              Text(
-                'Guests inside',
-                style: TextStyle(color: Colors.blue.shade900),
-              ),
-              Text(
-                '34/50',
-                style: TextStyle(color: Colors.lightBlue),
-              )
-            ]),
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: Row(children: [
-              Text(
-                'Contractors inside',
-                style: TextStyle(color: Colors.blue.shade900),
-              ),
-              Text(
-                '45/80',
-                style: TextStyle(color: Colors.lightBlue),
-              )
-            ]),
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: Row(children: [
-              Text(
-                'Deliveries Accepted',
-                style: TextStyle(color: Colors.blue.shade900),
-              ),
-              Text(
-                '110',
-                style: TextStyle(color: Colors.lightBlue),
-              )
-            ]),
-          )
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [new BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      blurRadius: 5.0,
+                    ),]
+                ),
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Guests inside',
+                      style: TextStyle(color: Color(0xff092F52)),
+                    ),
+                    Text(
+                      '34/50',
+                      style: TextStyle(color: Color(0xff005993)),
+                    )
+                  ],
+                )
+            ),
+
+            SizedBox(height: MediaQuery.of(context).size.width*0.04,),
+            Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [new BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      blurRadius: 5.0,
+                    ),]
+                ),
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Contractors inside',
+                      style: TextStyle(color: Color(0xff092F52)),
+                    ),
+                    Text(
+                      '45/80',
+                      style: TextStyle(color: Color(0xff005993)),
+                    )
+                  ],
+                )
+            ),
+
+            SizedBox(height: MediaQuery.of(context).size.width*0.04,),
+            Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [new BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      blurRadius: 5.0,
+                    ),]
+                ),
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Deliveries Accepted',
+                      style: TextStyle(color: Color(0xff092F52)),
+                    ),
+                    Text(
+                      '110',
+                      style: TextStyle(color: Color(0xff005993)),
+                    )
+                  ],
+                )
+            ),
+
+          ],
+        ),
       ),
     ));
   }

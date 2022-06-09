@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jbs_app/manager/approvereq.dart';
 import 'package:jbs_app/screens/splash_screen_1.dart';
+import 'package:jbs_app/storage.dart';
 
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Storage.init();
   runApp(const MyApp());
 }
 

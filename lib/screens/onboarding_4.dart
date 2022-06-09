@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:jbs_app/admin/admin2.dart';
+import 'package:jbs_app/admin/admin_profile.dart';
 import 'package:jbs_app/employee_screens/employee_welcome_1.dart';
 import 'package:jbs_app/manager/home.dart';
 
 import '../admin/admin1.dart';
+import '../storage.dart';
 
 class onBoarding extends StatefulWidget {
   const onBoarding({Key? key,}) : super(key: key);
@@ -22,14 +25,14 @@ class _onBoardingState extends State<onBoarding> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            GestureDetector(
-              child: Text("Select Mode", style: TextStyle(
-                  color: Color(0xff005993), letterSpacing: 1,
-                  fontSize: 18
-              ),),
-            ),
+            Text("Select Mode", style: TextStyle(
+                color: Color(0xff005993), letterSpacing: 1,
+                fontSize: 18
+            ),),
 
             SizedBox(height: 40,),
+
+
 
             GestureDetector(
               onTap: (){
@@ -49,7 +52,8 @@ class _onBoardingState extends State<onBoarding> {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder:
-                        (context) => Home2()));
+                        (context) => Home2(empId: Storage.get_adminEmpID().toString(),
+                          location: Storage.get_location().toString(),)));
               },
               child: Text("Manager", style: TextStyle(
                   color: Color(0xff005993), letterSpacing: 1,
@@ -64,7 +68,7 @@ class _onBoardingState extends State<onBoarding> {
         onTap: () {
           Navigator.push(context,
               MaterialPageRoute(builder:
-                  (context) => Admin1()));
+                  (context) => adminProfile()));
         },
               child: Text("Admin", style: TextStyle(
                   color: Color(0xff005993), letterSpacing: 1,
@@ -72,23 +76,6 @@ class _onBoardingState extends State<onBoarding> {
               ),),
             ),
 
-
-            // TextButton(
-            //     onPressed: () {
-            //       // Navigator.push(context,
-            //       //     MaterialPageRoute(builder: (context) {
-            //       //       return DeliveryFrom();
-            //       //     }));
-            //     },
-            //     style: ButtonStyle(
-            //         padding: MaterialStateProperty.all(
-            //             EdgeInsets.only(left: 50, right: 50)),
-            //         foregroundColor: MaterialStateProperty.all(Colors.transparent),
-            //         backgroundColor: MaterialStateProperty.all(Colors.transparent)),
-            //     child: Text("Admin", style: TextStyle(
-            //         color: Colors.white, letterSpacing: 1,
-            //         fontSize: 25
-            //     ),),)
 
           ],
         ),

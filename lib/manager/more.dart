@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../storage.dart';
+import 'home.dart';
+
 class More extends StatefulWidget {
   const More({Key? key}) : super(key: key);
 
@@ -10,7 +13,6 @@ class More extends StatefulWidget {
 class _MoreState extends State<More> {
   @override
   Widget build(BuildContext context) {
-    Color _iconColor = Colors.black;
     return SafeArea(
         child: Scaffold(
           body: Column(
@@ -21,12 +23,6 @@ class _MoreState extends State<More> {
                   child: ListTile(
                     leading: GestureDetector(
                       onTap: () {
-                        // showDialog(
-                        //   context: context,
-                        //   builder: (BuildContext context) =>
-                        //
-                        //      _buildPopupDialog(context),
-                        // );
                         _showEditProfileDialogue(context);
                       },
                       child: Image(
@@ -96,7 +92,7 @@ class _MoreState extends State<More> {
                         size: 30,
                       ),
                       title: Text(
-                        'Aprove Request',
+                        'Approve Request',
                         style: TextStyle(fontSize: 15),
                       ),
                       trailing: IconButton(
@@ -105,7 +101,14 @@ class _MoreState extends State<More> {
                           color: Colors.grey.shade500,
                           size: 30,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder:
+                                  (context) =>
+                                  Home2(empId: Storage.get_adminEmpID().toString(),
+                                location: Storage.get_location().toString(),)
+                              ));
+                        },
                       ),
                     ),
                     Divider(

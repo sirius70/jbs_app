@@ -4,7 +4,10 @@ import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../admin/more.dart';
+import '../models/manager_request_leave_model.dart';
+import '../storage.dart';
 import 'viewusers.dart';
+import 'package:http/http.dart'  as http;
 
 class Approve_req extends StatefulWidget {
   const Approve_req({Key? key}) : super(key: key);
@@ -36,62 +39,7 @@ class _Approve_reqState extends State<Approve_req> {
         .closed
         .then((reason) {
       if (reason != SnackBarClosedReason.action) {
-        // The SnackBar was dismissed by some other means
-        // that's not clicking of action button
-        // Make API call to backend
-
       }
-
-    // showDialog(
-    //   context: context,
-    //   builder: (BuildContext context) {
-    //     return Center(
-    //       child: Container(
-    //         padding: EdgeInsets.all(20),
-    //         height: 65,
-    //         width: MediaQuery.of(context).size.width * 0.9,
-    //         decoration: BoxDecoration(
-    //             color: Colors.white,
-    //             borderRadius: BorderRadius.circular(20),
-    //             boxShadow: [new BoxShadow(
-    //               color: Colors.grey,
-    //               blurRadius: 5.0,
-    //             ),]
-    //         ),
-    //         child: Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           children: [
-    //             Text("Approve the request", textAlign: TextAlign.center,
-    //               style: TextStyle( fontSize: 15,
-    //               ),),
-    //
-    //             Row(
-    //               children: [
-    //                 VerticalDividerWidget(),
-    //
-    //                 FlatButton(
-    //                   onPressed: () {
-    //                     var copiedEmail = approve.copy(swipedEmail);
-    //
-    //                     setState((){
-    //                       approveItems.insert(index, copiedEmail);
-    //                     });
-    //                   },
-    //                   child: const Text("Undo"),
-    //                 ),
-    //               ],
-    //             )
-    //
-    //           ],
-    //         ),
-    //       ),
-    //     );
-    //   },
-    // );
-
-
-
-
     });
   }
 
@@ -495,209 +443,152 @@ class _Approve_reqState extends State<Approve_req> {
                   child: ListView.builder(
                       itemCount: approveItems.length,
                       itemBuilder: (context, idx){
-                        return Dismissible(
-                            key: Key(approveItems[idx].index.toString()),
-                            direction: DismissDirection.startToEnd,
-                            // onDismissed: (direction) {
-                            //   handleDismiss(context, direction, idx);
-                            // },
+                        return Container(
+                          child: Dismissible(
+                              key: Key(approveItems[idx].index.toString()),
+                              direction: DismissDirection.startToEnd,
+                              onDismissed: (direction) {
+                                setState(() {
+                                  // added this block
+                                  approve deletedItem = approveItems.removeAt(idx);
 
-                            onDismissed: (direction) {
-                              setState(() {
-                                // added this block
-                                approve deletedItem = approveItems.removeAt(idx);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      Future.delayed(Duration(seconds: 3), () {
+                                        Navigator.of(context).pop(true);
+                                      });
+                                      return Center(
+                                        child: Container(
+                                          padding: EdgeInsets.all(20),
+                                          height: 65,
+                                          width: MediaQuery.of(context).size.width * 0.9,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(20),
+                                              boxShadow: [new BoxShadow(
+                                                color: Colors.grey,
+                                                blurRadius: 5.0,
+                                              ),]
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("Approve the request", textAlign: TextAlign.center,
+                                                style: TextStyle( fontSize: 15,
+                                                ),),
 
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    Future.delayed(Duration(seconds: 3), () {
-                                      Navigator.of(context).pop(true);
-                                    });
-                                    return Center(
+                                              Row(
+                                                children: [
+                                                  VerticalDividerWidget(),
+
+                                                  FlatButton(
+                                                      onPressed: () {
+
+                                                        setState(() => approveItems.insert(idx, deletedItem));
+                                                        Navigator.pop(context);
+                                                      },
+                                                    child: const Text("Undo"),
+                                                  ),
+                                                ],
+                                              )
+
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+
+                                });
+                              },
+
+                              background: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFFFE6E6),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Spacer(),
+                                    Container(
+                                      height: 100,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: NetworkImage("https://raw.githubusercontent.com/abuanwar072/E-commerce-Complete-Flutter-UI/afbdefed9ed20c76cbb6a4fbe3bf0ba25d3e246c/assets/icons/Trash.svg"),
+                                              fit: BoxFit.fill
+                                          )
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                width: MediaQuery.of(context).size.width,
+                                color: Color(0xff0EAF00),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+
+                                    Padding(
+                                      padding: const EdgeInsets.only(left:20, right: 20),
                                       child: Container(
-                                        padding: EdgeInsets.all(20),
-                                        height: 65,
-                                        width: MediaQuery.of(context).size.width * 0.9,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(20),
-                                            boxShadow: [new BoxShadow(
-                                              color: Colors.grey,
-                                              blurRadius: 5.0,
-                                            ),]
+                                          child: Text("Approve", style: TextStyle(
+                                              color: Colors.white
+                                          ),)
+                                      ),
+                                    ),
+
+
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundImage: AssetImage("lib/images/face.png"),
                                         ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        SizedBox(width: 8,),
+
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text("Approve the request", textAlign: TextAlign.center,
-                                              style: TextStyle( fontSize: 15,
-                                              ),),
+                                            Container(
+                                              height: 10,
+                                              width: 100,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
 
-                                            Row(
-                                              children: [
-                                                VerticalDividerWidget(),
+                                            Container(
+                                              height: 10,
+                                              width: 150,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
 
-                                                FlatButton(
-                                                    onPressed: () {
-
-                                                      setState(() => approveItems.insert(idx, deletedItem));
-                                                      Navigator.pop(context);
-                                                    },
-                                                  child: const Text("Undo"),
-                                                ),
-                                              ],
-                                            )
-
+                                            Container(
+                                              height: 10,
+                                              width: 150,
+                                              color: Colors.white,
+                                            ),
                                           ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-
-
-
-
-                                // ScaffoldMessenger.of(context)
-                                //   ..removeCurrentSnackBar()
-                                //   ..showSnackBar(
-                                //     SnackBar(
-                                //       content: Text("Deleted \"${deletedItem}\""),
-                                //       action: SnackBarAction(
-                                //           label: "UNDO",
-                                //           onPressed: () => setState(() => approveItems.insert(idx, deletedItem),) // this is what you needed
-                                //       ),
-                                //     ),
-                                //   );
-                              });
-                            },
-                            // confirmDismiss: (DismissDirection direction) async {
-                            //   return await showDialog(
-                            //     context: context,
-                            //     builder: (BuildContext context) {
-                            //       return Center(
-                            //         child: Container(
-                            //           padding: EdgeInsets.all(20),
-                            //           height: 65,
-                            //           width: MediaQuery.of(context).size.width * 0.9,
-                            //           decoration: BoxDecoration(
-                            //               color: Colors.white,
-                            //               borderRadius: BorderRadius.circular(20),
-                            //               boxShadow: [new BoxShadow(
-                            //                 color: Colors.grey,
-                            //                 blurRadius: 5.0,
-                            //               ),]
-                            //           ),
-                            //           child: Row(
-                            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //             children: [
-                            //               Text("Approve the request", textAlign: TextAlign.center,
-                            //                 style: TextStyle( fontSize: 15,
-                            //                 ),),
-                            //
-                            //               Row(
-                            //                 children: [
-                            //                   VerticalDividerWidget(),
-                            //
-                            //                   FlatButton(
-                            //                     onPressed: () => Navigator.of(context).pop(false),
-                            //                     child: const Text("Undo"),
-                            //                   ),
-                            //                 ],
-                            //               )
-                            //
-                            //             ],
-                            //           ),
-                            //         ),
-                            //       );
-                            //     },
-                            //   );
-                            // },
-                            background: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(
-                                color: Color(0xFFFFE6E6),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Row(
-                                children: [
-                                  Spacer(),
-                                  Container(
-                                    height: 100,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: NetworkImage("https://raw.githubusercontent.com/abuanwar072/E-commerce-Complete-Flutter-UI/afbdefed9ed20c76cbb6a4fbe3bf0ba25d3e246c/assets/icons/Trash.svg"),
-                                            fit: BoxFit.fill
                                         )
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              width: MediaQuery.of(context).size.width,
-                              color: Color(0xff0EAF00),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-
-                                  Padding(
-                                    padding: const EdgeInsets.only(left:20, right: 20),
-                                    child: Container(
-                                        child: Text("Approve", style: TextStyle(
-                                            color: Colors.white
-                                        ),)
-                                    ),
-                                  ),
-
-
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundImage: AssetImage("lib/images/face.png"),
-                                      ),
-                                      SizedBox(width: 8,),
-
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            height: 10,
-                                            width: 100,
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-
-                                          Container(
-                                            height: 10,
-                                            width: 150,
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-
-                                          Container(
-                                            height: 10,
-                                            width: 150,
-                                            color: Colors.white,
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
 
 
 
 
-                                ],
-                              ),
-                            )
+                                  ],
+                                ),
+                              )
+                          ),
                         );
                       }
 
@@ -705,464 +596,103 @@ class _Approve_reqState extends State<Approve_req> {
 
                 ),
 
+                FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot != null){
+                      ManagerRequestLeave _weather = snapshot.data as ManagerRequestLeave ;
+                      if (_weather == null){
+                        return Center(child: CircularProgressIndicator(),);
+                      }
+                      else{
+                        return weatherBox(context, _weather);
+                      }}
+                    else{
+                      return CircularProgressIndicator();
+                    }
+                  },
 
+                  future: getLeaveReqList(),
+                ),
 
-                Row(children: [
-                  Checkbox(
-                      value: _mybool,
-                      onChanged: (value) {
-                        setState(() => _mybool = value!);
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Image(
-                    image: AssetImage('lib/images/face3.png'),
-                    height: 60,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 10,
-                        width: 120,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 150,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 80,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 100,
-                        color: Colors.grey,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 65,
-                  ),
-                ]),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(children: [
-                  Checkbox(
-                      value: _mybool,
-                      onChanged: (value) {
-                        setState(() => _mybool = value!);
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Image(
-                    image: AssetImage('lib/images/face3.png'),
-                    height: 60,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 10,
-                        width: 120,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 150,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 80,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 100,
-                        color: Colors.grey,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 65,
-                  ),
-                ]),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(children: [
-                  Checkbox(
-                      value: _mybool,
-                      onChanged: (value) {
-                        setState(() => _mybool = value!);
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Image(
-                    image: AssetImage('lib/images/face3.png'),
-                    height: 60,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 10,
-                        width: 120,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 150,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 80,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 100,
-                        color: Colors.grey,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 65,
-                  ),
-                ]),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(children: [
-                  Checkbox(
-                      value: _mybool,
-                      onChanged: (value) {
-                        setState(() => _mybool = value!);
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Image(
-                    image: AssetImage('lib/images/face3.png'),
-                    height: 60,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 10,
-                        width: 120,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 150,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 80,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 100,
-                        color: Colors.grey,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 65,
-                  ),
-                ]),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(children: [
-                  Checkbox(
-                      value: _mybool,
-                      onChanged: (value) {
-                        setState(() => _mybool = value!);
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Image(
-                    image: AssetImage('lib/images/face3.png'),
-                    height: 60,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 10,
-                        width: 120,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 150,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 80,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 100,
-                        color: Colors.grey,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 65,
-                  ),
-                ]),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(children: [
-                  Checkbox(
-                      value: _mybool,
-                      onChanged: (value) {
-                        setState(() => _mybool = value!);
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Image(
-                    image: AssetImage('lib/images/face3.png'),
-                    height: 60,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 10,
-                        width: 120,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 150,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 80,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 100,
-                        color: Colors.grey,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 65,
-                  ),
-                ]),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(children: [
-                  Checkbox(
-                      value: _mybool,
-                      onChanged: (value) {
-                        setState(() => _mybool = value!);
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Image(
-                    image: AssetImage('lib/images/face3.png'),
-                    height: 60,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 10,
-                        width: 120,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 150,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 80,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 100,
-                        color: Colors.grey,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 65,
-                  ),
-                ]),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(children: [
-                  Checkbox(
-                      value: _mybool,
-                      onChanged: (value) {
-                        setState(() => _mybool = value!);
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Image(
-                    image: AssetImage('lib/images/face3.png'),
-                    height: 60,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 10,
-                        width: 120,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 150,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 80,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 10,
-                        width: 100,
-                        color: Colors.grey,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 65,
-                  ),
-                ]),
               ],
             )));
   }
+}
+
+
+Widget weatherBox(BuildContext context, ManagerRequestLeave reqLeaveListss){
+  return Expanded(
+      child: ListView.separated(
+          separatorBuilder: (BuildContext context, int index) {
+            return SizedBox(
+              height: 20,
+            );
+          },
+          itemCount: reqLeaveListss.data.length,
+          itemBuilder: (context, index){
+            return Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Row(
+                      children: [
+                        Image(
+                          image: AssetImage('lib/images/face3.png'),
+                          height: 70,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(reqLeaveListss.data[index].reqType,
+                            style: TextStyle(
+                              backgroundColor: Colors.grey.shade300,
+                              fontSize: 15, fontWeight: FontWeight.bold
+                            ),),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text("empId: ${reqLeaveListss.data[index].employeeId}",
+                              style: TextStyle(
+                                  backgroundColor: Colors.grey.shade300,
+                                  fontSize: 15,
+                              ),),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text("reason: ${reqLeaveListss.data[index].reason}",
+                              style: TextStyle(
+                                backgroundColor: Colors.grey.shade300,
+                                fontSize: 15,
+                              ),),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text("date of req: ${reqLeaveListss.data[index].dateOfReq}",
+                              style: TextStyle(
+                                backgroundColor: Colors.grey.shade300,
+                                fontSize: 15,
+                              ),),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text("leave date: ${reqLeaveListss.data[index].dateFor}",
+                              style: TextStyle(
+                                backgroundColor: Colors.grey.shade300,
+                                fontSize: 15,
+                              ),),
+                          ],
+                        ),
+                      ]),
+
+                ],
+              ),
+            );
+          }
+      )
+  );
 }
 
 class VerticalDividerWidget extends StatelessWidget {
@@ -1201,3 +731,21 @@ class approve {
 
 List<approve> approveItems = [approve(index: 0)];
 
+
+Future getLeaveReqList() async {
+
+  var headers = {'Content-Type': 'application/json',
+    'Authorization': 'Bearer ${Storage.get_accessToken()}'};
+
+  var url = Uri.parse('https://stg.visitormanager.net/v1/manager/request/leave', );
+
+  final response = await http.get(url, headers: headers);
+  print(response.body);
+
+  if (response.statusCode == 200) {
+    return managerRequestLeaveFromJson(response.body);
+  } else {
+    print("Failed to fetch data");
+  }
+
+}

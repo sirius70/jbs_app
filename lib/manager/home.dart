@@ -3,8 +3,11 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:jbs_app/admin/admin1.dart';
 import 'package:jbs_app/employee_screens/employee_welcome_1.dart';
 import 'package:jbs_app/employee_screens/widgets/egg.dart';
+import 'package:jbs_app/manager/reqManagerRegularization.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
+import '../api/access.dart';
+import '../storage.dart';
 import 'approvereq.dart';
 import 'viewusers.dart';
 import 'package:marquee/marquee.dart';
@@ -13,13 +16,16 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'more.dart';
 
 class Home2 extends StatefulWidget {
-  const Home2({Key? key}) : super(key: key);
+   Home2({Key? key, required this.empId, required this.location}) : super(key: key);
+   String empId;
+   String location;
 
   @override
   State<Home2> createState() => _Home2State();
 }
 
 class _Home2State extends State<Home2> {
+
   List dismiss = [
   ];
   @override
@@ -167,7 +173,8 @@ class _Home2State extends State<Home2> {
                                             Navigator.pushReplacement(
                                                 (context as Element),
                                                 MaterialPageRoute(
-                                                    builder: (BuildContext context) => Home2()));
+                                                    builder: (BuildContext context) => Home2(empId: Storage.get_adminEmpID().toString(),
+                                                      location: Storage.get_location().toString(),)));
                                           },
                                           child: ListTile(
                                             leading: Image(
@@ -250,15 +257,15 @@ class _Home2State extends State<Home2> {
                             height: 50),
                       ),
                       Text(
-                        'Admin',
+                        'Manager',
                         style: TextStyle(color: Colors.amber, fontSize: 10),
                       ),
                       Text(
-                        'Bengaluru',
+                        widget.location.toString(),
                         style: TextStyle(color: Colors.blue),
                       ),
                       Text(
-                        'Emp Id: 12345',
+                        "Emp ID: ${widget.empId}",
                         style: TextStyle(fontSize: 15),
                       )
                     ],
@@ -344,6 +351,11 @@ class _Home2State extends State<Home2> {
             SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               GestureDetector(
+                // onTap: (){
+                //   access().managerReqLeave().then((value) {
+                //
+                //   });
+                // },
                   child: Container(
                     padding: EdgeInsets.all(20),
                     height: 150,
@@ -371,7 +383,8 @@ class _Home2State extends State<Home2> {
                         MaterialPageRoute(builder: (context) {
                       return Approve_req();
                     }));
-                  }),
+                  }
+                  ),
               GestureDetector(
                   child: Container(
                     padding: EdgeInsets.all(20),
@@ -395,7 +408,12 @@ class _Home2State extends State<Home2> {
                       ),
                     ),
                   ),
-                  onTap: () {})
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return reqRegularization();
+                        }));
+                  })
             ]),
             Padding(
               padding: const EdgeInsets.all(20.0),

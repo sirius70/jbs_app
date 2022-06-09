@@ -4,6 +4,7 @@ import 'package:jbs_app/admin/statistics.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 
+import '../storage.dart';
 import 'admin2.dart';
 import 'navigation bar.dart';
 
@@ -450,7 +451,7 @@ class Admin1 extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                              return Admin2();
+                              return Admin2(location: Storage.get_location().toString(), empID: Storage.get_adminEmpID().toString(),);
                             }));
                       },
                       style: ButtonStyle(

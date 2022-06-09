@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:jbs_app/admin/admin_profile.dart';
+import 'package:jbs_app/admin/search_employee.dart';
+import 'package:jbs_app/admin/statistics.dart';
+import 'package:jbs_app/storage.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:marquee/marquee.dart';
@@ -11,21 +15,11 @@ import 'admin1.dart';
 import 'admin_users.dart';
 import 'navigation bar.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Admin2(),
-    );
-  }
-}
 
 class Admin2 extends StatelessWidget {
-  const Admin2({Key? key}) : super(key: key);
+  Admin2({Key? key, required  this.empID, required  this.location}) : super(key: key);
+  String empID;
+  String location;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +53,11 @@ class Admin2 extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return stats();
+                }));
+              },
               child: Column(
                 children: [
                   LineIcon(
@@ -83,8 +81,11 @@ class Admin2 extends StatelessWidget {
                 )),
             TextButton(
               onPressed: () {
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return Appdrawer();
+                // }));
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Appdrawer();
+                  return searchEmployee();
                 }));
               },
               child: Column(
@@ -102,7 +103,11 @@ class Admin2 extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Appdrawer();
+                }));
+              },
               child: Column(
                 children: [
                   LineIcon(
@@ -168,7 +173,8 @@ class Admin2 extends StatelessWidget {
                                               Navigator.pushReplacement(
                                                   (context as Element),
                                                   MaterialPageRoute(
-                                                      builder: (BuildContext context) => Home2()));
+                                                      builder: (BuildContext context) => Home2(empId: Storage.get_adminEmpID().toString(),
+                                                        location: Storage.get_location().toString(),)));
                                             },
                                             child: ListTile(
                                               leading: Image(
@@ -238,17 +244,22 @@ class Admin2 extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Image(image: AssetImage('lib/images/face.png'), height: 50),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                            adminProfile()));
+                        },
+                        child: Image(image: AssetImage('lib/images/face.png'), height: 50)),
                     Text(
                       'Admin',
                       style: TextStyle(color: Colors.amber, fontSize: 10),
                     ),
                     Text(
-                      'Bengaluru',
+                      '${location}',
                       style: TextStyle(color: Colors.blue),
                     ),
                     Text(
-                      'Emp Id: 12345',
+                      'Emp Id: ${empID}',
                       style: TextStyle(fontSize: 15),
                     )
                   ],
