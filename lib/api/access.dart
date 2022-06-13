@@ -97,6 +97,12 @@ class access {
     return data;
   }
 
+  Future<dynamic> enableEmployee(String locId, String empId) async {
+    NetworkHelper helper = NetworkHelper(base_url + "enableEmployee");
+    var data = await helper.enableEmployee(locId, empId);
+    return data;
+  }
+
   //
   // Future<dynamic> uploadVisitorImage(String path) async {
   //   NetworkHelper helper = NetworkHelper(base_url + "upload/img/VisitorImg",);

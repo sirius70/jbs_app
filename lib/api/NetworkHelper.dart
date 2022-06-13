@@ -350,6 +350,26 @@ class NetworkHelper {
     }
   }
 
+  Future enableEmployee(String locId, empId) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {'location_Id': locId, 'employee_Id': empId});
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
   //
   // Future uploadVisitorImage(String path) async {
   //   String fileName = path.split('/').last;

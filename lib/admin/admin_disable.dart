@@ -252,7 +252,35 @@ class _Disabled_usersState extends State<Disabled_users> {
                                                         ),
                                                         TextButton(
                                                           onPressed: () {
+                                                            print("locId: ${Storage.get_locationID().toString()}");
+                                                            print("empId: ${Storage.get_empID().toString()}");
+                                                            access().enableEmployee(Storage.get_locationID().toString(),
+                                                                Storage.get_empID().toString()).then((value){
+                                                              if(value["success"]){
+                                                                Fluttertoast.showToast(
+                                                                    msg: "${"Enabled employee with id: ${Storage.get_empID().toString()}"}",
+                                                                    toastLength: Toast.LENGTH_SHORT,
+                                                                    gravity: ToastGravity.BOTTOM,
+                                                                    timeInSecForIosWeb: 1,
+                                                                    backgroundColor: Colors.green.shade400,
+                                                                    textColor: Colors.white,
+                                                                    fontSize: 16.0);
+                                                                setState(() {
+                                                                  Navigator.pop(context);
+                                                                });
 
+                                                              } else{
+                                                                Fluttertoast.showToast(
+                                                                    msg: "Error enabling employee with id: ${Storage.get_empID().toString()}",
+                                                                    toastLength: Toast.LENGTH_SHORT,
+                                                                    gravity: ToastGravity.BOTTOM,
+                                                                    timeInSecForIosWeb: 1,
+                                                                    backgroundColor: Colors.red.shade400,
+                                                                    textColor: Colors.white,
+                                                                    fontSize: 16.0);
+                                                              }
+
+                                                            });
                                                           },
                                                           child: Text('Enable',
                                                               style: TextStyle(color: Colors.white)),
