@@ -1,57 +1,65 @@
+// To parse this JSON data, do
+//
+//     final disabledEmployeesList = disabledEmployeesListFromJson(jsonString);
+
+import 'dart:convert';
+
+DisabledEmployeesList disabledEmployeesListFromJson(String str) => DisabledEmployeesList.fromJson(json.decode(str));
+
+String disabledEmployeesListToJson(DisabledEmployeesList data) => json.encode(data.toJson());
+
 class DisabledEmployeesList {
-  String? status;
-  bool? success;
-  String? message;
-  List<Employees>? employees;
+  DisabledEmployeesList({
+    required this.status,
+    required this.success,
+    required this.message,
+    required this.employees,
+  });
 
-  DisabledEmployeesList(
-      {this.status, this.success, this.message, this.employees});
+  String status;
+  bool success;
+  String message;
+  List<Employee> employees;
 
-  DisabledEmployeesList.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    success = json['success'];
-    message = json['message'];
-    if (json['employees'] != null) {
-      employees = <Employees>[];
-      json['employees'].forEach((v) {
-        employees!.add(new Employees.fromJson(v));
-      });
-    }
-  }
+  factory DisabledEmployeesList.fromJson(Map<String, dynamic> json) => DisabledEmployeesList(
+    status: json["status"],
+    success: json["success"],
+    message: json["message"],
+    employees: List<Employee>.from(json["employees"].map((x) => Employee.fromJson(x))),
+  );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['success'] = this.success;
-    data['message'] = this.message;
-    if (this.employees != null) {
-      data['employees'] = this.employees!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "success": success,
+    "message": message,
+    "employees": List<dynamic>.from(employees.map((x) => x.toJson())),
+  };
 }
 
-class Employees {
-  String? email;
-  String? phoneNumber;
-  int? employeeId;
-  String? name;
+class Employee {
+  Employee({
+    required this.email,
+    required this.phoneNumber,
+    required this.employeeId,
+    required this.name,
+  });
 
-  Employees({this.email, this.phoneNumber, this.employeeId, this.name});
+  String email;
+  String phoneNumber;
+  int employeeId;
+  String name;
 
-  Employees.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
-    phoneNumber = json['phone_Number'];
-    employeeId = json['employee_Id'];
-    name = json['name'];
-  }
+  factory Employee.fromJson(Map<String, dynamic> json) => Employee(
+    email: json["email"],
+    phoneNumber: json["phone_Number"],
+    employeeId: json["employee_Id"],
+    name: json["name"],
+  );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this.email;
-    data['phone_Number'] = this.phoneNumber;
-    data['employee_Id'] = this.employeeId;
-    data['name'] = this.name;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    "email": email,
+    "phone_Number": phoneNumber,
+    "employee_Id": employeeId,
+    "name": name,
+  };
 }

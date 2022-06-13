@@ -69,14 +69,14 @@ class _Disabled_usersState extends State<Disabled_users> {
             ),
           )),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 10,),
           FutureBuilder(
             builder: (context, snapshot) {
               if (snapshot != null){
                 DisabledEmployeesList _disabledEmp = snapshot.data as DisabledEmployeesList ;
                 if (_disabledEmp == null){
-                  return Center(child: CircularProgressIndicator(),);
+                  return Center(child: Text("No disabled users found"),);
                 }
                 else{
                   return Expanded(
@@ -251,7 +251,9 @@ class _Disabled_usersState extends State<Disabled_users> {
                                                                   Colors.blue.shade900)),
                                                         ),
                                                         TextButton(
-                                                          onPressed: () {},
+                                                          onPressed: () {
+
+                                                          },
                                                           child: Text('Enable',
                                                               style: TextStyle(color: Colors.white)),
                                                           style: ButtonStyle(
@@ -285,7 +287,7 @@ class _Disabled_usersState extends State<Disabled_users> {
 
                 }}
               else{
-                return CircularProgressIndicator();
+                return Center(child: Text("No disabled users found"),);
               }
             },
 

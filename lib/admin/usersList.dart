@@ -70,13 +70,15 @@ access().usersList();
                         if (snapshot != null){
                           UserListApi _weather = snapshot.data as UserListApi ;
                           if (_weather == null){
-                            return Center(child: CircularProgressIndicator(),);
+                            return Center(child: Text("No employee Below Admin post in this organization"),);
                           }
                           else{
                             return weatherBox(context, _weather);
                           }}
                         else{
-                          return CircularProgressIndicator();
+                          return Center(
+                            child: Text("No employee Below Admin post in this organization"),
+                          );
                         }
                       },
 
