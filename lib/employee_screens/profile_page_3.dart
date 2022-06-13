@@ -6,6 +6,9 @@ import 'package:jbs_app/employee_screens/my_tracker.dart';
 import 'package:jbs_app/employee_screens/scan_qr.dart';
 import 'package:jbs_app/employee_screens/widgets/my_leave_application.dart';
 
+import '../api/access.dart';
+import '../models/profile_model.dart';
+import '../storage.dart';
 import 'employee_welcome_1.dart';
 import 'guest_register_2.dart';
 import 'my_regulaization_request.dart';
@@ -177,7 +180,7 @@ class _employeeProfileState extends State<employeeProfile> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("Nattakhan Wangphong Ballangnoi",
+                              Text(Storage.get_name().toString(),
                                 style: TextStyle(
                                   color: Color(0xff005993),
                                     fontSize: 20
@@ -186,7 +189,16 @@ class _employeeProfileState extends State<employeeProfile> {
                               SizedBox(height: 5,),
                               GestureDetector(
                                 onTap: (){
-                                  _showEditProfileDialogue(context);
+                                  access().profile().then((value) async{
+                                    if(value["success"]) {
+                                      ProfileApi profile = await ProfileApi.fromJson(value);
+                                      // final name = profile.data.name;
+                                      // Storage.set_name(name);
+                                      return _showEditProfileDialogue(context, profile);
+                                    }else{
+                                      return Center(child: CircularProgressIndicator(),);
+                                    }
+                                  });
                                 },
                                 child: Text("View Profile",
                                 style: TextStyle(
@@ -426,7 +438,7 @@ class _employeeProfileState extends State<employeeProfile> {
     );
   }
 
-  _showEditProfileDialogue(BuildContext context) {
+  _showEditProfileDialogue(BuildContext context, ProfileApi _profile) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -456,7 +468,7 @@ class _employeeProfileState extends State<employeeProfile> {
                     ),
 
                     SizedBox(height: 20),
-                    Text("Nattakhan Wangphong Ballangnoi",
+                    Text(_profile.data.name,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 20
@@ -468,7 +480,7 @@ class _employeeProfileState extends State<employeeProfile> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.call, color: Color(0xff009AFF),),
-                          Text(" +9112345 67890"),
+                          Text(_profile.data.phoneNumber,),
                         ],
                       ),
                     ),
@@ -479,7 +491,7 @@ class _employeeProfileState extends State<employeeProfile> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.mail, color: Color(0xff009AFF),),
-                          Text(" nattu@gmail.com"),
+                          Text(_profile.data.email),
                         ],
                       ),
                     ),

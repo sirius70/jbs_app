@@ -8,14 +8,14 @@ import 'package:jbs_app/models/profile_model.dart';
 import '../storage.dart';
 
 
-class adminProfile extends StatefulWidget {
-  const adminProfile({Key? key}) : super(key: key);
+class managerProfile extends StatefulWidget {
+  const managerProfile({Key? key}) : super(key: key);
 
   @override
-  State<adminProfile> createState() => _adminProfileState();
+  State<managerProfile> createState() => _managerProfileState();
 }
 
-class _adminProfileState extends State<adminProfile> {
+class _managerProfileState extends State<managerProfile> {
 
   SharedPreferencesInit() async {
     await Storage.init();
@@ -52,6 +52,7 @@ class _adminProfileState extends State<adminProfile> {
                           height: 70,
                           width: 70,
                           decoration: BoxDecoration(
+                            //    borderRadius: BorderRadius.circular(20),
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                   image: AssetImage("assets/images/loki.jpg"),
@@ -124,8 +125,8 @@ class _adminProfileState extends State<adminProfile> {
                               Navigator.push(
                                   context, MaterialPageRoute(builder:
                                   (context)=>Admin2(location: Storage.get_location().toString(),
-                                    empID: Storage.get_adminEmpID().toString(),
-                                  name: Storage.get_name().toString(),)));
+                                empID: Storage.get_adminEmpID().toString(),
+                                name: Storage.get_name().toString(),)));
                             },
                                 icon: Icon(Icons.arrow_forward_ios, color: Colors.grey,))
                           ],
@@ -173,6 +174,13 @@ class _adminProfileState extends State<adminProfile> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            // Row(
+                            //   children: [
+                            //     Icon(Icons.my_location_rounded, size: 30,color: Color(0xff009AFF),),
+                            //     SizedBox(width: 10,),
+                            //     Text("Tracking")
+                            //   ],
+                            // ),
                             Text("Visitor's history"),
 
                             IconButton(onPressed: (){

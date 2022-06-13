@@ -53,7 +53,8 @@ class _onBoardingState extends State<onBoarding> {
                 Navigator.push(context,
                     MaterialPageRoute(builder:
                         (context) => Home2(empId: Storage.get_adminEmpID().toString(),
-                          location: Storage.get_location().toString(),)));
+                          location: Storage.get_location().toString(),
+                        name: Storage.get_name().toString(),)));
               },
               child: Text("Manager", style: TextStyle(
                   color: Color(0xff005993), letterSpacing: 1,

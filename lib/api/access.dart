@@ -45,6 +45,58 @@ class access {
     return data;
   }
 
+  Future<dynamic> profile() async {
+
+    NetworkHelper helper = NetworkHelper(base_url + "profile");
+    var data = await helper.profile();
+    return data;
+  }
+
+  Future<dynamic> deliveryTodayCount() async {
+
+    NetworkHelper helper = NetworkHelper(base_url + "totalDeliveriesToday");
+    var data = await helper.deliveryTodayCount();
+    return data;
+  }
+
+  Future<dynamic> contractorTodayCount() async {
+
+    NetworkHelper helper = NetworkHelper(base_url + "contractorTodayDetails");
+    var data = await helper.contractorTodayCount();
+    return data;
+  }
+
+  Future<dynamic> visitorTodayCount() async {
+
+    NetworkHelper helper = NetworkHelper(base_url + "visitorTodayDetails");
+    var data = await helper.visitorTodayCount();
+    return data;
+  }
+
+  Future<dynamic> loginPhone(String phone_Number) async {
+    NetworkHelper helper = NetworkHelper(base_url + "verify/phone");
+    var data = await helper.loginPhone(phone_Number);
+    return data;
+  }
+
+  Future<dynamic> loginPhone2(String phone_Number, String idToken) async {
+    NetworkHelper helper = NetworkHelper(base_url + "login/phone");
+    var data = await helper.loginPhone2(phone_Number, idToken);
+    return data;
+  }
+
+  Future<dynamic> disableEmployee(String locId, String empId) async {
+    NetworkHelper helper = NetworkHelper(base_url + "disableEmployee");
+    var data = await helper.disableEmployee(locId, empId);
+    return data;
+  }
+
+  Future<dynamic> deleteEmployee(String locId, String empId) async {
+    NetworkHelper helper = NetworkHelper(base_url + "deleteEmployee");
+    var data = await helper.deleteEmployee(locId, empId);
+    return data;
+  }
+
   //
   // Future<dynamic> uploadVisitorImage(String path) async {
   //   NetworkHelper helper = NetworkHelper(base_url + "upload/img/VisitorImg",);

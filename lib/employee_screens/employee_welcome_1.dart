@@ -8,6 +8,8 @@ import 'package:jbs_app/employee_screens/scan_qr.dart';
 import 'package:jbs_app/employee_screens/widgets/bottom_navigation.dart';
 import 'package:marquee/marquee.dart';
 
+import '../storage.dart';
+
 enum Options { person_crop_circle, notifications, switch_account_outlined, }
 class employeeWelcome extends StatefulWidget {
   const employeeWelcome({Key? key}) : super(key: key);
@@ -297,7 +299,7 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                     children: [
                       Column(
                         children: [
-                          Text("Rahul \nSubramanian",
+                          Text(Storage.get_name().toString(),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
@@ -311,13 +313,13 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           SizedBox(height: 20,),
-                          Text("Bengaluru",
+                          Text(Storage.get_location().toString(),
                           style: TextStyle(
                             fontSize: 15,
                             color: Color(0xff0060B9)
                           ),),
                           SizedBox(height: 5,),
-                          Text("Emp ID: 12345")
+                          Text("Emp ID: ${Storage.get_adminEmpID().toString()}")
                         ],
                       ),
                     ],

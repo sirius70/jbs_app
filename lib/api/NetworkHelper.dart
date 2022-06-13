@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../models/disable_emp_model.dart';
 import '../models/login_model.dart';
 import '../models/search_emp_model.dart';
 import '../storage.dart';
@@ -14,7 +15,6 @@ class NetworkHelper {
   Dio? dio;
   BaseOptions option1 = BaseOptions(connectTimeout: 10000, receiveTimeout: 10000, headers: {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer ${Storage.get_accessToken()}',
   });
   BaseOptions option =
   BaseOptions(connectTimeout: 10000, receiveTimeout: 10000, headers: {
@@ -49,7 +49,7 @@ class NetworkHelper {
   }
 
   Future employeeList(String name) async {
-    dio = Dio(option1);
+    dio = Dio(option);
     try {
       Response? response =
       await dio?.post(url, data: {'name': name,'location_Id':Storage.get_locationID()});
@@ -71,7 +71,7 @@ class NetworkHelper {
   }
 
   Future createEmployee(String name, String phoneNo, String email, String Manager) async {
-    dio = Dio(option1);
+    dio = Dio(option);
     try {
       Response? response =
       await dio?.post(url, data: {'name': name,
@@ -100,7 +100,7 @@ class NetworkHelper {
   }
 
   Future usersList() async {
-    dio = Dio(option1);
+    dio = Dio(option);
     try {
       var queryParams = {
         'pageNo': 2,
@@ -126,7 +126,7 @@ class NetworkHelper {
   }
 
   Future attendanceList() async {
-    dio = Dio(option1);
+    dio = Dio(option);
     try {
       Map<String, String> queryParams = {
         "EmployeeId": Storage.get_empID().toString(),
@@ -155,13 +155,188 @@ class NetworkHelper {
   }
 
   Future managerReqLeave() async {
-    dio = Dio(option1);
+    dio = Dio(option);
     try {
       Response? response = await dio?.get(url);
 
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {
 
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+
+  Future profile() async {
+    dio = Dio(option);
+    try {
+
+      Response? response = await dio?.get(url);
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future deliveryTodayCount() async {
+    dio = Dio(option);
+    try {
+
+      Response? response = await dio?.get(url, queryParameters: {"location_Id": Storage.get_locationID()});
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future contractorTodayCount() async {
+    dio = Dio(option);
+    try {
+
+      Response? response = await dio?.get(url, queryParameters: {"location_Id": Storage.get_locationID()});
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future visitorTodayCount() async {
+    dio = Dio(option);
+    try {
+
+      Response? response = await dio?.get(url, queryParameters: {"location_Id": Storage.get_locationID()});
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future loginPhone(String phone_Number) async {
+    dio = Dio(option1);
+    try {
+
+      Response? response = await dio?.post(url, data: {"phone_Number": phone_Number});
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+
+  Future loginPhone2(String phone_Number, String idToken) async {
+    dio = Dio(option1);
+    try {
+
+      Response? response = await dio?.post(url, data: {"phone_Number": phone_Number
+      , "idToken": idToken});
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future disableEmployee(String locId, empId) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {'location_Id': locId, 'employee_Id': empId});
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future deleteEmployee(String locId, empId) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {'location_Id': locId, 'employee_Id': empId});
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
 
         print(response?.data);
 

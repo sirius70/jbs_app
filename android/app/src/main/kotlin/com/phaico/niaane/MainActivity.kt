@@ -1,4 +1,4 @@
-package com.example.jbs_app
+package com.phaico.niaane
 
 import io.flutter.embedding.android.FlutterActivity
 

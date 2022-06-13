@@ -339,79 +339,6 @@ class _UsersState extends State<Users> {
 
                                                   future: getManagerUserDetailsList(),
                                                 ),
-                                                // Column(
-                                                //   crossAxisAlignment: CrossAxisAlignment.start,
-                                                //   children: [
-                                                //     SizedBox(
-                                                //       height: 100,
-                                                //     ),
-                                                //     Container(
-                                                //       height: 15,
-                                                //       width: 150,
-                                                //       child: Text('Caroline forbes',
-                                                //           style: TextStyle(
-                                                //               color: Colors.lightBlue)),
-                                                //     ),
-                                                //     SizedBox(
-                                                //       height: 8,
-                                                //     ),
-                                                //     Container(
-                                                //       height: 15,
-                                                //       width: 120,
-                                                //       child: Text(
-                                                //         '+91 744xxxxxxx',
-                                                //         style:
-                                                //         TextStyle(color: Colors.lightBlue),
-                                                //       ),
-                                                //     ),
-                                                //     SizedBox(
-                                                //       height: 8,
-                                                //     ),
-                                                //     Container(
-                                                //       height: 15,
-                                                //       width: 150,
-                                                //       child: Text('carolineforbes@gmail.com',
-                                                //           style: TextStyle(
-                                                //               color: Colors.lightBlue)),
-                                                //     ),
-                                                //     SizedBox(
-                                                //       height: 80,
-                                                //     ),
-                                                //     SizedBox(
-                                                //       height: 30,
-                                                //       width: 100,
-                                                //       child: TextButton(
-                                                //           onPressed: () {
-                                                //             Navigator.push(context,
-                                                //                 MaterialPageRoute(
-                                                //                     builder: (context) {
-                                                //                       return Attendance();
-                                                //                     }));
-                                                //           },
-                                                //           style: ButtonStyle(
-                                                //               backgroundColor:
-                                                //               MaterialStateProperty.all(
-                                                //                   Colors.blue.shade900),
-                                                //               shape: MaterialStateProperty.all(
-                                                //                   RoundedRectangleBorder(
-                                                //                       borderRadius:
-                                                //                       BorderRadius.circular(
-                                                //                           18)))),
-                                                //           child: Row(
-                                                //             children: [
-                                                //               Text('View attendance',
-                                                //                   style: TextStyle(
-                                                //                       color: Colors.white,
-                                                //                       fontSize: 10)),
-                                                //               Icon(Icons.arrow_right_alt,
-                                                //                   color: Colors.white,
-                                                //                   size: 15),
-                                                //             ],
-                                                //           )),
-                                                //     )
-                                                //   ],
-                                                // ),
-
                                                 Column(
                                                   children: [
                                                     TextButton(
@@ -565,3 +492,4 @@ Future getManagerUserDetailsList() async {
   }
 
 }
+

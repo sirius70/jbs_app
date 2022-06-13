@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:jbs_app/admin/admin1.dart';
+import 'package:jbs_app/admin/statistics.dart';
 import 'package:jbs_app/employee_screens/employee_welcome_1.dart';
 import 'package:jbs_app/employee_screens/widgets/egg.dart';
 import 'package:jbs_app/manager/reqManagerRegularization.dart';
@@ -16,9 +17,12 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'more.dart';
 
 class Home2 extends StatefulWidget {
-   Home2({Key? key, required this.empId, required this.location}) : super(key: key);
+   Home2({Key? key, required this.empId,
+     required this.location,
+   required this.name}) : super(key: key);
    String empId;
    String location;
+   String name;
 
   @override
   State<Home2> createState() => _Home2State();
@@ -57,7 +61,10 @@ class _Home2State extends State<Home2> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    print("stats");
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>stats()));
+                  },
                   child: Column(
                     children: [
                       LineIcon(
@@ -131,6 +138,7 @@ class _Home2State extends State<Home2> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +150,7 @@ class _Home2State extends State<Home2> {
                       Row(
                         children: [
                           Text(
-                            'Caroline\nRose',
+                            widget.name,
                             style: TextStyle(
                                 color: Colors.blue.shade900, fontSize: 30),
                           ),
@@ -174,7 +182,8 @@ class _Home2State extends State<Home2> {
                                                 (context as Element),
                                                 MaterialPageRoute(
                                                     builder: (BuildContext context) => Home2(empId: Storage.get_adminEmpID().toString(),
-                                                      location: Storage.get_location().toString(),)));
+                                                      location: Storage.get_location().toString(),
+                                                    name: Storage.get_name().toString(),)));
                                           },
                                           child: ListTile(
                                             leading: Image(
@@ -237,9 +246,6 @@ class _Home2State extends State<Home2> {
                         ],
                       ),
                     ],
-                  ),
-                  SizedBox(
-                    width: 86,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../api/access.dart';
+import '../models/profile_model.dart';
 import '../storage.dart';
 import 'home.dart';
 
@@ -21,25 +23,34 @@ class _MoreState extends State<More> {
                   padding: EdgeInsets.all(10),
                   width: MediaQuery.of(context).size.width,
                   child: ListTile(
-                    leading: GestureDetector(
-                      onTap: () {
-                        _showEditProfileDialogue(context);
-                      },
-                      child: Image(
-                        image: AssetImage('lib/images/face.png'),
-                      ),
+                    leading: Image(
+                      image: AssetImage('lib/images/face.png'),
                     ),
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Caroline \nRose',
+                          Storage.get_name().toString(),
                           style: TextStyle(
                               color: Colors.lightBlue.shade700, fontSize: 25),
                         ),
-                        Text(
-                          'View profile and settings',
-                          style: TextStyle(color: Colors.lightBlue),
+                        GestureDetector(
+                          onTap: (){
+                            access().profile().then((value) async{
+                              if(value["success"]) {
+                                ProfileApi profile = await ProfileApi.fromJson(value);
+                                final name = profile.data.name;
+                                Storage.set_name(name);
+                                return _showEditProfileDialogue(context, profile);
+                              }else{
+                                return Center(child: CircularProgressIndicator(),);
+                              }
+                            });
+                          },
+                          child: Text(
+                            'View profile and settings',
+                            style: TextStyle(color: Colors.lightBlue),
+                          ),
                         ),
                       ],
                     ),
@@ -106,7 +117,8 @@ class _MoreState extends State<More> {
                               MaterialPageRoute(builder:
                                   (context) =>
                                   Home2(empId: Storage.get_adminEmpID().toString(),
-                                location: Storage.get_location().toString(),)
+                                location: Storage.get_location().toString(),
+                                    name: Storage.get_name().toString(),)
                               ));
                         },
                       ),
@@ -212,7 +224,7 @@ class _MoreState extends State<More> {
         ));
   }
 
-  _showEditProfileDialogue(BuildContext context) {
+  _showEditProfileDialogue(BuildContext context, ProfileApi profilee) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -220,9 +232,9 @@ class _MoreState extends State<More> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20.0))),
               content: Container(
-                padding: EdgeInsets.all(30),
+                padding: EdgeInsets.all(10),
                 width: 425.0,
-                height: 450.0,
+                height: 400.0,
                 decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: const Color(0xFFFFFF),
@@ -233,8 +245,7 @@ class _MoreState extends State<More> {
                       height: 200,
                       width: 200,
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        //  borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20),
                           image: DecorationImage(
                               image: AssetImage("assets/images/loki.jpg"),
                               fit: BoxFit.fill
@@ -243,7 +254,7 @@ class _MoreState extends State<More> {
                     ),
 
                     SizedBox(height: 20),
-                    Text("Caroline Rose",
+                    Text("${profilee.data.name}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 20
@@ -255,7 +266,7 @@ class _MoreState extends State<More> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.call, color: Color(0xff009AFF),),
-                          Text(" +9112345 67890"),
+                          Text(" ${profilee.data.phoneNumber}"),
                         ],
                       ),
                     ),
@@ -266,118 +277,19 @@ class _MoreState extends State<More> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.mail, color: Color(0xff009AFF),),
-                          Text(" caroline@gmail.com"),
-
+                          Text(" ${profilee.data.email}", textAlign: TextAlign.center,),
                         ],
                       ),
                     ),
-
-                    SizedBox(height: 10,),
-                    SizedBox(
-                      width: 80,
-                      child: TextButton(
-                          onPressed: () {},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                'Edit',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Icon(
-                                Icons.edit, size: 15,
-                                color: Colors.white,
-                              )
-                            ],
-                          ),
-                          style: ButtonStyle(
-                              backgroundColor:
-                              MaterialStateProperty.all(Color(0xff005993)),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                  )))),
-                    )
 
                   ],
                 ),
               ));
         });
   }
+
+
 }
 
 
-Widget _buildPopupDialog(BuildContext context) {
-    return new AlertDialog(
 
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(18.0))),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Image(image: AssetImage('lib/images/face.png'), height: 70),
-          SizedBox(
-            height: 15,
-          ),
-          Text('Caroline Rose'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.phone,
-                color: Colors.blue,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('+91 744xxxxx75'),
-            ],
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.mail,
-                color: Colors.blue,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text('carolinerose@gmail.com'),
-            ],
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          SizedBox(
-              width: 81,
-              height: 30,
-              child: TextButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all(Colors.blue.shade900),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18)))),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.logout,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('logout', style: TextStyle(color: Colors.white))
-                    ],
-                  )))
-        ],
-      ),
-    );
-  }

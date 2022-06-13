@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-class Users extends StatefulWidget {
-  const Users({Key? key}) : super(key: key);
+class AdminUsers extends StatefulWidget {
+  const AdminUsers({Key? key}) : super(key: key);
 
   @override
-  State<Users> createState() => _UsersState();
+  State<AdminUsers> createState() => _AdminUsersState();
 }
 
-class _UsersState extends State<Users> {
+class _AdminUsersState extends State<AdminUsers> {
   bool _myBool = false;
 
   @override

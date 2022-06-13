@@ -5,12 +5,20 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jbs_app/manager/more.dart';
+import 'package:jbs_app/screens/otp_verify_3.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'dart:math' as math;
 import '../admin/admin_profile.dart';
 import '../api/access.dart';
 import '../employee_screens/employee_welcome_1.dart';
 import '../manager/home.dart';
+import '../models/contractor_count_model.dart';
+import '../models/delivery_count_model.dart';
 import '../models/login_model.dart';
+import '../models/phone_login_model.dart';
+import '../models/profile_model.dart';
+
+import '../models/visitor_count_model.dart';
 import '../storage.dart';
 
 class loginScreen extends StatefulWidget {
@@ -24,7 +32,9 @@ class _loginScreenState extends State<loginScreen> {
 
   var emailController = TextEditingController();
   var passController = TextEditingController();
-  Dio dio = new Dio();
+  var phoneController = TextEditingController();
+
+
   SharedPreferencesInit() async {
     await Storage.init();
   }
@@ -33,103 +43,6 @@ class _loginScreenState extends State<loginScreen> {
   void initState(){
     super.initState();
     SharedPreferencesInit();
-  }
-
-  Future loginData(String email, String password) async {
-   if(email.isNotEmpty && password.isNotEmpty){
-     final String url = "https://stg.visitormanager.net/v1/login/email";
-     var data = {
-       "email": email,
-       "password": password
-     };
-
-     var response = await dio.post(url, data: data);
-
-     if (response.statusCode == 200) {
-       //print(LoginApi.fromJson(response.data));
-       print("Login response: ${response.data}");
-       print(response.data['data']);
-       Navigator.push(context,
-           MaterialPageRoute(builder: (context) =>
-               Scaffold(
-                 backgroundColor: Colors.white,
-                 body: Center(
-                   child:
-                   Column(
-                     mainAxisAlignment: MainAxisAlignment.center,
-                     children: [
-
-
-                       Text("Select Mode", style: TextStyle(
-                           color: Color(0xff005993), letterSpacing: 1,
-                           fontSize: 18
-                       ),),
-
-                       SizedBox(height: 40,),
-
-
-                       GestureDetector(
-                         onTap: (){
-                           Navigator.push(context,
-                               MaterialPageRoute(builder:
-                                   (context)=>employeeWelcome()));
-                         },
-                         child: Text("Employee", style: TextStyle(
-                             color: Color(0xff005993), letterSpacing: 1,
-                             fontSize: 40
-                         ),),
-                       ),
-                       SizedBox(height: 30,),
-
-                   if(response.data['data']['is_Manager'] == 1)...[
-                     GestureDetector(
-                       onTap: () {
-                         Navigator.push(context,
-                             MaterialPageRoute(builder:
-                                 (context) => More()
-                                   //   Home2(empId: Storage.get_adminEmpID().toString(),
-                                   // location: Storage.get_location().toString(),)
-                             ));
-
-                       },
-                       child: Text("Manager", style: TextStyle(
-                           color: Color(0xff005993), letterSpacing: 1,
-                           fontSize: 50,
-                           fontWeight: FontWeight.bold
-                       ),),
-                     ),
-                   ],
-
-                       SizedBox(height: 30,),
-
-                       if(response.data['data']['is_Admin'] == 1)...[
-                         GestureDetector(
-                           onTap: () {
-                             Navigator.push(context,
-                                 MaterialPageRoute(builder:
-                                     (context) => adminProfile()));
-                           },
-                           child: Text("Admin", style: TextStyle(
-                               color: Color(0xff005993), letterSpacing: 1,
-                               fontSize: 40
-                           ),),
-                         ),
-                       ],
-                     ],
-                   ),
-                 )
-               )
-           ));
-       ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(content: Text("Login successful")));
-     } else {
-       ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(content: Text("Invalid credentials")));
-     }
-   } else{
-     ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(content: Text("Blank fields not allowed")));
-   }
   }
 
   @override
@@ -223,7 +136,7 @@ class _loginScreenState extends State<loginScreen> {
                               borderSide: BorderSide(color: Color(0xff005993)),
                             ),
                             focusColor: Color(0xff005993),
-                            label: Text("Email/phone", style: TextStyle(
+                            label: Text("Email", style: TextStyle(
                               color: Color(0xff005993),)
                             )
                         ),
@@ -254,11 +167,181 @@ class _loginScreenState extends State<loginScreen> {
                   ),
                 ),
 
+                  SizedBox(height: 10,),
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(width: MediaQuery.of(context).size.width * 0.45,
+                          height: 1,
+                          color: Colors.black,),
+                        Text("OR"),
+                        Container(width: MediaQuery.of(context).size.width * 0.45,
+                          height: 1,
+                          color: Colors.black,),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+
+                  GestureDetector(
+                    onTap: (){
+                      showMaterialModalBottomSheet(
+                        context: context,
+                        builder: (context) => SingleChildScrollView(
+                          controller:
+                          ModalScrollController.of(context),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height*0.4,
+                              child: Column(
+                                children: [
+                                  Divider(
+                                    thickness: 3,
+                                    color: Colors.blue.shade900,
+                                    height: 1,
+                                    endIndent: 120,
+                                    indent: 120,
+                                  ),
+                                  SizedBox(
+                                    height: 25,
+                                  ),
+
+                                  Padding(padding: EdgeInsets.all(20),
+                                  child: Container(
+                                    child: TextFormField(
+                                      controller: phoneController,
+                                      decoration: const InputDecoration(
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(color: Color(0xff005993)),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(color: Color(0xff005993)),
+                                          ),
+                                          focusColor: Color(0xff005993),
+                                          label: Text("Phone", style: TextStyle(
+                                            color: Color(0xff005993),)
+                                          )
+                                      ),
+                                      style: TextStyle(color: Color(0xff005993)),
+                                      cursorColor: Color(0xff005993),
+                                    ),
+                                  ),),
+
+                                  SizedBox(height: 50,),
+                                  Container(
+                                    height: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width * 0.12,
+                                    width: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width * 0.55,
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        if(phoneController.text.isNotEmpty ){
+                                          access().loginPhone(("+91"+phoneController.text).toString()).then((value) async {
+                                            if (value["success"]) {
+
+                                              access().profile().then((value) async{
+                                                if(value["success"]) {
+                                                  ProfileApi profile = await ProfileApi.fromJson(value);
+                                                  final name = profile.data.name;
+                                                  Storage.set_name(name);
+                                                }
+                                              });
+
+                                              setState(() {
+                                                Navigator.push(context,
+                                                    MaterialPageRoute(builder: (context) {
+                                                      return otpVerify(phoneNo: phoneController.text);
+                                                    }));
+                                              });
+
+                                              access().deliveryTodayCount().then((value) async{
+                                                if(value["success"]){
+                                                  DeliveryTodaysCount deliveryCount = await DeliveryTodaysCount.fromJson(value);
+                                                  final deliCount = deliveryCount.data[0].count;
+                                                  print(deliCount);
+                                                  Storage.set_deliveryCount(deliCount.toString());
+                                                }
+                                              });
+
+                                              access().visitorTodayCount().then((value) async{
+                                                if(value["success"]){
+                                                  VisitorTodaysCount visitorCount = await VisitorTodaysCount.fromJson(value);
+                                                  final visitCount = visitorCount.visitorInsideToday[0].count;
+                                                  final totalVisitCount = visitorCount.totalVisitorVisitedToday[0].count;
+                                                  print("${visitCount}, ${totalVisitCount }");
+                                                  Storage.set_visitorCount(visitCount.toString());
+                                                  Storage.set_totalVisitorCount(totalVisitCount.toString());
+                                                }
+                                              });
+
+                                              access().contractorTodayCount().then((value) async{
+                                                if(value["success"]){
+                                                  ContractorTodaysCount contractorCount = await ContractorTodaysCount.fromJson(value);
+                                                  final contracCount = contractorCount.contractorInsideToday[0].count;
+                                                  final totalContracCount = contractorCount.totalContractorVisitedToday[0].count;
+                                                  print("${contracCount}, ${totalContracCount }");
+                                                  Storage.set_contractorCount(contracCount.toString());
+                                                  Storage.set_totalContractorCount(totalContracCount.toString());
+                                                }
+                                              });
+                                            } else{
+                                              Fluttertoast.showToast(
+                                                  msg: "${"Invalid credentials"}",
+                                                  toastLength: Toast.LENGTH_SHORT,
+                                                  gravity: ToastGravity.BOTTOM,
+                                                  timeInSecForIosWeb: 1,
+                                                  backgroundColor: Colors.red.shade400,
+                                                  textColor: Colors.white,
+                                                  fontSize: 16.0);
+                                            }
+                                          });
+                                        } else{
+                                          Fluttertoast.showToast(
+                                              msg: "${"Fields cannot be empty"}",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.BOTTOM,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.grey,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0);
+                                        }
+                                      },
+
+                                      child: Text("Login", style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16
+                                      ),),
+                                      style: ButtonStyle(
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(12.0),
+                                                  side: BorderSide(color: Color(0xff005993))
+                                              )
+                                          ),
+                                          backgroundColor: MaterialStateProperty.all(
+                                            Color(0xff005993),)
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )),
+                        ),
+                      );
+                    },
+                    child: Text("Login via OTP", style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15
+                  ),),),
+
                   SizedBox(height: 50,),
                   Container(
-                    // decoration: BoxDecoration(
-                    //   color: Color(0xffFF0000)
-                    // ),
                     height: MediaQuery
                         .of(context)
                         .size
@@ -276,7 +359,6 @@ class _loginScreenState extends State<loginScreen> {
                               LoginApi loginApiRes = await LoginApi.fromJson(value);
                               final empId = loginApiRes.data!.employeeId;
                               final location = loginApiRes.data!.locations[0].name;
-                              final comp_name = loginApiRes.data!.companyName;
                               final token = loginApiRes.tokens!.accessToken;
                               final isAdmin = loginApiRes.data!.isAdmin;
                               final isManager = loginApiRes.data!.isManager;
@@ -288,6 +370,14 @@ class _loginScreenState extends State<loginScreen> {
                               Storage.set_adminEmpID(empId.toString());
 
                               Storage.set_location(location.toString());
+
+                              access().profile().then((value) async{
+                                if(value["success"]) {
+                                  ProfileApi profile = await ProfileApi.fromJson(value);
+                                  final name = profile.data.name;
+                                  Storage.set_name(name);
+                                }
+                              });
 
 
                               Fluttertoast.showToast(

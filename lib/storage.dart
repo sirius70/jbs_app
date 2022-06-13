@@ -11,6 +11,12 @@ class Storage{
   static const _adminEmp_Id = "adminEmpId";
   static const _location = "location";
   static const _managerEmp_Id = "managerEmpId";
+  static const _name = "name";
+  static const _deliveryCount = "deliveryCount";
+  static const _contractorCount = "contractorCount";
+  static const _visitorCount = "visitorCount";
+  static const _totalContractorCount = "totaContractorCount2";
+  static const _totalVisitorCount = "totalVisitorCount";
 
   static Future init() async{
     sharedPreferences = await SharedPreferences.getInstance();
@@ -40,6 +46,24 @@ class Storage{
 
   static Future set_managerEmpID(String managerEmpId)async=>await sharedPreferences!.setString(_managerEmp_Id, managerEmpId);
   static String? get_managerEmpID()=>sharedPreferences!.getString(_managerEmp_Id)??"";
+
+  static Future set_name(String name)async=>await sharedPreferences!.setString(_name, name);
+  static String? get_name()=>sharedPreferences!.getString(_name)??"";
+
+  static Future set_deliveryCount(String deliveryCount)async=>await sharedPreferences!.setString(_deliveryCount, deliveryCount);
+  static String? get_deliveryCount()=>sharedPreferences!.getString(_deliveryCount)??"";
+
+  static Future set_visitorCount(String visitorCount)async=>await sharedPreferences!.setString(_visitorCount, visitorCount);
+  static String? get_visitorCount()=>sharedPreferences!.getString(_visitorCount)??"";
+
+  static Future set_totalVisitorCount(String totalVisitorCount)async=>await sharedPreferences!.setString(_totalVisitorCount, totalVisitorCount);
+  static String? get_totalVisitorCount()=>sharedPreferences!.getString(_totalVisitorCount)??"";
+
+  static Future set_contractorCount(String contractorCount)async=>await sharedPreferences!.setString(_contractorCount, contractorCount);
+  static String? get_contractorCount()=>sharedPreferences!.getString(_contractorCount)??"";
+
+  static Future set_totalContractorCount(String totalContractorCount)async=>await sharedPreferences!.setString(_totalContractorCount, totalContractorCount);
+  static String? get_totalContractorCount()=>sharedPreferences!.getString(_totalContractorCount)??"";
 
 }
 

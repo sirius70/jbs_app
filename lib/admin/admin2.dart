@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:jbs_app/admin/admin_profile.dart';
 import 'package:jbs_app/admin/search_employee.dart';
@@ -9,17 +10,24 @@ import 'package:line_icons/line_icons.dart';
 import 'package:marquee/marquee.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import '../api/access.dart';
 import '../employee_screens/employee_welcome_1.dart';
 import '../manager/home.dart';
+import '../models/contractor_count_model.dart';
+import '../models/delivery_count_model.dart';
+import '../models/visitor_count_model.dart';
 import 'admin1.dart';
 import 'admin_users.dart';
 import 'navigation bar.dart';
 
 
 class Admin2 extends StatelessWidget {
-  Admin2({Key? key, required  this.empID, required  this.location}) : super(key: key);
+  Admin2({Key? key, required  this.empID,
+    required  this.location, required this.name}) :
+        super(key: key);
   String empID;
   String location;
+  String name;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +42,9 @@ class Admin2 extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Users();
-                }));
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (BuildContext context) =>
+                    Admin2(empID: empID, location: location, name: name)));
               },
               child: Column(
                 children: [
@@ -54,6 +62,37 @@ class Admin2 extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
+                print("stats");
+                access().deliveryTodayCount().then((value) async{
+                  if(value["success"]){
+                    DeliveryTodaysCount deliveryCount = await DeliveryTodaysCount.fromJson(value);
+                    final deliCount = deliveryCount.data[0].count;
+                    print(deliCount);
+                    Storage.set_deliveryCount(deliCount.toString());
+                  }
+                });
+
+                access().visitorTodayCount().then((value) async{
+                  if(value["success"]){
+                    VisitorTodaysCount visitorCount = await VisitorTodaysCount.fromJson(value);
+                    final visitCount = visitorCount.visitorInsideToday[0].count;
+                    final totalVisitCount = visitorCount.totalVisitorVisitedToday[0].count;
+                    print("${visitCount}, ${totalVisitCount }");
+                    Storage.set_visitorCount(visitCount.toString());
+                    Storage.set_totalVisitorCount(totalVisitCount.toString());
+                  }
+                });
+
+                access().contractorTodayCount().then((value) async{
+                  if(value["success"]){
+                    ContractorTodaysCount contractorCount = await ContractorTodaysCount.fromJson(value);
+                    final contracCount = contractorCount.contractorInsideToday[0].count;
+                    final totalContracCount = contractorCount.totalContractorVisitedToday[0].count;
+                    print("${contracCount}, ${totalContracCount }");
+                    Storage.set_contractorCount(contracCount.toString());
+                    Storage.set_totalContractorCount(totalContracCount.toString());
+                  }
+                });
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return stats();
                 }));
@@ -81,9 +120,6 @@ class Admin2 extends StatelessWidget {
                 )),
             TextButton(
               onPressed: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //   return Appdrawer();
-                // }));
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return searchEmployee();
                 }));
@@ -134,6 +170,7 @@ class Admin2 extends StatelessWidget {
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Hello,',
@@ -142,7 +179,7 @@ class Admin2 extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Caroline\nRose',
+                          "$name",
                           style: TextStyle(
                               color: Colors.blue.shade900, fontSize: 30),
                         ),
@@ -155,8 +192,6 @@ class Admin2 extends StatelessWidget {
                                   ModalScrollController.of(context),
                                   child: Container(
                                       child: Column(
-                                        //  mainAxisAlignment:
-                                        //    MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Divider(
                                             thickness: 3,
@@ -174,7 +209,8 @@ class Admin2 extends StatelessWidget {
                                                   (context as Element),
                                                   MaterialPageRoute(
                                                       builder: (BuildContext context) => Home2(empId: Storage.get_adminEmpID().toString(),
-                                                        location: Storage.get_location().toString(),)));
+                                                        location: Storage.get_location().toString(),
+                                                        name: Storage.get_name().toString(),)));
                                             },
                                             child: ListTile(
                                               leading: Image(
@@ -237,9 +273,6 @@ class Admin2 extends StatelessWidget {
                       ],
                     ),
                   ],
-                ),
-                SizedBox(
-                  width: 86,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -335,11 +368,10 @@ class Admin2 extends StatelessWidget {
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        Container(
-                                          width: 80,
-                                          height: 10,
-                                          color: HexColor('#dadbda'),
-                                        ),
+                                        Text("Guests inside: ${Storage.get_visitorCount().toString()}",
+                                          style: TextStyle(
+                                              backgroundColor: HexColor('#dadbda')
+                                          ),)
                                       ],
                                     ),
                                     SizedBox(
@@ -354,11 +386,10 @@ class Admin2 extends StatelessWidget {
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        Container(
-                                          width: 100,
-                                          height: 10,
-                                          color: HexColor('#dadbda'),
-                                        ),
+                                        Text("Contractors inside: ${Storage.get_contractorCount().toString()}",
+                                          style: TextStyle(
+                                              backgroundColor: HexColor('#dadbda')
+                                          ),)
                                       ],
                                     ),
                                     SizedBox(
@@ -373,30 +404,10 @@ class Admin2 extends StatelessWidget {
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        Container(
-                                          width: 40,
-                                          height: 10,
-                                          color: HexColor('#dadbda'),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundColor: HexColor('#ababab'),
-                                          radius: 5,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Container(
-                                          width: 120,
-                                          height: 10,
-                                          color: HexColor('#dadbda'),
-                                        ),
+                                        Text("Deliveries accepted: ${Storage.get_deliveryCount().toString()}",
+                                        style: TextStyle(
+                                          backgroundColor: HexColor('#dadbda')
+                                        ),)
                                       ],
                                     )
                                   ],

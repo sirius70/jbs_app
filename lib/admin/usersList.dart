@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jbs_app/models/employee_attendance_list_model.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -20,7 +21,13 @@ class _UsersListsState extends State<UsersLists> {
   void initState(){
     super.initState();
 access().usersList();
+    SharedPreferencesInit();
   }
+
+  SharedPreferencesInit() async {
+    await Storage.init();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -194,38 +201,25 @@ access().usersList();
                                           Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Container(
-                                                height: 15,
-                                                width: 70,
-                                                child: Text(
-                                                  empListss.employee[index].name[0].toUpperCase()
-                                                      + empListss.employee[index].name.substring(1).toLowerCase().toString(),
-                                                  style:
-                                                  TextStyle(color: Color(0xff005993), fontSize: 15),
-                                                ),
+                                              Text(
+                                                empListss.employee[index].name,
+                                                style:
+                                                TextStyle(color: Color(0xff005993), fontSize: 15),
                                               ),
                                               SizedBox(
                                                 height: 8,
                                               ),
-                                              Container(
-                                                height: 15,
-                                                width: 120,
-                                                child: Text(
-                                                  empListss.employee[index].phoneNumber.toString(),
-                                                  style:
-                                                  TextStyle(color: Color(0xff005993), fontSize: 15 ),
-                                                ),
+                                              Text(
+                                                empListss.employee[index].phoneNumber.toString(),
+                                                style:
+                                                TextStyle(color: Color(0xff005993), fontSize: 15 ),
                                               ),
                                               SizedBox(
                                                 height: 8,
                                               ),
-                                              Container(
-                                                height: 15,
-                                                width: 150,
-                                                child: Text(empListss.employee[index].email.toString(),
-                                                    style: TextStyle(
-                                                        color: Color(0xff005993), fontSize: 15, )),
-                                              ),
+                                              Text(empListss.employee[index].email.toString(),
+                                                  style: TextStyle(
+                                                    color: Color(0xff005993), fontSize: 15, )),
                                               SizedBox(
                                                 height: 8,
                                               )
@@ -268,7 +262,33 @@ access().usersList();
                                         children: [
                                           TextButton(
                                             onPressed: () {
+                                              access().deleteEmployee(Storage.get_locationID().toString(),
+                                                  Storage.get_empID().toString()).then((value){
+                                                if(value["success"]){
+                                                  Fluttertoast.showToast(
+                                                      msg: "${"Deleted employee with id: ${Storage.get_empID().toString()}"}",
+                                                      toastLength: Toast.LENGTH_SHORT,
+                                                      gravity: ToastGravity.BOTTOM,
+                                                      timeInSecForIosWeb: 1,
+                                                      backgroundColor: Colors.green.shade400,
+                                                      textColor: Colors.white,
+                                                      fontSize: 16.0);
+                                                  setState(() {
+                                                    Navigator.pop(context);
+                                                  });
 
+                                                } else{
+                                                  Fluttertoast.showToast(
+                                                      msg: "Error deleting employee with id: ${Storage.get_empID().toString()}",
+                                                      toastLength: Toast.LENGTH_SHORT,
+                                                      gravity: ToastGravity.BOTTOM,
+                                                      timeInSecForIosWeb: 1,
+                                                      backgroundColor: Colors.red.shade400,
+                                                      textColor: Colors.white,
+                                                      fontSize: 16.0);
+                                                }
+
+                                              });
                                             },
                                             child: Text('Delete',
                                                 style: TextStyle(color: Colors.white)),
@@ -277,8 +297,38 @@ access().usersList();
                                                 MaterialStateProperty.all(
                                                     Color(0xff005993))),
                                           ),
-                                          TextButton(
+                                          ElevatedButton(
                                             onPressed: () {
+                                              print("locId: ${Storage.get_locationID().toString()}");
+                                              print("empId: ${Storage.get_empID().toString()}");
+                                              access().disableEmployee(Storage.get_locationID().toString(),
+                                                  Storage.get_empID().toString()).then((value){
+                                                if(value["success"]){
+                                                  Fluttertoast.showToast(
+                                                      msg: "${"Disabled employee with id: ${Storage.get_empID().toString()}"}",
+                                                      toastLength: Toast.LENGTH_SHORT,
+                                                      gravity: ToastGravity.BOTTOM,
+                                                      timeInSecForIosWeb: 1,
+                                                      backgroundColor: Colors.green.shade400,
+                                                      textColor: Colors.white,
+                                                      fontSize: 16.0);
+                                                  setState(() {
+                                                    Navigator.pop(context);
+                                                  });
+
+                                                } else{
+                                                  Fluttertoast.showToast(
+                                                      msg: "Error disabling employee with id: ${Storage.get_empID().toString()}",
+                                                      toastLength: Toast.LENGTH_SHORT,
+                                                      gravity: ToastGravity.BOTTOM,
+                                                      timeInSecForIosWeb: 1,
+                                                      backgroundColor: Colors.red.shade400,
+                                                      textColor: Colors.white,
+                                                      fontSize: 16.0);
+                                                }
+
+                                              });
+
                                             },
                                             child: Text('Disable',
                                                 style: TextStyle(color: Colors.white)),
