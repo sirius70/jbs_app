@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "325116922255",
-    "project_id": "niaane-62d51",
-    "storage_bucket": "niaane-62d51.appspot.com"
+    "project_number": "833475841953",
+    "project_id": "visitor-manager-1e1a4",
+    "storage_bucket": "visitor-manager-1e1a4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:325116922255:android:6df5f98381035ebeb023fa",
+        "mobilesdk_app_id": "1:833475841953:android:bf06f474dec483ce8b05e0",
         "android_client_info": {
-          "package_name": "com.phaico.niaane"
+          "package_name": "com.phaico.visitormanager"
         }
       },
       "oauth_client": [
         {
-          "client_id": "325116922255-skjscau9nto8m9culo4vc3nmhuejmk3f.apps.googleusercontent.com",
+          "client_id": "833475841953-fgsipt8mfocsm89hu8g8bosj4d440470.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.phaico.niaane",
+            "package_name": "com.phaico.visitormanager",
             "certificate_hash": "331f014991cf85d70dd33240eef7ccc24336390f"
           }
         },
         {
-          "client_id": "325116922255-taik0r3nfhmqidc9r3fk14to6lpk7l0b.apps.googleusercontent.com",
+          "client_id": "833475841953-t1h5tssmr40kurconthhgd00ln2b0iok.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCZI0pBp2d03KvWWrklYP_kJ08OizcBXXY"
+          "current_key": "AIzaSyDKt9a-Fv20VbiWLkYle76LNsAGQIvk0ps"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "325116922255-taik0r3nfhmqidc9r3fk14to6lpk7l0b.apps.googleusercontent.com",
+              "client_id": "833475841953-t1h5tssmr40kurconthhgd00ln2b0iok.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

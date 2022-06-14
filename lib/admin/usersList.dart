@@ -366,7 +366,7 @@ Future getEmployeeList() async {
   var headers = {'Content-Type': 'application/json',
     'Authorization': 'Bearer ${Storage.get_accessToken()}'};
 
-  var url = Uri.parse('https://stg.visitormanager.net/v1/listEmployee?pageNo=2&locationId=${Storage.get_locationID()}', );
+  var url = Uri.parse('https://stg.visitormanager.net/v1/listEmployee?locationId=${Storage.get_locationID()}', );
 
   final response = await http.get(url, headers: headers);
   print(response.body);

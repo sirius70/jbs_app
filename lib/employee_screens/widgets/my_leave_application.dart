@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:jbs_app/api/access.dart';
 import 'package:jbs_app/employee_screens/request_success.dart';
+import 'package:jbs_app/models/empAttendance_summary_model.dart';
 
 import '../employee_welcome_1.dart';
 import '../guest_register_2.dart';
@@ -18,6 +21,8 @@ class leaveApplication extends StatefulWidget {
 enum SingingCharacter { Morning, Afternoon }
 class _leaveApplicationState extends State<leaveApplication> {
   TextEditingController dateinput = TextEditingController();
+  TextEditingController reasonController = TextEditingController();
+
   SingingCharacter? _character = SingingCharacter.Morning;
 
   @override
@@ -212,329 +217,329 @@ class _leaveApplicationState extends State<leaveApplication> {
                                 SizedBox(height: 10,),
                                 Column(
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Name"),
-                                        Flexible(
-                                          child: Container(
-                                            height: 35,
-                                            width: 200,
-                                            child: TextField(
-                                              cursorColor: Color(0xff031627),
-                                              decoration: InputDecoration(
-                                                contentPadding: const EdgeInsets.all(10.0),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusColor: Color(0xff031627),
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                filled: true,
-                                                fillColor: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 18,),
-
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Department"),
-                                        Flexible(
-                                          child: Container(
-                                            height: 35,
-                                            width: 200,
-                                            child: TextField(
-                                              cursorColor: Color(0xff031627),
-                                              decoration: InputDecoration(
-                                                contentPadding: const EdgeInsets.all(10.0),
-                                                suffixIcon: Container(
-                                                  //margin: EdgeInsets.only(left: 10),
-                                                  decoration: BoxDecoration(
-                                                      border: Border(
-                                                        left: BorderSide(color: Colors.grey),
-                                                      )
-                                                  ),
-                                                  child: IconButton(
-                                                      onPressed: (){},
-                                                      icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
-                                                ),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusColor: Color(0xff031627),
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                filled: true,
-                                                fillColor: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-
-
-                                    SizedBox(height: 18,),
-
                                     // Row(
-                                    //   mainAxisAlignment: MainAxisAlignment.start,
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     //   children: [
-                                    //     Text("Date"),
-                                    //     SizedBox(width: MediaQuery.of(context).size.width*0.19,),
-                                    //     Row(
-                                    //       mainAxisAlignment: MainAxisAlignment.start,
-                                    //       children: [
-                                    //         Container(
-                                    //             width: 100,
-                                    //             child:Center(
-                                    //                 child:TextField(
-                                    //                   controller: dateinput,
-                                    //                   decoration: InputDecoration(
-                                    //                     hintText: 'Enter date',
-                                    //                     border: InputBorder.none,
-                                    //                     focusColor: Color(0xff031627),
-                                    //                   ),
-                                    //                   readOnly: true,
-                                    //                   onTap: () async {
-                                    //                     DateTime? pickedDate = await showDatePicker(
-                                    //                         context: context, initialDate: DateTime.now(),
-                                    //                         firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
-                                    //                         lastDate: DateTime(2101)
-                                    //                     );
-                                    //
-                                    //                     if(pickedDate != null ){
-                                    //                       print(pickedDate);
-                                    //                       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                    //                       print(formattedDate);
-                                    //                       setState(() {
-                                    //                         dateinput.text = formattedDate; //set output date to TextField value.
-                                    //                       });
-                                    //                     }else{
-                                    //                       print("Date is not selected");
-                                    //                     }
-                                    //                   },
-                                    //                 )
-                                    //             )
+                                    //     Text("Name"),
+                                    //     Flexible(
+                                    //       child: Container(
+                                    //         height: 35,
+                                    //         width: 200,
+                                    //         child: TextField(
+                                    //           cursorColor: Color(0xff031627),
+                                    //           decoration: InputDecoration(
+                                    //             contentPadding: const EdgeInsets.all(10.0),
+                                    //             enabledBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusedBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusColor: Color(0xff031627),
+                                    //             border: OutlineInputBorder(
+                                    //               borderRadius: BorderRadius.circular(10.0),
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             filled: true,
+                                    //             fillColor: Colors.white,
+                                    //           ),
                                     //         ),
-                                    //         Icon(Icons.calendar_today, size: 15,),
-                                    //       ],
+                                    //       ),
                                     //     ),
                                     //   ],
                                     // ),
-
-
-                                    Container(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text("Time")),
-                                    
-                                    SizedBox(height: 20),
+                                    // SizedBox(height: 18,),
+                                    //
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text("Department"),
+                                    //     Flexible(
+                                    //       child: Container(
+                                    //         height: 35,
+                                    //         width: 200,
+                                    //         child: TextField(
+                                    //           cursorColor: Color(0xff031627),
+                                    //           decoration: InputDecoration(
+                                    //             contentPadding: const EdgeInsets.all(10.0),
+                                    //             suffixIcon: Container(
+                                    //               //margin: EdgeInsets.only(left: 10),
+                                    //               decoration: BoxDecoration(
+                                    //                   border: Border(
+                                    //                     left: BorderSide(color: Colors.grey),
+                                    //                   )
+                                    //               ),
+                                    //               child: IconButton(
+                                    //                   onPressed: (){},
+                                    //                   icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
+                                    //             ),
+                                    //             enabledBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusedBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusColor: Color(0xff031627),
+                                    //             border: OutlineInputBorder(
+                                    //               borderRadius: BorderRadius.circular(10.0),
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             filled: true,
+                                    //             fillColor: Colors.white,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    //
+                                    //
+                                    // SizedBox(height: 18,),
 
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                        Text("Date"),
+                                        SizedBox(width: MediaQuery.of(context).size.width*0.19,),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Icon(Icons.calendar_month, color: Color(0xff2980B9),),
-
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text("09 SEPT 22", style: TextStyle(
-                                                        fontSize: 22,
-                                                        fontWeight: FontWeight.bold
-                                                    ),),
-
-                                                    SizedBox(height: 3,),
-                                                  ],
-                                                ),
-
-                                              ],
-                                            ),
-                                            SizedBox(height: 10),
-
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      height:12,
-                                                      width: 15,
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(color: Color(0xff00A3FF), width: 1),
-                                                        shape: BoxShape.circle, 
-                                                        boxShadow: [new BoxShadow(
-                                                          color: Color(0xff00A3FF).withOpacity(0.4),
-                                                          blurRadius: 5.0,
-                                                        ),]
-                                            ),
-
-                                                    ),
-
-                                                    Text("Morning", style: TextStyle(
-                                                      color:Color(0xff00A3FF),
-                                                        fontSize: 12
-                                                    ),),
-                                                  ],
-                                                ),
-                                                SizedBox(width: 5),
-
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      height:12,
-                                                      width: 15,
-                                                      decoration: BoxDecoration(
-                                                          border: Border.all(color: Colors.grey),
-                                                          shape: BoxShape.circle,
-                                                        
+                                            Container(
+                                                width: 100,
+                                                child:Center(
+                                                    child:TextField(
+                                                      controller: dateinput,
+                                                      decoration: InputDecoration(
+                                                        hintText: 'Enter date',
+                                                        border: InputBorder.none,
+                                                        focusColor: Color(0xff031627),
                                                       ),
+                                                      readOnly: true,
+                                                      onTap: () async {
+                                                        DateTime? pickedDate = await showDatePicker(
+                                                            context: context, initialDate: DateTime.now(),
+                                                            firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                                                            lastDate: DateTime(2101)
+                                                        );
 
-                                                    ),
-
-                                                    Text("Afternoon", style: TextStyle(
-                                                      fontSize: 12
-                                                    ),),
-                                                  ],
-                                                ),
-                                              ],
+                                                        if(pickedDate != null ){
+                                                          print(pickedDate);
+                                                          String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                                          print(formattedDate);
+                                                          setState(() {
+                                                            dateinput.text = formattedDate; //set output date to TextField value.
+                                                          });
+                                                        }else{
+                                                          print("Date is not selected");
+                                                        }
+                                                      },
+                                                    )
+                                                )
                                             ),
-                                            // Row(
-                                            //   mainAxisAlignment: MainAxisAlignment.start,
-                                            //   //crossAxisAlignment: CrossAxisAlignment.start,
-                                            //   children: [
-                                            //     Radio(
-                                            //         value: SingingCharacter.Morning,
-                                            //         groupValue: _character,
-                                            //         onChanged: (value) {
-                                            //           setState(() {
-                                            //             _character = value as SingingCharacter?;
-                                            //           });
-                                            //         },),
-                                            //     Text('Morning'),
-                                            //
-                                            //     Radio(
-                                            //       value: SingingCharacter.Afternoon,
-                                            //       groupValue: _character,
-                                            //       onChanged: (value) {
-                                            //       setState(() {
-                                            //         _character = value as SingingCharacter?;
-                                            //       });
-                                            //     },),
-                                            //     Text('Afternoon')
-                                            //   ],
-                                            // ),
-
-
+                                            Icon(Icons.calendar_today, size: 15,),
                                           ],
                                         ),
-
-                                        Text("to", style: TextStyle(
-                                            color: Color(0xff2980B9),
-                                            fontSize: 18
-                                        ),),
-
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Icon(Icons.calendar_month, color: Color(0xff2980B9),),
-
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text("09 SEPT 22", style: TextStyle(
-                                                        fontSize: 22,
-                                                        fontWeight: FontWeight.bold
-                                                    ),),
-
-                                                    SizedBox(height: 3,),
-                                                  ],
-                                                ),
-
-                                              ],
-                                            ),
-                                            SizedBox(height: 10),
-
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-
-
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      height:12,
-                                                      width: 15,
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(color: Colors.grey),
-                                                        shape: BoxShape.circle,
-
-                                                      ),
-
-                                                    ),
-
-                                                    Text("Morning", style: TextStyle(
-                                                        fontSize: 12
-                                                    ),),
-                                                  ],
-                                                ),
-
-                                                SizedBox(width: 5),
-
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      height:12,
-                                                      width: 15,
-                                                      decoration: BoxDecoration(
-                                                          border: Border.all(color: Color(0xff00A3FF), width: 1),
-                                                          shape: BoxShape.circle,
-                                                          boxShadow: [new BoxShadow(
-                                                            color: Color(0xff00A3FF).withOpacity(0.4),
-                                                            blurRadius: 5.0,
-                                                          ),]
-                                                      ),
-
-                                                    ),
-
-                                                    Text("Afternoon", style: TextStyle(
-                                                        color:Color(0xff00A3FF),
-                                                        fontSize: 12
-                                                    ),),
-                                                  ],
-                                                ),
-
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-
                                       ],
                                     ),
+
+
+                                    // Container(
+                                    //     alignment: Alignment.centerLeft,
+                                    //     child: Text("Time")),
+                                    //
+                                    // SizedBox(height: 20),
+                                    //
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Column(
+                                    //       crossAxisAlignment: CrossAxisAlignment.start,
+                                    //       children: [
+                                    //         Row(
+                                    //           mainAxisAlignment: MainAxisAlignment.start,
+                                    //           crossAxisAlignment: CrossAxisAlignment.start,
+                                    //           children: [
+                                    //             Icon(Icons.calendar_month, color: Color(0xff2980B9),),
+                                    //
+                                    //             Column(
+                                    //               crossAxisAlignment: CrossAxisAlignment.start,
+                                    //               children: [
+                                    //                 Text("09 SEPT 22", style: TextStyle(
+                                    //                     fontSize: 22,
+                                    //                     fontWeight: FontWeight.bold
+                                    //                 ),),
+                                    //
+                                    //                 SizedBox(height: 3,),
+                                    //               ],
+                                    //             ),
+                                    //
+                                    //           ],
+                                    //         ),
+                                    //         SizedBox(height: 10),
+                                    //
+                                    //         Row(
+                                    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //           children: [
+                                    //             Row(
+                                    //               children: [
+                                    //                 Container(
+                                    //                   height:12,
+                                    //                   width: 15,
+                                    //                   decoration: BoxDecoration(
+                                    //                     border: Border.all(color: Color(0xff00A3FF), width: 1),
+                                    //                     shape: BoxShape.circle,
+                                    //                     boxShadow: [new BoxShadow(
+                                    //                       color: Color(0xff00A3FF).withOpacity(0.4),
+                                    //                       blurRadius: 5.0,
+                                    //                     ),]
+                                    //         ),
+                                    //
+                                    //                 ),
+                                    //
+                                    //                 Text("Morning", style: TextStyle(
+                                    //                   color:Color(0xff00A3FF),
+                                    //                     fontSize: 12
+                                    //                 ),),
+                                    //               ],
+                                    //             ),
+                                    //             SizedBox(width: 5),
+                                    //
+                                    //             Row(
+                                    //               children: [
+                                    //                 Container(
+                                    //                   height:12,
+                                    //                   width: 15,
+                                    //                   decoration: BoxDecoration(
+                                    //                       border: Border.all(color: Colors.grey),
+                                    //                       shape: BoxShape.circle,
+                                    //
+                                    //                   ),
+                                    //
+                                    //                 ),
+                                    //
+                                    //                 Text("Afternoon", style: TextStyle(
+                                    //                   fontSize: 12
+                                    //                 ),),
+                                    //               ],
+                                    //             ),
+                                    //           ],
+                                    //         ),
+                                    //         // Row(
+                                    //         //   mainAxisAlignment: MainAxisAlignment.start,
+                                    //         //   //crossAxisAlignment: CrossAxisAlignment.start,
+                                    //         //   children: [
+                                    //         //     Radio(
+                                    //         //         value: SingingCharacter.Morning,
+                                    //         //         groupValue: _character,
+                                    //         //         onChanged: (value) {
+                                    //         //           setState(() {
+                                    //         //             _character = value as SingingCharacter?;
+                                    //         //           });
+                                    //         //         },),
+                                    //         //     Text('Morning'),
+                                    //         //
+                                    //         //     Radio(
+                                    //         //       value: SingingCharacter.Afternoon,
+                                    //         //       groupValue: _character,
+                                    //         //       onChanged: (value) {
+                                    //         //       setState(() {
+                                    //         //         _character = value as SingingCharacter?;
+                                    //         //       });
+                                    //         //     },),
+                                    //         //     Text('Afternoon')
+                                    //         //   ],
+                                    //         // ),
+                                    //
+                                    //
+                                    //       ],
+                                    //     ),
+                                    //
+                                    //     Text("to", style: TextStyle(
+                                    //         color: Color(0xff2980B9),
+                                    //         fontSize: 18
+                                    //     ),),
+                                    //
+                                    //     Column(
+                                    //       crossAxisAlignment: CrossAxisAlignment.start,
+                                    //       children: [
+                                    //         Row(
+                                    //           mainAxisAlignment: MainAxisAlignment.start,
+                                    //           crossAxisAlignment: CrossAxisAlignment.start,
+                                    //           children: [
+                                    //             Icon(Icons.calendar_month, color: Color(0xff2980B9),),
+                                    //
+                                    //             Column(
+                                    //               crossAxisAlignment: CrossAxisAlignment.start,
+                                    //               children: [
+                                    //                 Text("09 SEPT 22", style: TextStyle(
+                                    //                     fontSize: 22,
+                                    //                     fontWeight: FontWeight.bold
+                                    //                 ),),
+                                    //
+                                    //                 SizedBox(height: 3,),
+                                    //               ],
+                                    //             ),
+                                    //
+                                    //           ],
+                                    //         ),
+                                    //         SizedBox(height: 10),
+                                    //
+                                    //         Row(
+                                    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //           children: [
+                                    //
+                                    //
+                                    //             Row(
+                                    //               children: [
+                                    //                 Container(
+                                    //                   height:12,
+                                    //                   width: 15,
+                                    //                   decoration: BoxDecoration(
+                                    //                     border: Border.all(color: Colors.grey),
+                                    //                     shape: BoxShape.circle,
+                                    //
+                                    //                   ),
+                                    //
+                                    //                 ),
+                                    //
+                                    //                 Text("Morning", style: TextStyle(
+                                    //                     fontSize: 12
+                                    //                 ),),
+                                    //               ],
+                                    //             ),
+                                    //
+                                    //             SizedBox(width: 5),
+                                    //
+                                    //             Row(
+                                    //               children: [
+                                    //                 Container(
+                                    //                   height:12,
+                                    //                   width: 15,
+                                    //                   decoration: BoxDecoration(
+                                    //                       border: Border.all(color: Color(0xff00A3FF), width: 1),
+                                    //                       shape: BoxShape.circle,
+                                    //                       boxShadow: [new BoxShadow(
+                                    //                         color: Color(0xff00A3FF).withOpacity(0.4),
+                                    //                         blurRadius: 5.0,
+                                    //                       ),]
+                                    //                   ),
+                                    //
+                                    //                 ),
+                                    //
+                                    //                 Text("Afternoon", style: TextStyle(
+                                    //                     color:Color(0xff00A3FF),
+                                    //                     fontSize: 12
+                                    //                 ),),
+                                    //               ],
+                                    //             ),
+                                    //
+                                    //           ],
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //
+                                    //   ],
+                                    // ),
 
                                   ],
                                 ),
@@ -557,7 +562,8 @@ class _leaveApplicationState extends State<leaveApplication> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                     ),
-                                    child: TextField(
+                                    child: TextFormField(
+                                      controller: reasonController,
                                       textInputAction: TextInputAction.newline,
                                       keyboardType: TextInputType.multiline,
                                       minLines: null,
@@ -592,8 +598,37 @@ class _leaveApplicationState extends State<leaveApplication> {
                                   width: MediaQuery.of(context).size.width,
                                   child: ElevatedButton(
                                     onPressed: (){
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context)=>requestSuccess()));
+                                      if (dateinput.text.isNotEmpty && reasonController.text.isNotEmpty){
+                                        access().empAttendanceLeave(dateinput.text, reasonController.text).then((value) async{
+                                          if(value["success"]){
+                                           // EmpAttendanceLeave empAttLeave = EmpAttendanceLeave.fromJson(value);
+                                            setState(() {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(builder: (context)=>requestSuccess()));
+                                            });
+
+                                          }else{
+                                            Fluttertoast.showToast(
+                                                msg: "${"Error submitting leave application. Try after sometime"}",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.red.shade300,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0);
+                                          }
+                                        });
+                                      } else{
+                                        Fluttertoast.showToast(
+                                            msg: "${"Fields cannot be empty"}",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.grey,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      }
+
                                     },
                                     child: Text("Submit Application"),
                                     style: ButtonStyle(

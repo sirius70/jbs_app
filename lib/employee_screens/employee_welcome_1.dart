@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jbs_app/employee_screens/guest_register_2.dart';
@@ -8,7 +10,10 @@ import 'package:jbs_app/employee_screens/scan_qr.dart';
 import 'package:jbs_app/employee_screens/widgets/bottom_navigation.dart';
 import 'package:marquee/marquee.dart';
 
+import '../api/access.dart';
+import '../models/empAttendance_summary_model.dart';
 import '../storage.dart';
+import 'package:http/http.dart'  as http;
 
 enum Options { person_crop_circle, notifications, switch_account_outlined, }
 class employeeWelcome extends StatefulWidget {
@@ -19,9 +24,21 @@ class employeeWelcome extends StatefulWidget {
 }
 
 class _employeeWelcomeState extends State<employeeWelcome> {
+
+  SharedPreferencesInit() async {
+    await Storage.init();
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    SharedPreferencesInit();
+  }
+
   var _popupMenuItemIndex = 0;
 
   Color _changeColorAccordingToMenuItem = Colors.red;
+
   PopupMenuItem _buildPopupMenuItem(
       String title, IconData iconData, int position) {
     return PopupMenuItem(
@@ -312,7 +329,11 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          SizedBox(height: 20,),
+                          Text("Employee",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.amber
+                            ),),
                           Text(Storage.get_location().toString(),
                           style: TextStyle(
                             fontSize: 15,
@@ -410,16 +431,17 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                               blurRadius: 5.0,
                             ),]
                         ),
+
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Attendance summary",
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xff092F52)
-                            ),),
+                              style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff092F52)
+                              ),),
                             SizedBox(height: 10,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -429,61 +451,80 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                                   children: [
                                     SizedBox(height: 10,),
                                     Text("for the month of",
-                                      style: TextStyle(
-                                        fontSize: 15)),
+                                        style: TextStyle(
+                                            fontSize: 15)),
                                     SizedBox(height: 2,),
                                     Text("JUNE", style: TextStyle(
-                                      fontSize: 25,
+                                        fontSize: 25,
                                         color: Color(0xff2989BF)
                                     ),)
                                   ],
                                 ),
 
-                                Column(
-                                 // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 5,),
-                                    Row(
-                                      children: [
-                                        Text("Present Days - ", style: TextStyle(
-                                          fontSize: 15,)),
-                                        Text("29 days", style: TextStyle(
-                                          fontSize: 15,
-                                          color: Color(0xff0EAF00),
-                                        ),)
-                                      ],
-                                    ),
-                                    SizedBox(height: 7,),
-                                    Row(
-                                      children: [
-                                        Text("Absent Days - ", style: TextStyle(
-                                          fontSize: 15,)),
-                                        Text("2 days", style: TextStyle(
-                                          fontSize: 15,
-                                          color: Color(0xffFF2E00),
-                                        ),)
-                                      ],
-                                    ),
+                                FutureBuilder(
+                                  builder: (context, snapshot) {
+                                    if (snapshot != null){
+                                      EmpAttendanceSummary empAttSummary = snapshot.data as EmpAttendanceSummary ;
+                                      if (empAttSummary == null){
+                                        return Center(child: CircularProgressIndicator());
+                                      }
+                                      else{
+                                        return Column(
+                                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(height: 5,),
+                                            Row(
+                                              children: [
+                                                Text("Present Days - ", style: TextStyle(
+                                                  fontSize: 15,)),
+                                                Text("${empAttSummary.data.present[0].COUNT} days", style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Color(0xff0EAF00),
+                                                ),)
+                                              ],
+                                            ),
+                                            SizedBox(height: 7,),
+                                            Row(
+                                              children: [
+                                                Text("Absent Days - ", style: TextStyle(
+                                                  fontSize: 15,)),
+                                                Text("${empAttSummary.data.absent[0].COUNT} days", style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Color(0xffFF2E00),
+                                                ),)
+                                              ],
+                                            ),
 
-                                  ],
-                                )
+                                          ],
+                                        );
+                                      }}
+                                    else{
+                                      return CircularProgressIndicator();
+                                    }
+                                  },
+                                    // access().empAttendanceSummary("05-05-2022", "05-06-2022"),
+                                  future: access().empAttendanceSummary("05-05-2022", "05-06-2022").then((value) async{
+                                    return EmpAttendanceSummary.fromJson(jsonDecode(value));
+                                  }),
+                                ),
+
+
                               ],
                             )
                           ],
-                        ),
+                        )
+
+
                       ),
-
-
                     ],
                   ),
                 ),
 
+
                 Padding(
                     padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
                   child: Container(
-                      // width: MediaQuery.of(context).size.width*0.4,
-                      // height: MediaQuery.of(context).size.width*0.35,
                       padding: EdgeInsets.all(30),
                       decoration: BoxDecoration(
                           color: Colors.white,
@@ -823,7 +864,30 @@ class _employeeWelcomeState extends State<employeeWelcome> {
       ),
     );
   }
+}
 
+Future getEmpAttenSummary() async {
+
+  var headers = {'Content-Type': 'application/json',
+    'Authorization': 'Bearer ${Storage.get_accessToken()}'};
+
+
+  var url = Uri.parse('https://stg.visitormanager.net/v1/employee/attedance/summary');
+  var body = jsonEncode(
+      {
+        "startDate": "05-05-2022",
+        "endDate": "05-06-2022"
+      }
+  );
+
+  final response = await http.post(url, headers: headers, body: body);
+  print(response.body);
+
+  if (response.statusCode == 200) {
+    return EmpAttendanceSummary.fromJson(jsonDecode(response.body));
+  } else {
+    print("Failed to fetch data");
+  }
 
 }
 

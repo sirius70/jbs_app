@@ -1,13 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jbs_app/api/access.dart';
+import 'package:jbs_app/models/login_model.dart';
 import 'package:jbs_app/screens/onboarding_4.dart';
 import 'package:pinput/pinput.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+
+import '../admin/admin_profile.dart';
+import '../manager/more.dart';
+import '../employee_screens/employee_welcome_1.dart';
+import '../models/contractor_count_model.dart';
+import '../models/delivery_count_model.dart';
+import '../models/profile_model.dart';
+import '../models/visitor_count_model.dart';
+import '../storage.dart';
 
 class otpVerify extends StatefulWidget {
    otpVerify({Key? key, required this.phoneNo}) : super(key: key);
@@ -209,6 +218,7 @@ class _otpVerifyState extends State<otpVerify> {
                 onPressed: () async{
                   var deviceToken = await messaging!.getToken();
                   print("dev token: $deviceToken");
+                  access().regDevToken(deviceToken.toString());
                   print(_pinOtpController.text);
                   try{
                     await FirebaseAuth.instance.signInWithCredential(
@@ -219,15 +229,162 @@ class _otpVerifyState extends State<otpVerify> {
                       print("tokenId:$tokenId");
                       if(value.user != null) {
                         print("+91"+widget.phoneNo);
-                        access().loginPhone2(("+91"+widget.phoneNo).toString(), tokenId).then((value) {
-                          Fluttertoast.showToast(
-                              msg: "${"Logged in successfully"}",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.green.shade400,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
+                        access().loginPhone2(("+91"+widget.phoneNo).toString(), tokenId).then((value) async{
+                          if (value["success"]) {
+                            LoginApi loginApiRes = await LoginApi.fromJson(value);
+                            final empId = loginApiRes.data!.employeeId;
+                            final location = loginApiRes.data!.locations[0].name;
+                            final token = loginApiRes.tokens!.accessToken;
+                            final isAdmin = loginApiRes.data!.isAdmin;
+                            final isManager = loginApiRes.data!.isManager;
+                            final locationID = loginApiRes.data!.locations![0].locationId;
+                            Storage.set_locationID(locationID.toString());
+
+                            Storage.set_accessToken(token.toString());
+
+                            Storage.set_adminEmpID(empId.toString());
+
+                            Storage.set_location(location.toString());
+
+
+                            Fluttertoast.showToast(
+                                msg: "${"Logged in successfully"}",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.green.shade400,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            setState(() {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                    return Scaffold(
+                                        backgroundColor: Colors.white,
+                                        body: Center(
+                                          child:
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+
+
+                                              Text("Select Mode", style: TextStyle(
+                                                  color: Color(0xff005993), letterSpacing: 1,
+                                                  fontSize: 18
+                                              ),),
+
+                                              SizedBox(height: 40,),
+
+
+                                              GestureDetector(
+                                                onTap: (){
+                                                  Navigator.push(context,
+                                                      MaterialPageRoute(builder:
+                                                          (context)=>employeeWelcome()));
+                                                },
+                                                child: Text("Employee", style: TextStyle(
+                                                    color: Color(0xff005993), letterSpacing: 1,
+                                                    fontSize: 40
+                                                ),),
+                                              ),
+                                              SizedBox(height: 30,),
+
+                                              if(isManager == 1)...[
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    access().profile().then((value) async{
+                                                      if(value["success"]) {
+                                                        ProfileApi profile = await ProfileApi.fromJson(value);
+                                                        final name = profile.data.name;
+                                                        Storage.set_name(name);
+                                                      }
+                                                    });
+
+                                                    access().deliveryTodayCount().then((value) async{
+                                                      if(value["success"]){
+                                                        DeliveryTodaysCount deliveryCount = await DeliveryTodaysCount.fromJson(value);
+                                                        final deliCount = deliveryCount.data[0].count;
+                                                        print(deliCount);
+                                                        Storage.set_deliveryCount(deliCount.toString());
+                                                      }
+                                                    });
+
+                                                    access().visitorTodayCount().then((value) async{
+                                                      if(value["success"]){
+                                                        VisitorTodaysCount visitorCount = await VisitorTodaysCount.fromJson(value);
+                                                        final visitCount = visitorCount.visitorInsideToday[0].count;
+                                                        final totalVisitCount = visitorCount.totalVisitorVisitedToday[0].count;
+                                                        print("${visitCount}, ${totalVisitCount }");
+                                                        Storage.set_visitorCount(visitCount.toString());
+                                                        Storage.set_totalVisitorCount(totalVisitCount.toString());
+                                                      }
+                                                    });
+
+                                                    access().contractorTodayCount().then((value) async{
+                                                      if(value["success"]){
+                                                        ContractorTodaysCount contractorCount = await ContractorTodaysCount.fromJson(value);
+                                                        final contracCount = contractorCount.contractorInsideToday[0].count;
+                                                        final totalContracCount = contractorCount.totalContractorVisitedToday[0].count;
+                                                        print("${contracCount}, ${totalContracCount }");
+                                                        Storage.set_contractorCount(contracCount.toString());
+                                                        Storage.set_totalContractorCount(totalContracCount.toString());
+                                                      }
+                                                    });
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(builder:
+                                                            (context) =>
+                                                            More()
+                                                          //   Home2(empId: Storage.get_adminEmpID().toString(),
+                                                          // location: Storage.get_location().toString(),)
+                                                        ));
+
+                                                  },
+                                                  child: Text("Manager", style: TextStyle(
+                                                      color: Color(0xff005993), letterSpacing: 1,
+                                                      fontSize: 50,
+                                                      fontWeight: FontWeight.bold
+                                                  ),),
+                                                ),
+                                              ],
+
+                                              SizedBox(height: 30,),
+
+                                              if(isAdmin == 1)...[
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(builder:
+                                                            (context) => adminProfile()));
+                                                  },
+                                                  child: Text("Admin", style: TextStyle(
+                                                      color: Color(0xff005993), letterSpacing: 1,
+                                                      fontSize: 40
+                                                  ),),
+                                                ),
+                                              ],
+                                            ],
+                                          ),
+                                        )
+                                    );
+                                  }));
+                            });
+                          } else{
+                            Fluttertoast.showToast(
+                                msg: "${"Invalid credentials"}",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red.shade400,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+                          // Fluttertoast.showToast(
+                          //     msg: "${"Logged in successfully"}",
+                          //     toastLength: Toast.LENGTH_SHORT,
+                          //     gravity: ToastGravity.BOTTOM,
+                          //     timeInSecForIosWeb: 1,
+                          //     backgroundColor: Colors.green.shade400,
+                          //     textColor: Colors.white,
+                          //     fontSize: 16.0);
 
                           // Navigator.push(context,
                           //     MaterialPageRoute(builder: (context)=>onBoarding()));

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -33,6 +34,7 @@ class _loginScreenState extends State<loginScreen> {
   var emailController = TextEditingController();
   var passController = TextEditingController();
   var phoneController = TextEditingController();
+  FirebaseMessaging? messaging = FirebaseMessaging.instance;
 
 
   SharedPreferencesInit() async {
@@ -253,13 +255,6 @@ class _loginScreenState extends State<loginScreen> {
                                                 }
                                               });
 
-                                              setState(() {
-                                                Navigator.push(context,
-                                                    MaterialPageRoute(builder: (context) {
-                                                      return otpVerify(phoneNo: phoneController.text);
-                                                    }));
-                                              });
-
                                               access().deliveryTodayCount().then((value) async{
                                                 if(value["success"]){
                                                   DeliveryTodaysCount deliveryCount = await DeliveryTodaysCount.fromJson(value);
@@ -290,6 +285,15 @@ class _loginScreenState extends State<loginScreen> {
                                                   Storage.set_totalContractorCount(totalContracCount.toString());
                                                 }
                                               });
+
+                                              setState(() {
+                                                Navigator.push(context,
+                                                    MaterialPageRoute(builder: (context) {
+                                                      return otpVerify(phoneNo: phoneController.text);
+                                                    }));
+                                              });
+
+
                                             } else{
                                               Fluttertoast.showToast(
                                                   msg: "${"Invalid credentials"}",
@@ -352,6 +356,9 @@ class _loginScreenState extends State<loginScreen> {
                         .width * 0.55,
                     child: ElevatedButton(
                       onPressed: () async {
+                        var deviceToken = await messaging!.getToken();
+                        print("dev token: $deviceToken");
+                        access().regDevToken(deviceToken.toString());
                         if(emailController.text.isNotEmpty && passController.text.isNotEmpty ){
                           access().login(emailController.text,
                               passController.text).then((value) async {
@@ -376,6 +383,37 @@ class _loginScreenState extends State<loginScreen> {
                                   ProfileApi profile = await ProfileApi.fromJson(value);
                                   final name = profile.data.name;
                                   Storage.set_name(name);
+                                }
+                              });
+
+                              access().deliveryTodayCount().then((value) async{
+                                if(value["success"]){
+                                  DeliveryTodaysCount deliveryCount = await DeliveryTodaysCount.fromJson(value);
+                                  final deliCount = deliveryCount.data[0].count;
+                                  print(deliCount);
+                                  Storage.set_deliveryCount(deliCount.toString());
+                                }
+                              });
+
+                              access().visitorTodayCount().then((value) async{
+                                if(value["success"]){
+                                  VisitorTodaysCount visitorCount = await VisitorTodaysCount.fromJson(value);
+                                  final visitCount = visitorCount.visitorInsideToday[0].count;
+                                  final totalVisitCount = visitorCount.totalVisitorVisitedToday[0].count;
+                                  print("${visitCount}, ${totalVisitCount }");
+                                  Storage.set_visitorCount(visitCount.toString());
+                                  Storage.set_totalVisitorCount(totalVisitCount.toString());
+                                }
+                              });
+
+                              access().contractorTodayCount().then((value) async{
+                                if(value["success"]){
+                                  ContractorTodaysCount contractorCount = await ContractorTodaysCount.fromJson(value);
+                                  final contracCount = contractorCount.contractorInsideToday[0].count;
+                                  final totalContracCount = contractorCount.totalContractorVisitedToday[0].count;
+                                  print("${contracCount}, ${totalContracCount }");
+                                  Storage.set_contractorCount(contracCount.toString());
+                                  Storage.set_totalContractorCount(totalContracCount.toString());
                                 }
                               });
 
@@ -428,8 +466,6 @@ class _loginScreenState extends State<loginScreen> {
                                                     MaterialPageRoute(builder:
                                                         (context) =>
                                                             More()
-                                                          //   Home2(empId: Storage.get_adminEmpID().toString(),
-                                                          // location: Storage.get_location().toString(),)
                                                     ));
 
                                               },

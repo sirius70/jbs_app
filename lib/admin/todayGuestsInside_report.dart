@@ -20,7 +20,7 @@ class _todayGuestsReportState extends State<todayGuestsReport> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            title: Text("Todays Contractors reports"),
+            title: Text("Todays Visitors reports"),
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
             elevation: 0,
@@ -36,7 +36,7 @@ class _todayGuestsReportState extends State<todayGuestsReport> {
                       if (snapshot != null){
                         GuestsInsideReport guestReport = snapshot.data as GuestsInsideReport ;
                         if (guestReport == null){
-                          return Center(child: CircularProgressIndicator(),);
+                          return Center(child: Text("No Visitor today in your organization"),);
                         }
                         else{
                           return weatherBox(context, guestReport);

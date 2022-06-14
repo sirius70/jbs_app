@@ -35,13 +35,13 @@ class _todayContractorsReportState extends State<todayContractorsReport> {
                     if (snapshot != null){
                       ContractorsInsideReport contReport = snapshot.data as ContractorsInsideReport ;
                       if (contReport == null){
-                        return Center(child: CircularProgressIndicator(),);
+                        return Center(child: Text("No contractors today in your organization"),);
                       }
                       else{
                         return weatherBox(context, contReport);
                       }}
                     else{
-                      return CircularProgressIndicator();
+                      return Center(child: Text("No contractors"),);
                     }
                   },
 

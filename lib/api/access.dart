@@ -103,6 +103,30 @@ class access {
     return data;
   }
 
+  Future<dynamic> regDevToken(String devToken) async {
+    NetworkHelper helper = NetworkHelper(base_url + "register/device/token");
+    var data = await helper.regDevToken(devToken);
+    return data;
+  }
+
+  Future<dynamic> empAttendanceSummary(String startDate, endDate) async {
+    NetworkHelper helper = NetworkHelper(base_url + "employee/attedance/summary");
+    var data = await helper.empAttendanceSummary(startDate, endDate);
+    return data;
+  }
+
+  Future<dynamic> empAttendanceLeave(String date, reason) async {
+    NetworkHelper helper = NetworkHelper(base_url + "employee/attedance/summary");
+    var data = await helper.empAttendanceLeave(date, reason);
+    return data;
+  }
+
+  Future<dynamic> managerApproveLeave(bool approvalStatus, reqId) async {
+    NetworkHelper helper = NetworkHelper(base_url + "manager/request/approval/leave");
+    var data = await helper.managerApproveLeave(approvalStatus, reqId);
+    return data;
+  }
+
   //
   // Future<dynamic> uploadVisitorImage(String path) async {
   //   NetworkHelper helper = NetworkHelper(base_url + "upload/img/VisitorImg",);

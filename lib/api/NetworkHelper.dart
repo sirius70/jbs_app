@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import '../models/disable_emp_model.dart';
+import '../models/empAttendance_summary_model.dart';
 import '../models/login_model.dart';
 import '../models/search_emp_model.dart';
 import '../storage.dart';
@@ -361,6 +364,87 @@ class NetworkHelper {
         print(response?.data);
 
         return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future regDevToken(String devToken) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {'device_Token': devToken});
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future empAttendanceSummary(String startDate, endDate) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {
+        "startDate": "05-05-2022",
+        "endDate": "05-06-2022"
+      });
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+        print(response?.data);
+        //return EmpAttendanceSummary.fromJson(jsonDecode(response?.data));
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future empAttendanceLeave(String date, reason) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {
+        "date": date,
+        "reason": reason
+      });
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+        print(response?.data);
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future managerApproveLeave(bool approvalStatus, String reqId) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {
+        "approval_status": approvalStatus,
+        "req_id": reqId
+      });
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+        print(response?.data);
       } else {
         return {'success': false, 'message': 'Failed'};
       }

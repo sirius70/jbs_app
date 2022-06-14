@@ -21,7 +21,7 @@ class _todayDeliveryReportState extends State<todayDeliveryReport> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            title: Text("Todays Contractors reports"),
+            title: Text("Todays Deliveries reports"),
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
             elevation: 0,
@@ -37,7 +37,7 @@ class _todayDeliveryReportState extends State<todayDeliveryReport> {
                       if (snapshot != null){
                         DeliveryInsideReport delReport = snapshot.data as DeliveryInsideReport ;
                         if (delReport == null){
-                          return Center(child: CircularProgressIndicator(),);
+                          return Center(child: Text("No deleveries today in your organization"),);
                         }
                         else{
                           return weatherBox(context, delReport);

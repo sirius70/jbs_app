@@ -113,7 +113,7 @@ class _Create_userState extends State<Create_user> {
                   else if (valuefirst.toString() == "false"){
                     isManager = "0";
                   }
-                  access().createEmployee(nameController.text, ("+91-"+phoneController.text).toString(),
+                  access().createEmployee(nameController.text, ("+91"+phoneController.text).toString(),
                       emailController.text, isManager).then((value) async{
                         print(value["success"]);
                         if (value["success"]){
