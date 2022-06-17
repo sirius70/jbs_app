@@ -148,6 +148,18 @@ class access {
     return data;
   }
 
+  Future<dynamic> empSerReq(String adminId , issueSec, issueReason) async {
+    NetworkHelper helper = NetworkHelper(base_url + "employee/serviceRequest");
+    var data = await helper.empSerReq(adminId , issueSec, issueReason);
+    return data;
+  }
+
+  Future<dynamic> adminIssuesList() async {
+    NetworkHelper helper = NetworkHelper(base_url + "get/service/request");
+    var data = await helper.adminIssuesList();
+    return data;
+  }
+
   //
   // Future<dynamic> uploadVisitorImage(String path) async {
   //   NetworkHelper helper = NetworkHelper(base_url + "upload/img/VisitorImg",);

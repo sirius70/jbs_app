@@ -477,6 +477,7 @@ class NetworkHelper {
       return {'success': false, 'message': e.message};
     }
   }
+
   Future guestRegister(String name , String phNo, email, companyName, ndaSign, date, time) async {
     dio = Dio(option);
     try {
@@ -514,6 +515,52 @@ class NetworkHelper {
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {
 
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future adminIssuesList() async {
+    dio = Dio(option);
+    try {
+      Response? response = await dio?.get(url, queryParameters: {"location_Id": Storage.get_locationID()});
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future empSerReq(String adminId , issueSec, issueReason) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {
+        "admin_Id":adminId,
+        "location_Id":Storage.get_locationID(),
+        "issue_Level":issueSec,
+        "issue_Elaboration": issueReason
+      });
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
 
         print(response?.data);
 

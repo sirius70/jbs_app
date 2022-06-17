@@ -1,13 +1,16 @@
 import 'dart:convert';
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart'  as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jbs_app/api/access.dart';
 import 'package:jbs_app/employee_screens/profile_page_3.dart';
 import 'package:jbs_app/employee_screens/request_success.dart';
 import 'package:jbs_app/employee_screens/scan_qr.dart';
 
 import '../models/emp_get_admins_model.dart';
+import '../models/emp_sendServiceReq_model.dart';
 import '../storage.dart';
 import 'employee_welcome_1.dart';
 import 'guest_register_2.dart';
@@ -22,10 +25,15 @@ class serviceRequest extends StatefulWidget {
 class _serviceRequestState extends State<serviceRequest> {
   TextEditingController dateinput = TextEditingController();
   TextEditingController nameController = TextEditingController();
-  TextEditingController deptController = TextEditingController();
+  TextEditingController issueController = TextEditingController();
+
   Set<String> items = {};
-  String? _mySelection;
-  List data = [];
+  String? selectedValue;
+  String? selectedValue2;
+  List categoryItemList = [];
+  List issueList = ['Very high', 'High', 'Low'];
+  var issues;
+  final bool isLoading = false;
 
   @override
   void initState() {
@@ -223,7 +231,7 @@ class _serviceRequestState extends State<serviceRequest> {
                                         Text("Name"),
                                         Flexible(
                                           child: Container(
-                                            height: 35,
+                                            height: 38,
                                             width: 200,
                                             child: TextField(
                                               cursorColor: Color(0xff031627),
@@ -249,115 +257,17 @@ class _serviceRequestState extends State<serviceRequest> {
                                       ],
                                     ),
                                     SizedBox(height: 18,),
-
-                                    // FutureBuilder(
-                                    //   builder: (context, snapshot) {
-                                    //     if (snapshot != null){
-                                    //       GetAdmins getAdmin = snapshot.data as GetAdmins ;
-                                    //       if (getAdmin == null){
-                                    //         return Center(child: Text(""),);
-                                    //       }
-                                    //       else{
-                                    //
-                                    //         // for(int i = 0; i<getAdmin.data.length; i++){
-                                    //         //   items.add(getAdmin.data[i].name);
-                                    //         // }
-                                    //         // print(items);
-                                    //
-                                    //         return  DropdownButton(
-                                    //           items: data.map((getAdmin) {
-                                    //             return new DropdownMenuItem(
-                                    //               child: new Text(getAdmin.data[0].name.toString()),
-                                    //               value:getAdmin.data[0].name.toString(),
-                                    //             );
-                                    //           }).toList(),
-                                    //           onChanged: (String? newVal) {
-                                    //             setState(() {
-                                    //               _mySelection = newVal;
-                                    //             });
-                                    //           },
-                                    //           value: _mySelection,
-                                    //         );
-                                    //       }}
-                                    //     else{
-                                    //       return const Center(
-                                    //         child: Text(""),
-                                    //       );
-                                    //     }
-                                    //   },
-                                    //
-                                    //   future: getAdmins(),
-                                    // ),
-
-
-
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text("Department"),
                                         Flexible(
-                                          child: Container(
-                                            height: 35,
+                                          child:Container(
+                                            height: 38,
                                             width: 200,
-                                            child: TextFormField(
-                                              controller: deptController,
-                                              cursorColor: Color(0xff031627),
+                                            child: InputDecorator(
                                               decoration: InputDecoration(
                                                 contentPadding: const EdgeInsets.all(10.0),
-                                                suffixIcon: Container(
-                                                  //margin: EdgeInsets.only(left: 10),
-                                                  decoration: const BoxDecoration(
-                                                      border: Border(
-                                                        left: BorderSide(color: Colors.grey),
-                                                      )
-                                                  ),
-                                                  child: FutureBuilder(
-                                                    builder: (context, snapshot) {
-                                                      if (snapshot != null){
-                                                        GetAdmins getAdmin = snapshot.data as GetAdmins ;
-                                                        print(snapshot.data);
-                                                        if (getAdmin == null){
-                                                          return Center(child: Text(""),);
-                                                        }
-                                                        else{
-
-                                                          for(int i = 0; i<getAdmin.data.length; i++){
-                                                            items.add(getAdmin.data[i].name);
-
-                                                          }
-                                                          print(items);
-                                                         // return Container();
-
-                                                          return PopupMenuButton(
-                                                            icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey,),
-                                                            onSelected: (String value) {
-                                                              deptController.text = value;
-                                                            },
-                                                            itemBuilder: (BuildContext context) {
-                                                             //String name = getAdmin.data[i].name;
-                                                                return getAdmin.data[0].name
-                                                                    .map<PopupMenuItem>(( value) {
-                                                                  return  PopupMenuItem(
-                                                                      child: new Text(value), value: value);
-                                                                });
-
-
-                                                            },
-                                                          );
-                                                        }}
-                                                      else{
-                                                        return const Center(
-                                                          child: Text(""),
-                                                        );
-                                                      }
-                                                    },
-
-                                                    future: getAdmins(),
-                                                  ),
-
-
-
-                                                ),
                                                 enabledBorder: OutlineInputBorder(
                                                   borderSide: BorderSide(color: Colors.grey),
                                                 ),
@@ -372,54 +282,38 @@ class _serviceRequestState extends State<serviceRequest> {
                                                 filled: true,
                                                 fillColor: Colors.white,
                                               ),
+                                              child: DropdownButtonHideUnderline(
+                                                child: DropdownButton(
+                                                    icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,),
+                                                    value: selectedValue,
+                                                    items: categoryItemList.map((category){
+                                                      return DropdownMenuItem(
+                                                          value: category["employee_Id"].toString(),
+                                                          child: Row(
+                                                            children: [
+                                                              Text(category["name"]),
+                                                             // Text(category["employee_Id"].toString())
+                                                            ],
+                                                          )
+                                                      );
+                                                    }).toList(),
+                                                    onChanged: (value){
+                                                      setState((){
+                                                        selectedValue = value as String?;
+                                                        print(selectedValue);
+
+                                                        Storage.set_reguAdminId(selectedValue.toString());
+                                                        print(Storage.get_reguAdminId());
+
+                                                      });
+                                                    }
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                          )
                                         ),
                                       ],
                                     ),
-
-                                    // Row(
-                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    //   children: [
-                                    //     Text("Department"),
-                                    //     Flexible(
-                                    //       child: Container(
-                                    //         height: 35,
-                                    //         width: 200,
-                                    //         child: TextField(
-                                    //           cursorColor: Color(0xff031627),
-                                    //           decoration: InputDecoration(
-                                    //             contentPadding: const EdgeInsets.all(10.0),
-                                    //             suffixIcon: Container(
-                                    //               //margin: EdgeInsets.only(left: 10),
-                                    //               decoration: BoxDecoration(
-                                    //                   border: Border(
-                                    //                     left: BorderSide(color: Colors.grey),
-                                    //                   )
-                                    //               ),
-                                    //               child: IconButton(
-                                    //                   onPressed: (){},
-                                    //                   icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
-                                    //             ),
-                                    //             enabledBorder: OutlineInputBorder(
-                                    //               borderSide: BorderSide(color: Colors.grey),
-                                    //             ),
-                                    //             focusedBorder: OutlineInputBorder(
-                                    //               borderSide: BorderSide(color: Colors.grey),
-                                    //             ),
-                                    //             focusColor: Color(0xff031627),
-                                    //             border: OutlineInputBorder(
-                                    //               borderRadius: BorderRadius.circular(10.0),
-                                    //               borderSide: BorderSide(color: Colors.grey),
-                                    //             ),
-                                    //             filled: true,
-                                    //             fillColor: Colors.white,
-                                    //           ),
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ],
-                                    // ),
 
 
                                     SizedBox(height: 18,),
@@ -429,40 +323,54 @@ class _serviceRequestState extends State<serviceRequest> {
                                       children: [
                                         Text("Issue Section"),
                                         Flexible(
-                                          child: Container(
-                                            height: 35,
-                                            width: 200,
-                                            child: TextField(
-                                              cursorColor: Color(0xff031627),
-                                              decoration: InputDecoration(
-                                                contentPadding: const EdgeInsets.all(10.0),
-                                                suffixIcon: Container(
-                                                  //margin: EdgeInsets.only(left: 10),
-                                                  decoration: BoxDecoration(
-                                                      border: Border(
-                                                        left: BorderSide(color: Colors.grey),
-                                                      )
+                                            child:Container(
+                                              height: 38,
+                                              width: 200,
+                                              child: InputDecorator(
+                                                decoration: InputDecoration(
+                                                  contentPadding: const EdgeInsets.all(10.0),
+                                                  enabledBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.grey),
                                                   ),
-                                                  child: IconButton(
-                                                      onPressed: (){},
-                                                      icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
+                                                  focusedBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.grey),
+                                                  ),
+                                                  focusColor: Color(0xff031627),
+                                                  border: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.circular(10.0),
+                                                    borderSide: BorderSide(color: Colors.grey),
+                                                  ),
+                                                  filled: true,
+                                                  fillColor: Colors.white,
                                                 ),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
+                                                child: DropdownButtonHideUnderline(
+                                                  child: DropdownButton(
+                                                      icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,),
+                                                      value: selectedValue2,
+                                                      items: issueList.map((issue){
+                                                        return DropdownMenuItem(
+                                                            value: issue.toString(),
+                                                            child: Row(
+                                                              children: [
+                                                                Text(issue, style: TextStyle(
+                                                                  fontSize: 15
+                                                                ),),
+                                                                // Text(category["employee_Id"].toString())
+                                                              ],
+                                                            )
+                                                        );
+                                                      }).toList(),
+                                                      onChanged: (value){
+                                                        setState((){
+                                                          selectedValue2 = value as String?;
+                                                          print(selectedValue2);
+
+                                                        });
+                                                      }
+                                                  ),
                                                 ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusColor: Color(0xff031627),
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                filled: true,
-                                                fillColor: Colors.white,
                                               ),
-                                            ),
-                                          ),
+                                            )
                                         ),
                                       ],
                                     ),
@@ -487,7 +395,8 @@ class _serviceRequestState extends State<serviceRequest> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                     ),
-                                    child: TextField(
+                                    child: TextFormField(
+                                      controller: issueController,
                                       textInputAction: TextInputAction.newline,
                                       keyboardType: TextInputType.multiline,
                                       minLines: null,
@@ -522,8 +431,50 @@ class _serviceRequestState extends State<serviceRequest> {
                                   width: MediaQuery.of(context).size.width,
                                   child: ElevatedButton(
                                     onPressed: (){
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context)=>requestSuccess1()));
+
+                                     if(issueController.text.isNotEmpty){
+                                       access().empSerReq(selectedValue.toString(),
+                                           selectedValue2 == "Very high"? 3 :
+                                           selectedValue2 == "High"? 2 : 1,
+                                           issueController.text).then((value){
+                                             if(value["success"]) {
+                                               SendServiceReq sendReq = SendServiceReq.fromJson(value);
+                                               setState((){
+                                                 Fluttertoast.showToast(
+                                                     msg: "${sendReq.message}",
+                                                     toastLength: Toast.LENGTH_SHORT,
+                                                     gravity: ToastGravity.BOTTOM,
+                                                     timeInSecForIosWeb: 1,
+                                                     backgroundColor: Colors.green.shade300,
+                                                     textColor: Colors.white,
+                                                     fontSize: 16.0);
+                                                 Navigator.push(context,
+                                                     MaterialPageRoute(builder: (context)=>requestSuccess1()));
+                                               });
+                                             } else{
+                                               Fluttertoast.showToast(
+                                                   msg: "${"Request could'nt be made. Please try after sometime"}",
+                                                   toastLength: Toast.LENGTH_SHORT,
+                                                   gravity: ToastGravity.BOTTOM,
+                                                   timeInSecForIosWeb: 1,
+                                                   backgroundColor: Colors.red.shade300,
+                                                   textColor: Colors.white,
+                                                   fontSize: 16.0);
+                                             }
+
+                                       });
+
+                                     } else{
+                                       Fluttertoast.showToast(
+                                           msg: "${"Fields cannot be empty"}",
+                                           toastLength: Toast.LENGTH_SHORT,
+                                           gravity: ToastGravity.BOTTOM,
+                                           timeInSecForIosWeb: 1,
+                                           backgroundColor: Colors.grey,
+                                           textColor: Colors.white,
+                                           fontSize: 16.0);
+                                     }
+
                                     },
                                     child: Text("Submit Request"),
                                     style: ButtonStyle(
@@ -563,14 +514,20 @@ class _serviceRequestState extends State<serviceRequest> {
     var headers = {'Content-Type': 'application/json',
       'Authorization': 'Bearer ${Storage.get_accessToken()}'};
 
-
     var url = Uri.parse('https://stg.visitormanager.net/v1/get/admin/location?location_Id=0000${Storage.get_locationID()}');
 
     final response = await http.get(url, headers: headers);
     print(response.body);
 
     if (response.statusCode == 200) {
-      return GetAdmins.fromJson(jsonDecode(response.body));
+      var jsonData = jsonDecode(response.body);
+      print("jsonData:${jsonData["data"]}");
+      categoryItemList = jsonData["data"];
+      // setState((){
+      //   categoryItemList = jsonData;
+      // });
+      print("categoryList: ${categoryItemList}");
+      //return GetAdmins.fromJson(jsonDecode(response.body));
     } else {
       print("Failed to fetch data");
     }

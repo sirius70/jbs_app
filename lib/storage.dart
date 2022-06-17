@@ -19,6 +19,7 @@ class Storage{
   static const _totalVisitorCount = "totalVisitorCount";
   static const _reqId = "reqId";
   static const _date = "date";
+  static const _reguAdminId = "reguAdminId";
 
   static Future init() async{
     sharedPreferences = await SharedPreferences.getInstance();
@@ -70,8 +71,11 @@ class Storage{
   static Future set_reqId(String reqId)async=>await sharedPreferences!.setString(_reqId, reqId);
   static String? get_reqId()=>sharedPreferences!.getString(_reqId)??"";
 
-  static Future set_date(String date)async=>await sharedPreferences!.setString(_date, _date);
+  static Future set_date(String date)async=>await sharedPreferences!.setString(_date, date);
   static String? get_date()=>sharedPreferences!.getString(_date)??"";
+
+  static Future set_reguAdminId(String reguAdminId)async=>await sharedPreferences!.setString(_reguAdminId, reguAdminId);
+  static String? get_reguAdminId()=>sharedPreferences!.getString(_reguAdminId)??"";
 
 }
 

@@ -22,6 +22,7 @@ class _UsersListsState extends State<UsersLists> {
     super.initState();
 access().usersList();
     SharedPreferencesInit();
+    getEmployeeList();
   }
 
   SharedPreferencesInit() async {
