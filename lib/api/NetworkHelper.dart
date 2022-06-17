@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import '../models/disable_emp_model.dart';
 import '../models/empAttendance_summary_model.dart';
+import '../models/emp_regularization_model.dart';
 import '../models/login_model.dart';
 import '../models/search_emp_model.dart';
 import '../storage.dart';
@@ -414,17 +415,39 @@ class NetworkHelper {
     }
   }
 
-  Future empAttendanceLeave(String date, reason) async {
+
+  Future empAttendanceLeave(String date, String reason) async {
     dio = Dio(option);
     try {
       Response? response =
-      await dio?.post(url, data: {
-        "date": date,
-        "reason": reason
-      });
+      await dio?.post(url, data: {'date': date, 'reason': reason});
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {
+
         print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+
+  Future empAttendanceRegularization(String date, String reason) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {'date': date, 'reason': reason});
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+        print(response?.data);
+
+        return response?.data;
       } else {
         return {'success': false, 'message': 'Failed'};
       }
@@ -438,13 +461,14 @@ class NetworkHelper {
     dio = Dio(option);
     try {
       Response? response =
-      await dio?.post(url, data: {
-        "approval_status": approvalStatus,
-        "req_id": reqId
-      });
+      await dio?.post(url, data: { "approval_status": approvalStatus,
+        "req_id": reqId});
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {
+
         print(response?.data);
+
+        return response?.data;
       } else {
         return {'success': false, 'message': 'Failed'};
       }
@@ -453,6 +477,56 @@ class NetworkHelper {
       return {'success': false, 'message': e.message};
     }
   }
+  Future guestRegister(String name , String phNo, email, companyName, ndaSign, date, time) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {
+        "visitorName":name,
+        "phoneNo":phNo,
+        "email":email,
+        "visitorCompany":companyName,
+        "NDA_sign": ndaSign,
+        "location_Id":Storage.get_locationID(),
+        "date":date,
+        "time": time
+      });
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future empAbsPres() async {
+    dio = Dio(option);
+    try {
+      Response? response = await dio?.get(url);
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
 
   //
   // Future uploadVisitorImage(String path) async {

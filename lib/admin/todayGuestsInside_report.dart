@@ -90,10 +90,10 @@ class _todayGuestsReportState extends State<todayGuestsReport> {
                                   backgroundImage: AssetImage("lib/images/face3.png")
                                // backgroundImage: NetworkImage(guestReport.visitorReportsToday![index].vISITORPHOTO.toString()),
                               ),
-                              Text(guestReport.visitorReportsToday![index].vISITORNAME.toString()),
-                              Text(guestReport.visitorReportsToday![index].vISITORCOMPANYNAME.toString()),
-                              Text(guestReport.visitorReportsToday![index].vISITORPHONENUMBER.toString()),
-                              Text(guestReport.visitorReportsToday![index].vISITOREmail.toString()),
+                              Text(guestReport.visitorReportsToday[index].VISITORNAME.toString()),
+                              Text(guestReport.visitorReportsToday[index].VISITORCOMPANYNAME.toString()),
+                              Text(guestReport.visitorReportsToday[index].VISITORPHONENUMBER.toString()),
+                              Text(guestReport.visitorReportsToday[index].VISITOREmail.toString()),
 
                             ],
                           ),
@@ -121,8 +121,8 @@ class _todayGuestsReportState extends State<todayGuestsReport> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("entry time: ${guestReport.visitorReportsToday![index].vISITORENTRYTIME}"),
-                          Text("checkout time: ${guestReport.visitorReportsToday![index].checkOutTime}")
+                          Text("entry time: ${guestReport.visitorReportsToday[index].VISITORENTRYTIME}"),
+                          Text("checkout time: ${guestReport.visitorReportsToday[index].checkOutTime}")
                         ],
                       ),
                       SizedBox(height: 15,),
@@ -134,10 +134,10 @@ class _todayGuestsReportState extends State<todayGuestsReport> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("emp name: ${guestReport.visitorReportsToday![index].eMPLOYEENAME}"),
-                              Text("emp email: ${guestReport.visitorReportsToday![index].eMPLOYEEEMAIL}"),
-                              Text("emp phNo: ${guestReport.visitorReportsToday![index].eMPLOYEEPHONENUMBER}"),
-                              Text("nda sign: ${guestReport.visitorReportsToday![index].nDASign==0? "not signed":"signed"}")
+                              Text("emp name: ${guestReport.visitorReportsToday[index].EMPLOYEENAME}"),
+                              Text("emp email: ${guestReport.visitorReportsToday[index].EMPLOYEEEMAIL}"),
+                              Text("emp phNo: ${guestReport.visitorReportsToday[index].EMPLOYEEPHONENUMBER}"),
+                              Text("nda sign: ${guestReport.visitorReportsToday[index].NDASign==0? "not signed":"signed"}")
                             ],
                           )
                         ],

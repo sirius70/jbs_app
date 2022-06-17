@@ -131,9 +131,7 @@ class _Create_userState extends State<Create_user> {
                           emailController.clear();
                           phoneController.clear();
                           valuefirst = false;
-                          setState((){
 
-                          });
                         } else {
                           CreateEmpRes createEmpRes = await CreateEmpRes.fromJson(value);
                           final msg = createEmpRes.message;
@@ -150,9 +148,7 @@ class _Create_userState extends State<Create_user> {
                           emailController.clear();
                           phoneController.clear();
                           valuefirst = false;
-                          setState((){
 
-                          });
                         }
                   } );
                 }else{

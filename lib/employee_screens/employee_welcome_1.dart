@@ -2,18 +2,23 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:jbs_app/employee_screens/guest_register_2.dart';
 import 'package:jbs_app/employee_screens/my_attendance.dart';
 import 'package:jbs_app/employee_screens/my_scan_qr.dart';
+import 'package:jbs_app/employee_screens/my_service_request.dart';
 import 'package:jbs_app/employee_screens/profile_page_3.dart';
 import 'package:jbs_app/employee_screens/scan_qr.dart';
 import 'package:jbs_app/employee_screens/widgets/bottom_navigation.dart';
+import 'package:jbs_app/employee_screens/widgets/my_leave_application.dart';
 import 'package:marquee/marquee.dart';
 
 import '../api/access.dart';
 import '../models/empAttendance_summary_model.dart';
 import '../storage.dart';
 import 'package:http/http.dart'  as http;
+
+import 'my_regulaization_request.dart';
 
 enum Options { person_crop_circle, notifications, switch_account_outlined, }
 class employeeWelcome extends StatefulWidget {
@@ -454,7 +459,7 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                                         style: TextStyle(
                                             fontSize: 15)),
                                     SizedBox(height: 2,),
-                                    Text("JUNE", style: TextStyle(
+                                    Text(DateFormat.MMMM().format(DateTime.now()).toString(), style: TextStyle(
                                         fontSize: 25,
                                         color: Color(0xff2989BF)
                                     ),)
@@ -478,7 +483,7 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                                               children: [
                                                 Text("Present Days - ", style: TextStyle(
                                                   fontSize: 15,)),
-                                                Text("${empAttSummary.data.present[0].COUNT} days", style: TextStyle(
+                                                Text("${empAttSummary.data.Present} days", style: TextStyle(
                                                   fontSize: 15,
                                                   color: Color(0xff0EAF00),
                                                 ),)
@@ -489,7 +494,7 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                                               children: [
                                                 Text("Absent Days - ", style: TextStyle(
                                                   fontSize: 15,)),
-                                                Text("${empAttSummary.data.absent[0].COUNT} days", style: TextStyle(
+                                                Text("${empAttSummary.data.Absent} days", style: TextStyle(
                                                   fontSize: 15,
                                                   color: Color(0xffFF2E00),
                                                 ),)
@@ -504,9 +509,10 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                                     }
                                   },
                                     // access().empAttendanceSummary("05-05-2022", "05-06-2022"),
-                                  future: access().empAttendanceSummary("05-05-2022", "05-06-2022").then((value) async{
-                                    return EmpAttendanceSummary.fromJson(jsonDecode(value));
-                                  }),
+                                  future: getEmpAttenSummary()
+                                  // access().empAttendanceSummary("05-05-2022", "05-06-2022").then((value) async{
+                                  //   return EmpAttendanceSummary.fromJson(jsonDecode(value));
+                                  // }),
                                 ),
 
 
@@ -524,34 +530,13 @@ class _employeeWelcomeState extends State<employeeWelcome> {
 
                 Padding(
                     padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-                  child: Container(
-                      padding: EdgeInsets.all(30),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [new BoxShadow(
-                            color: Colors.grey.withOpacity(0.4),
-                            blurRadius: 5.0,
-                          ),]
-                      ),
-                      child: Center(child: Text("Request for regularization",textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff092F52)
-                        ),))
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width*0.4,
-                        height: MediaQuery.of(context).size.width*0.35,
-                        padding: EdgeInsets.all(10),
+                  child: GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder:
+                          (context)=>regularizationRequest()));
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(30),
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20),
@@ -560,16 +545,26 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                               blurRadius: 5.0,
                             ),]
                         ),
-                        child: Center(
-                            child: Text("Apply for \nleave", textAlign: TextAlign.center,
+                        child: Center(child: Text("Request for regularization",textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
                               color: Color(0xff092F52)
                           ),))
-                      ),
+                    ),
+                  ),
+                ),
 
-                      Container(
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>leaveApplication()));
+                        },
+                        child: Container(
                           width: MediaQuery.of(context).size.width*0.4,
                           height: MediaQuery.of(context).size.width*0.35,
                           padding: EdgeInsets.all(10),
@@ -581,12 +576,39 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                                 blurRadius: 5.0,
                               ),]
                           ),
-                          child: Center(child: Text("Raise support request",textAlign: TextAlign.center,
+                          child: Center(
+                              child: Text("Apply for \nleave", textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff092F52)
                             ),))
+                        ),
+                      ),
+
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>serviceRequest()));
+                        },
+                        child: Container(
+                            width: MediaQuery.of(context).size.width*0.4,
+                            height: MediaQuery.of(context).size.width*0.35,
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [new BoxShadow(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  blurRadius: 5.0,
+                                ),]
+                            ),
+                            child: Center(child: Text("Raise support request",textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff092F52)
+                              ),))
+                        ),
                       ),
                     ],
                   ),
@@ -875,8 +897,8 @@ Future getEmpAttenSummary() async {
   var url = Uri.parse('https://stg.visitormanager.net/v1/employee/attedance/summary');
   var body = jsonEncode(
       {
-        "startDate": "05-05-2022",
-        "endDate": "05-06-2022"
+        "startDate": "2022-06-01",
+        "endDate": "2022-06-30"
       }
   );
 

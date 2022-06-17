@@ -189,176 +189,176 @@ class _myCalendarState extends State<myCalendar> {
 
                 CalendarPage2(),
 
-                SizedBox(height: 10,),
-
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              Text("09/16*",  style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xff005993)
-                              ),),
-
-                              Text("Present",),
-
-                            ],
-                          ),
-
-                          Container(
-                            width: MediaQuery.of(context).size.width*0.6,
-                            padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              border: Border.all(color: Colors.grey.shade200),
-                              borderRadius: BorderRadius.circular(20),
-
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      height:8,
-                                      width: 8,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color(0xff0EAF00)
-                                      ),
-                                    ),
-                                    Text(" Present",
-                                      style: TextStyle(
-                                          color: Color(0xff005993)
-                                      ),)
-                                  ],
-                                ),
-
-                                Row(
-                                  children: [
-                                    Container(
-                                      height:8,
-                                      width: 8,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color(0xffFF3821)
-                                      ),
-                                    ),
-                                    Text(" Absent",
-                                      style: TextStyle(
-                                          color: Color(0xff005993)
-                                      ),)
-                                  ],
-                                ),
-
-                                Row(
-                                  children: [
-                                    Container(
-                                      height:8,
-                                      width: 8,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color(0xff59B2EC)
-                                      ),
-                                    ),
-                                    Text(" Today",
-                                      style: TextStyle(
-                                          color: Color(0xff005993)
-                                      ),)
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-
-                        ],
-                      ),
-
-                      SizedBox(height: 20,),
-                      Divider(),
-                      SizedBox(height: 20,),
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("19 October, Today",
-                                  style: TextStyle(
-                                    color: Color(0xff288EE3),
-                                    fontSize: 22
-                                  ),),
-                                  Text("ABSENT",
-                                    style: TextStyle(
-                                        color: Color(0xffFF2E00),
-                                        fontSize: 22
-                                    ),)
-                                ],
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(top: 8,
-                                bottom: 8, left: 30, right: 30),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-
-                                  color: Colors.white,
-                                  border: Border.all(color: Color(0xff288EE3) )
-                                ),
-                                child: Text("Regularize",  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xff005993)
-                                ),),
-                              )
-                            ],
-                          ),
-                          
-                          Padding(
-                              padding: EdgeInsets.all(20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Check-in at 8:59 AM via QR",
-                            style: TextStyle(
-                              fontSize: 15
-                            ),),
-                            SizedBox(height: 10,),
-                            Text("Exit detected at 12:15PM",
-                              style: TextStyle(
-                                  fontSize: 15
-                              ),),
-                            SizedBox(height: 10,),
-                            Text("Entry book detected at 12:45PM",
-                              style: TextStyle(
-                                  fontSize: 15
-                              ),),
-                            SizedBox(height: 10,),
-                            Text("Check-out at 6:59 AM via ID",
-                              style: TextStyle(
-                                  fontSize: 15
-                              ),),
-                            SizedBox(height: 10,),
-                          ],
-                          ),
-                          ),
-
-                        ],
-                      )
-
-
-                    ],
-                  ),
-                )
+                // SizedBox(height: 10,),
+                //
+                // Padding(
+                //   padding: const EdgeInsets.all(15.0),
+                //   child: Column(
+                //     children: [
+                //       Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //         children: [
+                //           Column(
+                //             children: [
+                //               Text("09/16*",  style: TextStyle(
+                //                   fontSize: 28,
+                //                   fontWeight: FontWeight.bold,
+                //                   color: Color(0xff005993)
+                //               ),),
+                //
+                //               Text("Present",),
+                //
+                //             ],
+                //           ),
+                //
+                //           Container(
+                //             width: MediaQuery.of(context).size.width*0.6,
+                //             padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                //             decoration: BoxDecoration(
+                //               color: Colors.grey.shade200,
+                //               border: Border.all(color: Colors.grey.shade200),
+                //               borderRadius: BorderRadius.circular(20),
+                //
+                //             ),
+                //             child: Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               children: [
+                //                 Row(
+                //                   children: [
+                //                     Container(
+                //                       height:8,
+                //                       width: 8,
+                //                       decoration: BoxDecoration(
+                //                         shape: BoxShape.circle,
+                //                         color: Color(0xff0EAF00)
+                //                       ),
+                //                     ),
+                //                     Text(" Present",
+                //                       style: TextStyle(
+                //                           color: Color(0xff005993)
+                //                       ),)
+                //                   ],
+                //                 ),
+                //
+                //                 Row(
+                //                   children: [
+                //                     Container(
+                //                       height:8,
+                //                       width: 8,
+                //                       decoration: BoxDecoration(
+                //                           shape: BoxShape.circle,
+                //                           color: Color(0xffFF3821)
+                //                       ),
+                //                     ),
+                //                     Text(" Absent",
+                //                       style: TextStyle(
+                //                           color: Color(0xff005993)
+                //                       ),)
+                //                   ],
+                //                 ),
+                //
+                //                 Row(
+                //                   children: [
+                //                     Container(
+                //                       height:8,
+                //                       width: 8,
+                //                       decoration: BoxDecoration(
+                //                           shape: BoxShape.circle,
+                //                           color: Color(0xff59B2EC)
+                //                       ),
+                //                     ),
+                //                     Text(" Today",
+                //                       style: TextStyle(
+                //                           color: Color(0xff005993)
+                //                       ),)
+                //                   ],
+                //                 )
+                //               ],
+                //             ),
+                //           ),
+                //
+                //         ],
+                //       ),
+                //
+                //       SizedBox(height: 20,),
+                //       Divider(),
+                //       SizedBox(height: 20,),
+                //
+                //       Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Row(
+                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //             children: [
+                //               Column(
+                //                 crossAxisAlignment: CrossAxisAlignment.start,
+                //                 children: [
+                //                   Text("19 October, Today",
+                //                   style: TextStyle(
+                //                     color: Color(0xff288EE3),
+                //                     fontSize: 22
+                //                   ),),
+                //                   Text("ABSENT",
+                //                     style: TextStyle(
+                //                         color: Color(0xffFF2E00),
+                //                         fontSize: 22
+                //                     ),)
+                //                 ],
+                //               ),
+                //               Container(
+                //                 padding: EdgeInsets.only(top: 8,
+                //                 bottom: 8, left: 30, right: 30),
+                //                 decoration: BoxDecoration(
+                //                   borderRadius: BorderRadius.circular(25),
+                //
+                //                   color: Colors.white,
+                //                   border: Border.all(color: Color(0xff288EE3) )
+                //                 ),
+                //                 child: Text("Regularize",  style: TextStyle(
+                //                     fontSize: 15,
+                //                     fontWeight: FontWeight.bold,
+                //                     color: Color(0xff005993)
+                //                 ),),
+                //               )
+                //             ],
+                //           ),
+                //
+                //           Padding(
+                //               padding: EdgeInsets.all(20),
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             Text("Check-in at 8:59 AM via QR",
+                //             style: TextStyle(
+                //               fontSize: 15
+                //             ),),
+                //             SizedBox(height: 10,),
+                //             Text("Exit detected at 12:15PM",
+                //               style: TextStyle(
+                //                   fontSize: 15
+                //               ),),
+                //             SizedBox(height: 10,),
+                //             Text("Entry book detected at 12:45PM",
+                //               style: TextStyle(
+                //                   fontSize: 15
+                //               ),),
+                //             SizedBox(height: 10,),
+                //             Text("Check-out at 6:59 AM via ID",
+                //               style: TextStyle(
+                //                   fontSize: 15
+                //               ),),
+                //             SizedBox(height: 10,),
+                //           ],
+                //           ),
+                //           ),
+                //
+                //         ],
+                //       )
+                //
+                //
+                //     ],
+                //   ),
+                // )
 
               ],
             ),

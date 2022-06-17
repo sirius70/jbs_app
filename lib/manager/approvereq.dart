@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:jbs_app/api/access.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -17,35 +21,7 @@ class Approve_req extends StatefulWidget {
 }
 
 class _Approve_reqState extends State<Approve_req> {
-
-
-  handleDismiss(BuildContext context, DismissDirection direction, int index) {
-    // Get a reference to the swiped item
-    approve deletedItem = approveItems.removeAt(index);
-
-    ScaffoldMessenger.of(context)
-        .showSnackBar(
-      SnackBar(
-        content: Text(" Do you want to undo?"),
-        duration: Duration(seconds: 5),
-        action: SnackBarAction(
-            label: "Undo",
-            textColor: Colors.yellow,
-            onPressed: () {
-              setState(() => approveItems.insert(index, deletedItem));
-            }),
-      ),
-    )
-        .closed
-        .then((reason) {
-      if (reason != SnackBarClosedReason.action) {
-      }
-    });
-  }
-
   bool _myBool = false;
-  bool _mybool = false;
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -283,339 +259,31 @@ class _Approve_reqState extends State<Approve_req> {
                 )),
             body: Column(
               children: [
+
                 Expanded(
-                    child: ListView.builder(
-                      itemCount: denyItems.length,
-                        itemBuilder: (context, idx){
-                        return Dismissible(
-                          key: Key(denyItems[idx].index.toString()),
-                          direction: DismissDirection.endToStart,
-                            onDismissed: (direction) {
-                              setState(() {
-                                denyItems.removeAt(idx);
-                              });
-                            },
-                            confirmDismiss: (DismissDirection direction) async {
-                              return await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Center(
-                                    child: Container(
-                                      padding: EdgeInsets.all(20),
-                                      height: MediaQuery.of(context).size.width * 0.5,
-                                      width: MediaQuery.of(context).size.width * 0.75,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(20),
-                                          boxShadow: [new BoxShadow(
-                                            color: Colors.grey.withOpacity(0.4),
-                                            blurRadius: 5.0,
-                                          ),]
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text("Are you sure you want this \nrequest?", textAlign: TextAlign.center,
-                                          style: TextStyle( fontSize: 20,
-                                            color: Color(0xff005993)
-                                          ),),
-
-                                          SizedBox(height: 20,),
-
-                                          Divider(),
-
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-
-                                              FlatButton(
-                                                onPressed: () => Navigator.of(context).pop(false),
-                                                child: const Text("Dismiss"),
-                                              ),
-
-                                  VerticalDividerWidget(),
-
-                                              FlatButton(
-                                                  onPressed: () => Navigator.of(context).pop(true),
-                                                  child: const Text("Deny")
-                                              ),
-
-                                            ],
-                                          ),
-
-
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          background: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFFE6E6),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Row(
-                              children: [
-                                Spacer(),
-                                Container(
-                                  height: 100,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage("https://raw.githubusercontent.com/abuanwar072/E-commerce-Complete-Flutter-UI/afbdefed9ed20c76cbb6a4fbe3bf0ba25d3e246c/assets/icons/Trash.svg"),
-                                      fit: BoxFit.fill
-                                    )
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            width: MediaQuery.of(context).size.width,
-                            color: Color(0xffFF3E01),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage: AssetImage("lib/images/face.png"),
-                                    ),
-                                    SizedBox(width: 8,),
-
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 10,
-                                          width: 100,
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-
-                                        Container(
-                                          height: 10,
-                                          width: 150,
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-
-                                        Container(
-                                          height: 10,
-                                          width: 150,
-                                          color: Colors.white,
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-
-
-                                Padding(
-                                  padding: const EdgeInsets.only(left:20, right: 20),
-                                  child: Container(
-                                      child: Text("Denied", style: TextStyle(
-                                        color: Colors.white
-                                      ),)
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        );
+                  child: FutureBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot != null){
+                        ManagerRequestLeave _weather = snapshot.data as ManagerRequestLeave ;
+                        if (_weather == null){
+                          return Center(child: Text("No requests"),);
                         }
-
-                    ),
-
-                ),
-
-
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: approveItems.length,
-                      itemBuilder: (context, idx){
-                        return Container(
-                          child: Dismissible(
-                              key: Key(approveItems[idx].index.toString()),
-                              direction: DismissDirection.startToEnd,
-                              onDismissed: (direction) {
-                                setState(() {
-                                  // added this block
-                                  approve deletedItem = approveItems.removeAt(idx);
-
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      Future.delayed(Duration(seconds: 3), () {
-                                        Navigator.of(context).pop(true);
-                                      });
-                                      return Center(
-                                        child: Container(
-                                          padding: EdgeInsets.all(20),
-                                          height: 65,
-                                          width: MediaQuery.of(context).size.width * 0.9,
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.circular(20),
-                                              boxShadow: [new BoxShadow(
-                                                color: Colors.grey,
-                                                blurRadius: 5.0,
-                                              ),]
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Approve the request", textAlign: TextAlign.center,
-                                                style: TextStyle( fontSize: 15,
-                                                ),),
-
-                                              Row(
-                                                children: [
-                                                  VerticalDividerWidget(),
-
-                                                  FlatButton(
-                                                      onPressed: () {
-
-                                                        setState(() => approveItems.insert(idx, deletedItem));
-                                                        Navigator.pop(context);
-                                                      },
-                                                    child: const Text("Undo"),
-                                                  ),
-                                                ],
-                                              )
-
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
-
-                                });
-                              },
-
-                              background: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFFFE6E6),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Spacer(),
-                                    Container(
-                                      height: 100,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: NetworkImage("https://raw.githubusercontent.com/abuanwar072/E-commerce-Complete-Flutter-UI/afbdefed9ed20c76cbb6a4fbe3bf0ba25d3e246c/assets/icons/Trash.svg"),
-                                              fit: BoxFit.fill
-                                          )
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                width: MediaQuery.of(context).size.width,
-                                color: Color(0xff0EAF00),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-
-                                    Padding(
-                                      padding: const EdgeInsets.only(left:20, right: 20),
-                                      child: Container(
-                                          child: Text("Approve", style: TextStyle(
-                                              color: Colors.white
-                                          ),)
-                                      ),
-                                    ),
-
-
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: AssetImage("lib/images/face.png"),
-                                        ),
-                                        SizedBox(width: 8,),
-
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              height: 10,
-                                              width: 100,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-
-                                            Container(
-                                              height: 10,
-                                              width: 150,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-
-                                            Container(
-                                              height: 10,
-                                              width: 150,
-                                              color: Colors.white,
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-
-
-
-
-                                  ],
-                                ),
-                              )
-                          ),
-                        );
-                      }
-
-                  ),
-
-                ),
-
-                FutureBuilder(
-                  builder: (context, snapshot) {
-                    if (snapshot != null){
-                      ManagerRequestLeave _weather = snapshot.data as ManagerRequestLeave ;
-                      if (_weather == null){
-                        return Center(child: CircularProgressIndicator(),);
-                      }
+                        else{
+                          return weatherBox(context, _weather);
+                        }}
                       else{
-                        return weatherBox(context, _weather);
-                      }}
-                    else{
-                      return CircularProgressIndicator();
-                    }
-                  },
+                        return CircularProgressIndicator();
+                      }
+                    },
 
-                  future: getLeaveReqList(),
+                    future: getLeaveReqList(),
+                  ),
                 ),
+
 
               ],
-            )));
+            ))
+    );
   }
 }
 
@@ -630,66 +298,282 @@ Widget weatherBox(BuildContext context, ManagerRequestLeave reqLeaveListss){
           },
           itemCount: reqLeaveListss.data.length,
           itemBuilder: (context, index){
-            return Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Row(
-                      children: [
-                        Image(
-                          image: AssetImage('lib/images/face3.png'),
-                          height: 70,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(reqLeaveListss.data[index].reqType,
-                            style: TextStyle(
-                              backgroundColor: Colors.grey.shade300,
-                              fontSize: 15, fontWeight: FontWeight.bold
-                            ),),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text("empId: ${reqLeaveListss.data[index].employeeId}",
-                              style: TextStyle(
-                                  backgroundColor: Colors.grey.shade300,
-                                  fontSize: 15,
-                              ),),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text("reason: ${reqLeaveListss.data[index].reason}",
-                              style: TextStyle(
-                                backgroundColor: Colors.grey.shade300,
-                                fontSize: 15,
-                              ),),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text("date of req: ${reqLeaveListss.data[index].dateOfReq}",
-                              style: TextStyle(
-                                backgroundColor: Colors.grey.shade300,
-                                fontSize: 15,
-                              ),),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text("leave date: ${reqLeaveListss.data[index].dateFor}",
-                              style: TextStyle(
-                                backgroundColor: Colors.grey.shade300,
-                                fontSize: 15,
-                              ),),
-                          ],
-                        ),
-                      ]),
-
-                ],
+            return Dismissible(
+              key: Key(reqLeaveListss.data[index].toString()),
+              //direction: DismissDirection.endToStart,
+              background: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade300,
+                  //borderRadius: BorderRadius.circular(15),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children:const [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Icon(
+                      Icons.check,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      "Approve",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
+                ),
               ),
+              secondaryBackground: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade300,
+                  //borderRadius: BorderRadius.circular(15),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Icon(
+                      Icons.delete_outlined,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      "Deny",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
+                ),
+              ),
+              confirmDismiss: (direction) async {
+                if (direction  == DismissDirection.endToStart){
+                  //status = true;
+                  return await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Center(
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          height: MediaQuery.of(context).size.width * 0.5,
+                          width: MediaQuery.of(context).size.width * 0.75,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [new BoxShadow(
+                                color: Colors.grey.withOpacity(0.4),
+                                blurRadius: 5.0,
+                              ),]
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Are you sure you want this \nrequest?", textAlign: TextAlign.center,
+                                style: TextStyle( fontSize: 20,
+                                    color: Color(0xff005993)
+                                ),),
+
+                              SizedBox(height: 20,),
+
+                              Divider(),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+
+                                  FlatButton(
+                                    onPressed: () => Navigator.of(context).pop(false),
+                                    child: const Text("Dismiss"),
+                                  ),
+
+                                  VerticalDividerWidget(),
+
+                                  FlatButton(
+                                      onPressed: () {
+                                        bool status = false;
+                                        final requestId = reqLeaveListss.data[index].id;
+                                        Storage.set_reqId(requestId.toString());
+                                        final reqId = Storage.get_reqId();
+                                        print("reqId: $reqId");
+                                        access().managerApproveLeave(status, reqId).then((value){
+                                          if (value["success"]){
+                                            Navigator.of(context).pop(true);
+                                            Fluttertoast.showToast(
+                                                msg: "The request has been addressed",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.green.shade400,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0);
+                                          }
+                                        });
+
+                                      },
+                                      child: const Text("Deny")
+                                  ),
+
+                                ],
+                              ),
+
+
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else{
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      bool status = true;
+                      final requestId = reqLeaveListss.data[index].id;
+                      Storage.set_reqId(requestId.toString());
+                      final reqId = Storage.get_reqId();
+                      print("reqId: $reqId");
+                      access().managerApproveLeave(status, reqId).then((value){
+                        if (value["success"]){
+
+                          //Navigator.of(context).pop(true);
+                          //
+                          // Fluttertoast.showToast(
+                          //     msg: "The request has been addressed",
+                          //     toastLength: Toast.LENGTH_SHORT,
+                          //     gravity: ToastGravity.BOTTOM,
+                          //     timeInSecForIosWeb: 1,
+                          //     backgroundColor: Colors.green.shade400,
+                          //     textColor: Colors.white,
+                          //     fontSize: 16.0);
+                        }
+                      });
+
+                      Future.delayed(Duration(seconds: 3), () {
+                        Navigator.of(context).pop(true);
+                      });
+                      return Center(
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          height: 65,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [new BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 5.0,
+                              ),]
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Approved the request", textAlign: TextAlign.center,
+                                style: TextStyle( fontSize: 15,
+                                ),),
+
+                              Row(
+                                children: [
+                                  VerticalDividerWidget(),
+
+                                  FlatButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Undo"),
+                                  ),
+                                ],
+                              )
+
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+
+              },
+
+
+              child: Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Row(
+                          children: [
+                            Image(
+                              image: AssetImage('lib/images/face3.png'),
+                              height: 70,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(reqLeaveListss.data[index].reqType,
+                                  style: TextStyle(
+                                      backgroundColor: Colors.grey.shade300,
+                                      fontSize: 15, fontWeight: FontWeight.bold
+                                  ),),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text("empId: ${reqLeaveListss.data[index].employeeId}",
+                                  style: TextStyle(
+                                    backgroundColor: Colors.grey.shade300,
+                                    fontSize: 15,
+                                  ),),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text("reason: ${reqLeaveListss.data[index].reason}",
+                                  style: TextStyle(
+                                    backgroundColor: Colors.grey.shade300,
+                                    fontSize: 15,
+                                  ),),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text("date of req: ${reqLeaveListss.data[index].dateOfReq}",
+                                  style: TextStyle(
+                                    backgroundColor: Colors.grey.shade300,
+                                    fontSize: 15,
+                                  ),),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text("leave date: ${reqLeaveListss.data[index].dateFor}",
+                                  style: TextStyle(
+                                    backgroundColor: Colors.grey.shade300,
+                                    fontSize: 15,
+                                  ),),
+                              ],
+                            ),
+                          ]),
+
+                    ],
+                  ),
+                )
+
+
+              ),
+
             );
+
+
+
+
           }
       )
   );
@@ -708,30 +592,6 @@ class VerticalDividerWidget extends StatelessWidget {
 
 
 
-
-class deny{
-  final Color color;
-  final int index;
-  
-  deny({required this.color, required this.index});
-}
-
-List<deny> denyItems = [deny(color: Color(0xffFF3E01), index: 0)];
-
-
-
-class approve {
-  final int index;
-
-  approve({ required this.index});
-
-  approve.copy(approve other)
-      : this.index = other.index;
-}
-
-List<approve> approveItems = [approve(index: 0)];
-
-
 Future getLeaveReqList() async {
 
   var headers = {'Content-Type': 'application/json',
@@ -743,9 +603,443 @@ Future getLeaveReqList() async {
   print(response.body);
 
   if (response.statusCode == 200) {
-    return managerRequestLeaveFromJson(response.body);
+    return ManagerRequestLeave.fromJson(jsonDecode(response.body));
   } else {
     print("Failed to fetch data");
   }
 
 }
+
+
+
+// Expanded(
+//     child: ListView.builder(
+//       itemCount: denyItems.length,
+//         itemBuilder: (context, idx){
+//         return Dismissible(
+//           key: Key(denyItems[idx].index.toString()),
+//           //direction: DismissDirection.endToStart,
+//             secondaryBackground: Container(
+//               padding: EdgeInsets.symmetric(horizontal: 20),
+//               decoration: BoxDecoration(
+//                 color: Color(0xFFFFE6E6),
+//                 borderRadius: BorderRadius.circular(15),
+//               ),
+//               child: Row(
+//                 children: [
+//                   Spacer(),
+//                   Container(
+//                     height: 100,
+//                     width: 100,
+//                     decoration: BoxDecoration(
+//                         image: DecorationImage(
+//                             image: NetworkImage("https://raw.githubusercontent.com/abuanwar072/E-commerce-Complete-Flutter-UI/afbdefed9ed20c76cbb6a4fbe3bf0ba25d3e246c/assets/icons/Trash.svg"),
+//                             fit: BoxFit.fill
+//                         )
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//
+//             onDismissed: (direction) {
+//               setState(() {
+//                 denyItems.removeAt(idx);
+//               });
+//             },
+//             confirmDismiss: (direction) async {
+//             if (direction  == DismissDirection.endToStart){
+//               return await showDialog(
+//                 context: context,
+//                 builder: (BuildContext context) {
+//                   return Center(
+//                     child: Container(
+//                       padding: EdgeInsets.all(20),
+//                       height: MediaQuery.of(context).size.width * 0.5,
+//                       width: MediaQuery.of(context).size.width * 0.75,
+//                       decoration: BoxDecoration(
+//                           color: Colors.white,
+//                           borderRadius: BorderRadius.circular(20),
+//                           boxShadow: [new BoxShadow(
+//                             color: Colors.grey.withOpacity(0.4),
+//                             blurRadius: 5.0,
+//                           ),]
+//                       ),
+//                       child: Column(
+//                         mainAxisAlignment: MainAxisAlignment.center,
+//                         children: [
+//                           Text("Are you sure you want this \nrequest?", textAlign: TextAlign.center,
+//                             style: TextStyle( fontSize: 20,
+//                                 color: Color(0xff005993)
+//                             ),),
+//
+//                           SizedBox(height: 20,),
+//
+//                           Divider(),
+//
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                             children: [
+//
+//                               FlatButton(
+//                                 onPressed: () => Navigator.of(context).pop(false),
+//                                 child: const Text("Dismiss"),
+//                               ),
+//
+//                               VerticalDividerWidget(),
+//
+//                               FlatButton(
+//                                   onPressed: () => Navigator.of(context).pop(true),
+//                                   child: const Text("Deny")
+//                               ),
+//
+//                             ],
+//                           ),
+//
+//
+//                         ],
+//                       ),
+//                     ),
+//                   );
+//                 },
+//               );
+//             } else{
+//               setState(() {
+//                 // added this block
+//                 approve deletedItem = approveItems.removeAt(idx);
+//
+//                 showDialog(
+//                   context: context,
+//                   builder: (BuildContext context) {
+//                     Future.delayed(Duration(seconds: 3), () {
+//                       Navigator.of(context).pop(true);
+//                     });
+//                     return Center(
+//                       child: Container(
+//                         padding: EdgeInsets.all(20),
+//                         height: 65,
+//                         width: MediaQuery.of(context).size.width * 0.9,
+//                         decoration: BoxDecoration(
+//                             color: Colors.white,
+//                             borderRadius: BorderRadius.circular(20),
+//                             boxShadow: [new BoxShadow(
+//                               color: Colors.grey,
+//                               blurRadius: 5.0,
+//                             ),]
+//                         ),
+//                         child: Row(
+//                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                           children: [
+//                             Text("Approve the request", textAlign: TextAlign.center,
+//                               style: TextStyle( fontSize: 15,
+//                               ),),
+//
+//                             Row(
+//                               children: [
+//                                 VerticalDividerWidget(),
+//
+//                                 FlatButton(
+//                                   onPressed: () {
+//
+//                                     setState(() => approveItems.insert(idx, deletedItem));
+//                                     Navigator.pop(context);
+//                                   },
+//                                   child: const Text("Undo"),
+//                                 ),
+//                               ],
+//                             )
+//
+//                           ],
+//                         ),
+//                       ),
+//                     );
+//                   },
+//                 );
+//
+//               });
+//             }
+//
+//             },
+//           background: Container(
+//             padding: EdgeInsets.symmetric(horizontal: 20),
+//             decoration: BoxDecoration(
+//               color: Color(0xFFFFE6E6),
+//               borderRadius: BorderRadius.circular(15),
+//             ),
+//             child: Row(
+//               children: [
+//                 Spacer(),
+//                 Container(
+//                   height: 100,
+//                   width: 100,
+//                   decoration: BoxDecoration(
+//                     image: DecorationImage(
+//                       image: NetworkImage("https://raw.githubusercontent.com/abuanwar072/E-commerce-Complete-Flutter-UI/afbdefed9ed20c76cbb6a4fbe3bf0ba25d3e246c/assets/icons/Trash.svg"),
+//                       fit: BoxFit.fill
+//                     )
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//
+//           child: Expanded(
+//             child: FutureBuilder(
+//               builder: (context, snapshot) {
+//                 if (snapshot != null){
+//                   ManagerRequestLeave _weather = snapshot.data as ManagerRequestLeave ;
+//                   if (_weather == null){
+//                     return Center(child: CircularProgressIndicator(),);
+//                   }
+//                   else{
+//                     return weatherBox(context, _weather);
+//                   }}
+//                 else{
+//                   return CircularProgressIndicator();
+//                 }
+//               },
+//
+//               future: getLeaveReqList(),
+//             ),
+//           ),
+//
+//           // Container(
+//           //   padding: EdgeInsets.all(10),
+//           //   width: MediaQuery.of(context).size.width,
+//           //   color: Color(0xffFF3E01),
+//           //   child: Row(
+//           //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           //     children: [
+//           //       Row(
+//           //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           //         children: [
+//           //           CircleAvatar(
+//           //             backgroundImage: AssetImage("lib/images/face.png"),
+//           //           ),
+//           //           SizedBox(width: 8,),
+//           //
+//           //           Column(
+//           //             crossAxisAlignment: CrossAxisAlignment.start,
+//           //             children: [
+//           //               Container(
+//           //                 height: 10,
+//           //                 width: 100,
+//           //                 color: Colors.white,
+//           //               ),
+//           //               SizedBox(
+//           //                 height: 5,
+//           //               ),
+//           //
+//           //               Container(
+//           //                 height: 10,
+//           //                 width: 150,
+//           //                 color: Colors.white,
+//           //               ),
+//           //               SizedBox(
+//           //                 height: 5,
+//           //               ),
+//           //
+//           //               Container(
+//           //                 height: 10,
+//           //                 width: 150,
+//           //                 color: Colors.white,
+//           //               ),
+//           //             ],
+//           //           )
+//           //         ],
+//           //       ),
+//           //
+//           //
+//           //       Padding(
+//           //         padding: const EdgeInsets.only(left:20, right: 20),
+//           //         child: Container(
+//           //             child: Text("Denied", style: TextStyle(
+//           //               color: Colors.white
+//           //             ),)
+//           //         ),
+//           //       )
+//           //     ],
+//           //   ),
+//           // )
+//         );
+//         }
+//
+//     ),
+//
+// ),
+
+
+// Expanded(
+//   child: ListView.builder(
+//       itemCount: approveItems.length,
+//       itemBuilder: (context, idx){
+//         return Container(
+//           child: Dismissible(
+//               key: Key(approveItems[idx].index.toString()),
+//               direction: DismissDirection.startToEnd,
+//               onDismissed: (direction) {
+//                 setState(() {
+//                   // added this block
+//                   approve deletedItem = approveItems.removeAt(idx);
+//
+//                   showDialog(
+//                     context: context,
+//                     builder: (BuildContext context) {
+//                       Future.delayed(Duration(seconds: 3), () {
+//                         Navigator.of(context).pop(true);
+//                       });
+//                       return Center(
+//                         child: Container(
+//                           padding: EdgeInsets.all(20),
+//                           height: 65,
+//                           width: MediaQuery.of(context).size.width * 0.9,
+//                           decoration: BoxDecoration(
+//                               color: Colors.white,
+//                               borderRadius: BorderRadius.circular(20),
+//                               boxShadow: [new BoxShadow(
+//                                 color: Colors.grey,
+//                                 blurRadius: 5.0,
+//                               ),]
+//                           ),
+//                           child: Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                             children: [
+//                               Text("Approve the request", textAlign: TextAlign.center,
+//                                 style: TextStyle( fontSize: 15,
+//                                 ),),
+//
+//                               Row(
+//                                 children: [
+//                                   VerticalDividerWidget(),
+//
+//                                   FlatButton(
+//                                       onPressed: () {
+//
+//                                         setState(() => approveItems.insert(idx, deletedItem));
+//                                         Navigator.pop(context);
+//                                       },
+//                                     child: const Text("Undo"),
+//                                   ),
+//                                 ],
+//                               )
+//
+//                             ],
+//                           ),
+//                         ),
+//                       );
+//                     },
+//                   );
+//
+//                 });
+//               },
+//
+//               background: Container(
+//                 padding: EdgeInsets.symmetric(horizontal: 20),
+//                 decoration: BoxDecoration(
+//                   color: Color(0xFFFFE6E6),
+//                   borderRadius: BorderRadius.circular(15),
+//                 ),
+//                 child: Row(
+//                   children: [
+//                     Spacer(),
+//                     Container(
+//                       height: 100,
+//                       width: 100,
+//                       decoration: BoxDecoration(
+//                           image: DecorationImage(
+//                               image: NetworkImage("https://raw.githubusercontent.com/abuanwar072/E-commerce-Complete-Flutter-UI/afbdefed9ed20c76cbb6a4fbe3bf0ba25d3e246c/assets/icons/Trash.svg"),
+//                               fit: BoxFit.fill
+//                           )
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               child: Container(
+//                 padding: EdgeInsets.all(10),
+//                 width: MediaQuery.of(context).size.width,
+//                 color: Color(0xff0EAF00),
+//                 child: Row(
+//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                   children: [
+//
+//                     Padding(
+//                       padding: const EdgeInsets.only(left:20, right: 20),
+//                       child: Container(
+//                           child: Text("Approve", style: TextStyle(
+//                               color: Colors.white
+//                           ),)
+//                       ),
+//                     ),
+//
+//
+//                     Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       children: [
+//                         CircleAvatar(
+//                           backgroundImage: AssetImage("lib/images/face.png"),
+//                         ),
+//                         SizedBox(width: 8,),
+//
+//                         Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             Container(
+//                               height: 10,
+//                               width: 100,
+//                               color: Colors.white,
+//                             ),
+//                             SizedBox(
+//                               height: 5,
+//                             ),
+//
+//                             Container(
+//                               height: 10,
+//                               width: 150,
+//                               color: Colors.white,
+//                             ),
+//                             SizedBox(
+//                               height: 5,
+//                             ),
+//
+//                             Container(
+//                               height: 10,
+//                               width: 150,
+//                               color: Colors.white,
+//                             ),
+//                           ],
+//                         )
+//                       ],
+//                     ),
+//
+//
+//
+//
+//                   ],
+//                 ),
+//               )
+//           ),
+//         );
+//       }
+//
+//   ),
+//
+// ),
+
+// FutureBuilder(
+//   builder: (context, snapshot) {
+//     if (snapshot != null){
+//       ManagerRequestLeave _weather = snapshot.data as ManagerRequestLeave ;
+//       if (_weather == null){
+//         return Center(child: CircularProgressIndicator(),);
+//       }
+//       else{
+//         return weatherBox(context, _weather);
+//       }}
+//     else{
+//       return CircularProgressIndicator();
+//     }
+//   },
+//
+//   future: getLeaveReqList(),
+// ),

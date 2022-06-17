@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:jbs_app/api/access.dart';
 import 'package:jbs_app/employee_screens/profile_page_3.dart';
 import 'package:jbs_app/employee_screens/request_success.dart';
 import 'package:jbs_app/employee_screens/scan_qr.dart';
@@ -18,6 +20,7 @@ class regularizationRequest extends StatefulWidget {
 
 class _regularizationRequestState extends State<regularizationRequest> {
   TextEditingController dateinput = TextEditingController();
+  TextEditingController reasonController = TextEditingController();
 
   @override
   void initState() {
@@ -357,7 +360,8 @@ class _regularizationRequestState extends State<regularizationRequest> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                     ),
-                                    child: TextField(
+                                    child: TextFormField(
+                                      controller: reasonController,
                                       textInputAction: TextInputAction.newline,
                                       keyboardType: TextInputType.multiline,
                                       minLines: null,
@@ -392,8 +396,40 @@ class _regularizationRequestState extends State<regularizationRequest> {
                                   width: MediaQuery.of(context).size.width,
                                   child: ElevatedButton(
                                     onPressed: (){
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context)=>requestSuccess()));
+                                      print(dateinput.text);
+                                      if(dateinput.text.isNotEmpty && reasonController.text.isNotEmpty){
+                                        access().empAttendanceRegularization(dateinput.text,
+                                            reasonController.text).then((value) {
+                                          if(value["success"]){
+                                            Navigator.push(context,
+                                                MaterialPageRoute(builder: (context)=>requestSuccess()));
+                                            dateinput.clear();
+                                            reasonController.clear();
+                                          } else{
+                                            Fluttertoast.showToast(
+                                                msg: "${"Error submitting regularization application. Try after sometime"}",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.red.shade300,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0);
+
+                                            dateinput.clear();
+                                            reasonController.clear();
+                                          }
+                                        });
+
+                                      } else{
+                                        Fluttertoast.showToast(
+                                            msg: "${"Fields cannot be empty"}",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.grey,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      }
                                     },
                                     child: Text("Submit Request"),
                                     style: ButtonStyle(

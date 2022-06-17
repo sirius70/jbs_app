@@ -6,6 +6,7 @@ import 'package:jbs_app/api/access.dart';
 import 'package:jbs_app/employee_screens/request_success.dart';
 import 'package:jbs_app/models/empAttendance_summary_model.dart';
 
+import '../../models/emp_leave_applica_model.dart';
 import '../employee_welcome_1.dart';
 import '../guest_register_2.dart';
 import '../my_attendance.dart';
@@ -217,84 +218,84 @@ class _leaveApplicationState extends State<leaveApplication> {
                                 SizedBox(height: 10,),
                                 Column(
                                   children: [
-                                    // Row(
-                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    //   children: [
-                                    //     Text("Name"),
-                                    //     Flexible(
-                                    //       child: Container(
-                                    //         height: 35,
-                                    //         width: 200,
-                                    //         child: TextField(
-                                    //           cursorColor: Color(0xff031627),
-                                    //           decoration: InputDecoration(
-                                    //             contentPadding: const EdgeInsets.all(10.0),
-                                    //             enabledBorder: OutlineInputBorder(
-                                    //               borderSide: BorderSide(color: Colors.grey),
-                                    //             ),
-                                    //             focusedBorder: OutlineInputBorder(
-                                    //               borderSide: BorderSide(color: Colors.grey),
-                                    //             ),
-                                    //             focusColor: Color(0xff031627),
-                                    //             border: OutlineInputBorder(
-                                    //               borderRadius: BorderRadius.circular(10.0),
-                                    //               borderSide: BorderSide(color: Colors.grey),
-                                    //             ),
-                                    //             filled: true,
-                                    //             fillColor: Colors.white,
-                                    //           ),
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                    // SizedBox(height: 18,),
-                                    //
-                                    // Row(
-                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    //   children: [
-                                    //     Text("Department"),
-                                    //     Flexible(
-                                    //       child: Container(
-                                    //         height: 35,
-                                    //         width: 200,
-                                    //         child: TextField(
-                                    //           cursorColor: Color(0xff031627),
-                                    //           decoration: InputDecoration(
-                                    //             contentPadding: const EdgeInsets.all(10.0),
-                                    //             suffixIcon: Container(
-                                    //               //margin: EdgeInsets.only(left: 10),
-                                    //               decoration: BoxDecoration(
-                                    //                   border: Border(
-                                    //                     left: BorderSide(color: Colors.grey),
-                                    //                   )
-                                    //               ),
-                                    //               child: IconButton(
-                                    //                   onPressed: (){},
-                                    //                   icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
-                                    //             ),
-                                    //             enabledBorder: OutlineInputBorder(
-                                    //               borderSide: BorderSide(color: Colors.grey),
-                                    //             ),
-                                    //             focusedBorder: OutlineInputBorder(
-                                    //               borderSide: BorderSide(color: Colors.grey),
-                                    //             ),
-                                    //             focusColor: Color(0xff031627),
-                                    //             border: OutlineInputBorder(
-                                    //               borderRadius: BorderRadius.circular(10.0),
-                                    //               borderSide: BorderSide(color: Colors.grey),
-                                    //             ),
-                                    //             filled: true,
-                                    //             fillColor: Colors.white,
-                                    //           ),
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                    //
-                                    //
-                                    // SizedBox(height: 18,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Name"),
+                                        Flexible(
+                                          child: Container(
+                                            height: 35,
+                                            width: 200,
+                                            child: TextField(
+                                              cursorColor: Color(0xff031627),
+                                              decoration: InputDecoration(
+                                                contentPadding: const EdgeInsets.all(10.0),
+                                                enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.grey),
+                                                ),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.grey),
+                                                ),
+                                                focusColor: Color(0xff031627),
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                  borderSide: BorderSide(color: Colors.grey),
+                                                ),
+                                                filled: true,
+                                                fillColor: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 18,),
+
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Department"),
+                                        Flexible(
+                                          child: Container(
+                                            height: 35,
+                                            width: 200,
+                                            child: TextField(
+                                              cursorColor: Color(0xff031627),
+                                              decoration: InputDecoration(
+                                                contentPadding: const EdgeInsets.all(10.0),
+                                                suffixIcon: Container(
+                                                  //margin: EdgeInsets.only(left: 10),
+                                                  decoration: BoxDecoration(
+                                                      border: Border(
+                                                        left: BorderSide(color: Colors.grey),
+                                                      )
+                                                  ),
+                                                  child: IconButton(
+                                                      onPressed: (){},
+                                                      icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
+                                                ),
+                                                enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.grey),
+                                                ),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.grey),
+                                                ),
+                                                focusColor: Color(0xff031627),
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                  borderSide: BorderSide(color: Colors.grey),
+                                                ),
+                                                filled: true,
+                                                fillColor: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+
+                                    SizedBox(height: 18,),
 
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.start,
@@ -591,22 +592,24 @@ class _leaveApplicationState extends State<leaveApplication> {
 
                                 SizedBox(height: 30,),
                                 Container(
-                                  // decoration: BoxDecoration(
-                                  //   color: Color(0xffFF0000)
-                                  // ),
                                   height: MediaQuery.of(context).size.width*0.14,
                                   width: MediaQuery.of(context).size.width,
                                   child: ElevatedButton(
                                     onPressed: (){
                                       if (dateinput.text.isNotEmpty && reasonController.text.isNotEmpty){
                                         access().empAttendanceLeave(dateinput.text, reasonController.text).then((value) async{
-                                          if(value["success"]){
-                                           // EmpAttendanceLeave empAttLeave = EmpAttendanceLeave.fromJson(value);
+                                         EmpAttendanceLeave empAttLeave = await EmpAttendanceLeave.fromJson(value);
+                                         print(empAttLeave.data);
+                                          print("sucees: ${value}");
+                                          if (value["success"]){
+                                            EmpAttendanceLeave empAttLeave = EmpAttendanceLeave.fromJson(value);
+                                            print(empAttLeave.data.reqId);
                                             setState(() {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(builder: (context)=>requestSuccess()));
-                                            });
 
+                                          Navigator.push(context,MaterialPageRoute(builder: (context)=>requestSuccess()));
+                                            });
+                                            dateinput.clear();
+                                            reasonController.clear();
                                           }else{
                                             Fluttertoast.showToast(
                                                 msg: "${"Error submitting leave application. Try after sometime"}",
@@ -616,8 +619,12 @@ class _leaveApplicationState extends State<leaveApplication> {
                                                 backgroundColor: Colors.red.shade300,
                                                 textColor: Colors.white,
                                                 fontSize: 16.0);
+
+                                            dateinput.clear();
+                                            reasonController.clear();
                                           }
                                         });
+
                                       } else{
                                         Fluttertoast.showToast(
                                             msg: "${"Fields cannot be empty"}",
@@ -663,3 +670,4 @@ class _leaveApplicationState extends State<leaveApplication> {
     );
   }
 }
+

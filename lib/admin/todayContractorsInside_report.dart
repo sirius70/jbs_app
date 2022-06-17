@@ -41,7 +41,7 @@ class _todayContractorsReportState extends State<todayContractorsReport> {
                         return weatherBox(context, contReport);
                       }}
                     else{
-                      return Center(child: Text("No contractors"),);
+                      return Center(child: CircularProgressIndicator(),);
                     }
                   },
 
@@ -89,10 +89,10 @@ class _todayContractorsReportState extends State<todayContractorsReport> {
                                   backgroundImage: AssetImage("lib/images/face3.png")
                                // backgroundImage: NetworkImage(contactReport.contractorsReportsToday![index].cONTRACTORPHOTO.toString()),
                               ),
-                              Text(contactReport.contractorsReportsToday![index].cONTRACTORNAME.toString()),
-                              Text(contactReport.contractorsReportsToday![index].cONTRACTORCOMPANYNAME.toString()),
-                              Text(contactReport.contractorsReportsToday![index].cONTRACTORPHONENUMBER.toString()),
-                              Text(contactReport.contractorsReportsToday![index].cONTRACTOREMAIL.toString()),
+                              Text(contactReport.contractorsReportsToday[index].CONTRACTORNAME.toString()),
+                              Text(contactReport.contractorsReportsToday[index].CONTRACTORCOMPANYNAME.toString()),
+                              Text(contactReport.contractorsReportsToday[index].CONTRACTORPHONENUMBER.toString()),
+                              Text(contactReport.contractorsReportsToday[index].CONTRACTOREMAIL.toString()),
 
                             ],
                           ),
@@ -120,8 +120,8 @@ class _todayContractorsReportState extends State<todayContractorsReport> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("entry time: ${contactReport.contractorsReportsToday![index].cONTRACTORSENTRYTIME}"),
-                          Text("checkout time: ${contactReport.contractorsReportsToday![index].checkOutTime}")
+                          Text("entry time: ${contactReport.contractorsReportsToday[index].CONTRACTORSENTRYTIME}"),
+                          Text("checkout time: ${contactReport.contractorsReportsToday[index].checkOutTime}")
                         ],
                       ),
                         SizedBox(height: 15,),
@@ -133,10 +133,10 @@ class _todayContractorsReportState extends State<todayContractorsReport> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("emp name: ${contactReport.contractorsReportsToday![index].eMPLOYEENAME}"),
-                                Text("emp email: ${contactReport.contractorsReportsToday![index].eMPLOYEEEMAIL}"),
-                                Text("emp phNo: ${contactReport.contractorsReportsToday![index].eMPLOYEEPHONENUMBER}"),
-                                Text("nda sign: ${contactReport.contractorsReportsToday![index].nDASign==0? "not signed":"signed"}")
+                                Text("emp name: ${contactReport.contractorsReportsToday[index].EMPLOYEENAME}"),
+                                Text("emp email: ${contactReport.contractorsReportsToday[index].EMPLOYEEEMAIL}"),
+                                Text("emp phNo: ${contactReport.contractorsReportsToday[index].EMPLOYEEPHONENUMBER}"),
+                                Text("nda sign: ${contactReport.contractorsReportsToday[index].NDASign==0? "not signed":"signed"}")
                               ],
                             )
                           ],

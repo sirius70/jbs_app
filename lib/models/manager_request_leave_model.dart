@@ -1,13 +1,3 @@
-// To parse this JSON data, do
-//
-//     final managerRequestLeave = managerRequestLeaveFromJson(jsonString);
-
-import 'dart:convert';
-
-ManagerRequestLeave managerRequestLeaveFromJson(String str) => ManagerRequestLeave.fromJson(json.decode(str));
-
-String managerRequestLeaveToJson(ManagerRequestLeave data) => json.encode(data.toJson());
-
 class ManagerRequestLeave {
   ManagerRequestLeave({
     required this.status,
@@ -15,29 +5,30 @@ class ManagerRequestLeave {
     required this.message,
     required this.data,
   });
+  late final String status;
+  late final bool success;
+  late final String message;
+  late final List<Data> data;
 
-  String status;
-  bool success;
-  String message;
-  List<Datum> data;
+  ManagerRequestLeave.fromJson(Map<String, dynamic> json){
+    status = json['status'];
+    success = json['success'];
+    message = json['message'];
+    data = List.from(json['data']).map((e)=>Data.fromJson(e)).toList();
+  }
 
-  factory ManagerRequestLeave.fromJson(Map<String, dynamic> json) => ManagerRequestLeave(
-    status: json["status"],
-    success: json["success"],
-    message: json["message"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "status": status,
-    "success": success,
-    "message": message,
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
-  };
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['status'] = status;
+    _data['success'] = success;
+    _data['message'] = message;
+    _data['data'] = data.map((e)=>e.toJson()).toList();
+    return _data;
+  }
 }
 
-class Datum {
-  Datum({
+class Data {
+  Data({
     required this.id,
     required this.employeeId,
     required this.controllerId,
@@ -47,35 +38,36 @@ class Datum {
     required this.dateOfReq,
     required this.dateFor,
   });
+  late final int id;
+  late final int employeeId;
+  late final int controllerId;
+  late final String reason;
+  late final int approvalStatus;
+  late final String reqType;
+  late final String dateOfReq;
+  late final String dateFor;
 
-  int id;
-  int employeeId;
-  int controllerId;
-  String reason;
-  int approvalStatus;
-  String reqType;
-  DateTime dateOfReq;
-  String dateFor;
+  Data.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    employeeId = json['employee_id'];
+    controllerId = json['controller_id'];
+    reason = json['reason'];
+    approvalStatus = json['approval_status'];
+    reqType = json['req_type'];
+    dateOfReq = json['date_of_req'];
+    dateFor = json['date_for'];
+  }
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-    id: json["id"],
-    employeeId: json["employee_id"],
-    controllerId: json["controller_id"],
-    reason: json["reason"],
-    approvalStatus: json["approval_status"],
-    reqType: json["req_type"],
-    dateOfReq: DateTime.parse(json["date_of_req"]),
-    dateFor: json["date_for"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "employee_id": employeeId,
-    "controller_id": controllerId,
-    "reason": reason,
-    "approval_status": approvalStatus,
-    "req_type": reqType,
-    "date_of_req": dateOfReq.toIso8601String(),
-    "date_for": dateFor,
-  };
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['employee_id'] = employeeId;
+    _data['controller_id'] = controllerId;
+    _data['reason'] = reason;
+    _data['approval_status'] = approvalStatus;
+    _data['req_type'] = reqType;
+    _data['date_of_req'] = dateOfReq;
+    _data['date_for'] = dateFor;
+    return _data;
+  }
 }

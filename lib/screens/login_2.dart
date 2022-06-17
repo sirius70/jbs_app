@@ -255,36 +255,7 @@ class _loginScreenState extends State<loginScreen> {
                                                 }
                                               });
 
-                                              access().deliveryTodayCount().then((value) async{
-                                                if(value["success"]){
-                                                  DeliveryTodaysCount deliveryCount = await DeliveryTodaysCount.fromJson(value);
-                                                  final deliCount = deliveryCount.data[0].count;
-                                                  print(deliCount);
-                                                  Storage.set_deliveryCount(deliCount.toString());
-                                                }
-                                              });
 
-                                              access().visitorTodayCount().then((value) async{
-                                                if(value["success"]){
-                                                  VisitorTodaysCount visitorCount = await VisitorTodaysCount.fromJson(value);
-                                                  final visitCount = visitorCount.visitorInsideToday[0].count;
-                                                  final totalVisitCount = visitorCount.totalVisitorVisitedToday[0].count;
-                                                  print("${visitCount}, ${totalVisitCount }");
-                                                  Storage.set_visitorCount(visitCount.toString());
-                                                  Storage.set_totalVisitorCount(totalVisitCount.toString());
-                                                }
-                                              });
-
-                                              access().contractorTodayCount().then((value) async{
-                                                if(value["success"]){
-                                                  ContractorTodaysCount contractorCount = await ContractorTodaysCount.fromJson(value);
-                                                  final contracCount = contractorCount.contractorInsideToday[0].count;
-                                                  final totalContracCount = contractorCount.totalContractorVisitedToday[0].count;
-                                                  print("${contracCount}, ${totalContracCount }");
-                                                  Storage.set_contractorCount(contracCount.toString());
-                                                  Storage.set_totalContractorCount(totalContracCount.toString());
-                                                }
-                                              });
 
                                               setState(() {
                                                 Navigator.push(context,
@@ -362,6 +333,7 @@ class _loginScreenState extends State<loginScreen> {
                         if(emailController.text.isNotEmpty && passController.text.isNotEmpty ){
                           access().login(emailController.text,
                               passController.text).then((value) async {
+                                print("value111: $value");
                             if (value["success"]) {
                               LoginApi loginApiRes = await LoginApi.fromJson(value);
                               final empId = loginApiRes.data!.employeeId;
@@ -482,6 +454,36 @@ class _loginScreenState extends State<loginScreen> {
                                           if(isAdmin == 1)...[
                                             GestureDetector(
                                               onTap: () {
+                                                access().deliveryTodayCount().then((value) async{
+                                                  if(value["success"]){
+                                                    DeliveryTodaysCount deliveryCount = await DeliveryTodaysCount.fromJson(value);
+                                                    final deliCount = deliveryCount.data[0].count;
+                                                    print(deliCount);
+                                                    Storage.set_deliveryCount(deliCount.toString());
+                                                  }
+                                                });
+
+                                                access().visitorTodayCount().then((value) async{
+                                                  if(value["success"]){
+                                                    VisitorTodaysCount visitorCount = await VisitorTodaysCount.fromJson(value);
+                                                    final visitCount = visitorCount.visitorInsideToday[0].count;
+                                                    final totalVisitCount = visitorCount.totalVisitorVisitedToday[0].count;
+                                                    print("${visitCount}, ${totalVisitCount }");
+                                                    Storage.set_visitorCount(visitCount.toString());
+                                                    Storage.set_totalVisitorCount(totalVisitCount.toString());
+                                                  }
+                                                });
+
+                                                access().contractorTodayCount().then((value) async{
+                                                  if(value["success"]){
+                                                    ContractorTodaysCount contractorCount = await ContractorTodaysCount.fromJson(value);
+                                                    final contracCount = contractorCount.contractorInsideToday[0].count;
+                                                    final totalContracCount = contractorCount.totalContractorVisitedToday[0].count;
+                                                    print("${contracCount}, ${totalContracCount }");
+                                                    Storage.set_contractorCount(contracCount.toString());
+                                                    Storage.set_totalContractorCount(totalContracCount.toString());
+                                                  }
+                                                });
                                                 Navigator.push(context,
                                                     MaterialPageRoute(builder:
                                                         (context) => adminProfile()));

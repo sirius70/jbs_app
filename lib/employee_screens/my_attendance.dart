@@ -5,6 +5,7 @@ import 'package:jbs_app/employee_screens/scan_qr.dart';
 import 'package:jbs_app/employee_screens/view_my_calendar.dart';
 import 'dart:ui' as ui;
 
+import '../models/empAttendance_summary_model.dart';
 import 'employee_welcome_1.dart';
 import 'guest_register_2.dart';
 import 'widgets/bar_graph.dart';
@@ -200,60 +201,79 @@ class _myAttendanceState extends State<myAttendance> {
                             blurRadius: 5.0,
                           ),]
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text("Today's attendance: "),
-                              SizedBox(width: MediaQuery.of(context).size.width*0.18,),
-                              Text("Marked", style: TextStyle(
-                                color: Color(0xff0EAF00)
-                              ),)
-                            ],
-                          ),
+                      child: FutureBuilder(
+                          builder: (context, snapshot) {
+                            if (snapshot != null){
+                              EmpAttendanceSummary empAttSummary = snapshot.data as EmpAttendanceSummary ;
+                              if (empAttSummary == null){
+                                return Center(child: CircularProgressIndicator());
+                              }
+                              else{
+                                return  Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
 
-                          SizedBox(height: 10,),
 
-                          Row(
-                            children: [
-                              Text("Present days this month: "),
-                              SizedBox(width: MediaQuery.of(context).size.width*0.11,),
-                              Text("26", style: TextStyle(
-                                  color: Color(0xff0EAF00)
-                              ),)
-                            ],
-                          ),
-                          SizedBox(height: 10,),
+                                    Row(
+                                      children: [
+                                        Text("Today's attendance: "),
+                                        SizedBox(width: MediaQuery.of(context).size.width*0.18,),
+                                        Text("Marked", style: TextStyle(
+                                            color: Color(0xff0EAF00)
+                                        ),)
+                                      ],
+                                    ),
 
-                          Row(
-                            children: [
-                              Text("Absent days this month: "),
-                              SizedBox(width: MediaQuery.of(context).size.width*0.12,),
-                              Text("05", style: TextStyle(
-                                  color: Color(0xffFF2E00)
-                              ),)
-                            ],
-                          ),
-                          SizedBox(height: 10,),
+                                    SizedBox(height: 10,),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              GestureDetector(
-                                onTap: (){
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context)=>myCalendar()));
-                                },
-                                child: Text("View in Calendar", style: TextStyle(
-                                    color: Color(0xff092F52),
-                                  decoration: TextDecoration.underline
-                                ),),
-                              )
-                            ],
-                          )
-                        ],
+                                    Row(
+                                      children: [
+                                        Text("Present days this month: "),
+                                        SizedBox(width: MediaQuery.of(context).size.width*0.11,),
+                                        Text("${empAttSummary.data.Present}", style: TextStyle(
+                                            color: Color(0xff0EAF00)
+                                        ),)
+                                      ],
+                                    ),
+                                    SizedBox(height: 10,),
+
+                                    Row(
+                                      children: [
+                                        Text("Absent days this month: "),
+                                        SizedBox(width: MediaQuery.of(context).size.width*0.12,),
+                                        Text("${empAttSummary.data.Absent}", style: TextStyle(
+                                            color: Color(0xffFF2E00)
+                                        ),)
+                                      ],
+                                    ),
+                                    SizedBox(height: 10,),
+
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: (){
+                                            Navigator.push(context,
+                                                MaterialPageRoute(builder: (context)=>myCalendar()));
+                                          },
+                                          child: Text("View in Calendar", style: TextStyle(
+                                              color: Color(0xff092F52),
+                                              decoration: TextDecoration.underline
+                                          ),),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                );
+                              }}
+                            else{
+                              return CircularProgressIndicator();
+                            }
+                          },
+                          future: getEmpAttenSummary()
                       ),
+
+
                     ),
 
                     SizedBox(height: 25,),

@@ -17,6 +17,8 @@ class Storage{
   static const _visitorCount = "visitorCount";
   static const _totalContractorCount = "totaContractorCount2";
   static const _totalVisitorCount = "totalVisitorCount";
+  static const _reqId = "reqId";
+  static const _date = "date";
 
   static Future init() async{
     sharedPreferences = await SharedPreferences.getInstance();
@@ -64,6 +66,12 @@ class Storage{
 
   static Future set_totalContractorCount(String totalContractorCount)async=>await sharedPreferences!.setString(_totalContractorCount, totalContractorCount);
   static String? get_totalContractorCount()=>sharedPreferences!.getString(_totalContractorCount)??"";
+
+  static Future set_reqId(String reqId)async=>await sharedPreferences!.setString(_reqId, reqId);
+  static String? get_reqId()=>sharedPreferences!.getString(_reqId)??"";
+
+  static Future set_date(String date)async=>await sharedPreferences!.setString(_date, _date);
+  static String? get_date()=>sharedPreferences!.getString(_date)??"";
 
 }
 

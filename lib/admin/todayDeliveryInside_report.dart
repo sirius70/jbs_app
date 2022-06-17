@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart'  as http;
-import '../models/contractors_report_model.dart';
 import '../models/delivery_report_model.dart';
-import '../models/guests_report_model.dart';
 import '../storage.dart';
 
 class todayDeliveryReport extends StatefulWidget {
@@ -91,10 +89,10 @@ class _todayDeliveryReportState extends State<todayDeliveryReport> {
                                   backgroundImage: AssetImage("lib/images/face3.png")
                                 //backgroundImage: NetworkImage(delReport.deliveryReportsToday![index].dELIVERYBOYPHOTO.toString()),
                               ),
-                              Text(delReport.deliveryReportsToday![index].dELIVERYNAME.toString()),
-                              Text(delReport.deliveryReportsToday![index].dELIVERYCOMPANYNAME.toString()),
-                              Text(delReport.deliveryReportsToday![index].dELIVERYPHONENUMBER.toString()),
-                              Text(delReport.deliveryReportsToday![index].dELIVERYEMAIL.toString()),
+                              Text(delReport.deliveryReportsToday[index].DELIVERYNAME.toString()),
+                              Text(delReport.deliveryReportsToday[index].DELIVERYCOMPANYNAME.toString()),
+                              Text(delReport.deliveryReportsToday[index].DELIVERYPHONENUMBER.toString()),
+                              Text(delReport.deliveryReportsToday[index].DELIVERYEMAIL.toString()),
                             ],
                           ),
                           delReport.deliveryReportsToday![index].checkOut == 1?
@@ -121,8 +119,8 @@ class _todayDeliveryReportState extends State<todayDeliveryReport> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("entry time: ${delReport.deliveryReportsToday![index].dELIVERYENTRYTIME}"),
-                          Text("checkout time: ${delReport.deliveryReportsToday![index].checkOutTime}")
+                          Text("entry time: ${delReport.deliveryReportsToday[index].DELIVERYENTRYTIME}"),
+                          Text("checkout time: ${delReport.deliveryReportsToday[index].checkOutTime}")
                         ],
                       ),
                       SizedBox(height: 15,),
@@ -134,10 +132,10 @@ class _todayDeliveryReportState extends State<todayDeliveryReport> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("emp name: ${delReport.deliveryReportsToday![index].eMPLOYEENAME}"),
-                              Text("emp email: ${delReport.deliveryReportsToday![index].eMPLOYEEEMAIL}"),
-                              Text("emp phNo: ${delReport.deliveryReportsToday![index].eMPLOYEEPHONENUMBER}"),
-                              Text("nda sign: ${delReport.deliveryReportsToday![index].nDASign==0? "not signed":"signed"}")
+                              Text("emp name: ${delReport.deliveryReportsToday[index].EMPLOYEENAME}"),
+                              Text("emp email: ${delReport.deliveryReportsToday[index].EMPLOYEEEMAIL}"),
+                              Text("emp phNo: ${delReport.deliveryReportsToday[index].EMPLOYEEPHONENUMBER}"),
+                              Text("nda sign: ${delReport.deliveryReportsToday[index].NDASign==0? "not signed":"signed"}")
                             ],
                           )
                         ],

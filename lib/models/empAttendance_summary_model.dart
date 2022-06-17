@@ -29,55 +29,79 @@ class EmpAttendanceSummary {
 
 class Data {
   Data({
-    required this.absent,
-    required this.present,
+    required this.Absent,
+    required this.Present,
+    required this.absentLogs,
+    required this.presentLogs,
   });
-  late final List<Absent> absent;
-  late final List<Present> present;
+  late final int Absent;
+  late final int Present;
+  late final List<AbsentLogs> absentLogs;
+  late final List<PresentLogs> presentLogs;
 
   Data.fromJson(Map<String, dynamic> json){
-    absent = List.from(json['Absent']).map((e)=>Absent.fromJson(e)).toList();
-    present = List.from(json['Present']).map((e)=>Present.fromJson(e)).toList();
+    Absent = json['Absent'];
+    Present = json['Present'];
+    absentLogs = List.from(json['Absent_logs']).map((e)=>AbsentLogs.fromJson(e)).toList();
+    presentLogs = List.from(json['Present_logs']).map((e)=>PresentLogs.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['Absent'] = absent.map((e)=>e.toJson()).toList();
-    _data['Present'] = present.map((e)=>e.toJson()).toList();
+    _data['Absent'] = Absent;
+    _data['Present'] = Present;
+    _data['Absent_logs'] = absentLogs.map((e)=>e.toJson()).toList();
+    _data['Present_logs'] = presentLogs.map((e)=>e.toJson()).toList();
     return _data;
   }
 }
 
-class Absent {
-  Absent({
-    required this.COUNT,
+class AbsentLogs {
+  AbsentLogs({
+    required this.id,
+    required this.marked,
+    required this.DateTime,
   });
-  late final int COUNT;
+  late final int id;
+  late final int marked;
+  late final String DateTime;
 
-  Absent.fromJson(Map<String, dynamic> json){
-    COUNT = json['COUNT(marked)'];
+  AbsentLogs.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    marked = json['marked'];
+    DateTime = json['DateTime'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['COUNT(marked)'] = COUNT;
+    _data['id'] = id;
+    _data['marked'] = marked;
+    _data['DateTime'] = DateTime;
     return _data;
   }
 }
 
-class Present {
-  Present({
-    required this.COUNT,
+class PresentLogs {
+  PresentLogs({
+    required this.id,
+    required this.marked,
+    required this.DateTime,
   });
-  late final int COUNT;
+  late final int id;
+  late final int marked;
+  late final String DateTime;
 
-  Present.fromJson(Map<String, dynamic> json){
-    COUNT = json['COUNT(marked)'];
+  PresentLogs.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    marked = json['marked'];
+    DateTime = json['DateTime'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['COUNT(marked)'] = COUNT;
+    _data['id'] = id;
+    _data['marked'] = marked;
+    _data['DateTime'] = DateTime;
     return _data;
   }
 }

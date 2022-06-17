@@ -4,6 +4,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:jbs_app/storage.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -35,6 +36,8 @@ class _MyHomePageState extends State<MyHomePage> {
     final _calendarCarouselNoHeader = CalendarCarousel<Event>(
       onDayPressed: (date, events){
         setState(() => _currentDate2 = date);
+        print(_currentDate2);
+        Storage.set_date(_currentDate2.toString());
         events.forEach((event) => print(event.title));
 
       },
@@ -64,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
       selectedDayBorderColor: Colors.transparent,
       selectedDayButtonColor: Colors.transparent,
       selectedDayTextStyle: const TextStyle(
-        color: Colors.black, fontSize: 20
+        color: Colors.green, fontSize: 20
       ),
       minSelectedDate: _currentDate.subtract(Duration(days: 360)),
       maxSelectedDate: _currentDate.add(Duration(days: 360)),

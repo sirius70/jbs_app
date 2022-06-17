@@ -1,9 +1,14 @@
+import 'dart:convert';
+
+import 'package:http/http.dart'  as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jbs_app/employee_screens/profile_page_3.dart';
 import 'package:jbs_app/employee_screens/request_success.dart';
 import 'package:jbs_app/employee_screens/scan_qr.dart';
 
+import '../models/emp_get_admins_model.dart';
+import '../storage.dart';
 import 'employee_welcome_1.dart';
 import 'guest_register_2.dart';
 import 'my_attendance.dart';
@@ -16,6 +21,17 @@ class serviceRequest extends StatefulWidget {
 }
 class _serviceRequestState extends State<serviceRequest> {
   TextEditingController dateinput = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController deptController = TextEditingController();
+  Set<String> items = {};
+  String? _mySelection;
+  List data = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getAdmins();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -234,6 +250,47 @@ class _serviceRequestState extends State<serviceRequest> {
                                     ),
                                     SizedBox(height: 18,),
 
+                                    // FutureBuilder(
+                                    //   builder: (context, snapshot) {
+                                    //     if (snapshot != null){
+                                    //       GetAdmins getAdmin = snapshot.data as GetAdmins ;
+                                    //       if (getAdmin == null){
+                                    //         return Center(child: Text(""),);
+                                    //       }
+                                    //       else{
+                                    //
+                                    //         // for(int i = 0; i<getAdmin.data.length; i++){
+                                    //         //   items.add(getAdmin.data[i].name);
+                                    //         // }
+                                    //         // print(items);
+                                    //
+                                    //         return  DropdownButton(
+                                    //           items: data.map((getAdmin) {
+                                    //             return new DropdownMenuItem(
+                                    //               child: new Text(getAdmin.data[0].name.toString()),
+                                    //               value:getAdmin.data[0].name.toString(),
+                                    //             );
+                                    //           }).toList(),
+                                    //           onChanged: (String? newVal) {
+                                    //             setState(() {
+                                    //               _mySelection = newVal;
+                                    //             });
+                                    //           },
+                                    //           value: _mySelection,
+                                    //         );
+                                    //       }}
+                                    //     else{
+                                    //       return const Center(
+                                    //         child: Text(""),
+                                    //       );
+                                    //     }
+                                    //   },
+                                    //
+                                    //   future: getAdmins(),
+                                    // ),
+
+
+
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -242,20 +299,64 @@ class _serviceRequestState extends State<serviceRequest> {
                                           child: Container(
                                             height: 35,
                                             width: 200,
-                                            child: TextField(
+                                            child: TextFormField(
+                                              controller: deptController,
                                               cursorColor: Color(0xff031627),
                                               decoration: InputDecoration(
                                                 contentPadding: const EdgeInsets.all(10.0),
                                                 suffixIcon: Container(
                                                   //margin: EdgeInsets.only(left: 10),
-                                                  decoration: BoxDecoration(
+                                                  decoration: const BoxDecoration(
                                                       border: Border(
                                                         left: BorderSide(color: Colors.grey),
                                                       )
                                                   ),
-                                                  child: IconButton(
-                                                      onPressed: (){},
-                                                      icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
+                                                  child: FutureBuilder(
+                                                    builder: (context, snapshot) {
+                                                      if (snapshot != null){
+                                                        GetAdmins getAdmin = snapshot.data as GetAdmins ;
+                                                        print(snapshot.data);
+                                                        if (getAdmin == null){
+                                                          return Center(child: Text(""),);
+                                                        }
+                                                        else{
+
+                                                          for(int i = 0; i<getAdmin.data.length; i++){
+                                                            items.add(getAdmin.data[i].name);
+
+                                                          }
+                                                          print(items);
+                                                         // return Container();
+
+                                                          return PopupMenuButton(
+                                                            icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey,),
+                                                            onSelected: (String value) {
+                                                              deptController.text = value;
+                                                            },
+                                                            itemBuilder: (BuildContext context) {
+                                                             //String name = getAdmin.data[i].name;
+                                                                return getAdmin.data[0].name
+                                                                    .map<PopupMenuItem>(( value) {
+                                                                  return  PopupMenuItem(
+                                                                      child: new Text(value), value: value);
+                                                                });
+
+
+                                                            },
+                                                          );
+                                                        }}
+                                                      else{
+                                                        return const Center(
+                                                          child: Text(""),
+                                                        );
+                                                      }
+                                                    },
+
+                                                    future: getAdmins(),
+                                                  ),
+
+
+
                                                 ),
                                                 enabledBorder: OutlineInputBorder(
                                                   borderSide: BorderSide(color: Colors.grey),
@@ -276,6 +377,49 @@ class _serviceRequestState extends State<serviceRequest> {
                                         ),
                                       ],
                                     ),
+
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text("Department"),
+                                    //     Flexible(
+                                    //       child: Container(
+                                    //         height: 35,
+                                    //         width: 200,
+                                    //         child: TextField(
+                                    //           cursorColor: Color(0xff031627),
+                                    //           decoration: InputDecoration(
+                                    //             contentPadding: const EdgeInsets.all(10.0),
+                                    //             suffixIcon: Container(
+                                    //               //margin: EdgeInsets.only(left: 10),
+                                    //               decoration: BoxDecoration(
+                                    //                   border: Border(
+                                    //                     left: BorderSide(color: Colors.grey),
+                                    //                   )
+                                    //               ),
+                                    //               child: IconButton(
+                                    //                   onPressed: (){},
+                                    //                   icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
+                                    //             ),
+                                    //             enabledBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusedBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusColor: Color(0xff031627),
+                                    //             border: OutlineInputBorder(
+                                    //               borderRadius: BorderRadius.circular(10.0),
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             filled: true,
+                                    //             fillColor: Colors.white,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ],
+                                    // ),
 
 
                                     SizedBox(height: 18,),
@@ -413,4 +557,24 @@ class _serviceRequestState extends State<serviceRequest> {
 
     );
   }
+
+  Future getAdmins() async {
+
+    var headers = {'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${Storage.get_accessToken()}'};
+
+
+    var url = Uri.parse('https://stg.visitormanager.net/v1/get/admin/location?location_Id=0000${Storage.get_locationID()}');
+
+    final response = await http.get(url, headers: headers);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      return GetAdmins.fromJson(jsonDecode(response.body));
+    } else {
+      print("Failed to fetch data");
+    }
+
+  }
 }
+

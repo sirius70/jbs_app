@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jbs_app/employee_screens/profile_page_3.dart';
 import 'package:jbs_app/employee_screens/scan_qr.dart';
 import 'package:jbs_app/employee_screens/widgets/calendar_guest.dart';
 
+import '../api/access.dart';
+import '../storage.dart';
 import 'employee_welcome_1.dart';
 import 'my_attendance.dart';
 
@@ -15,6 +18,29 @@ class guestRegister extends StatefulWidget {
 }
 
 class _guestRegisterState extends State<guestRegister> {
+  var items = ['Phaico',
+    'Accenture', 'Amazon',
+    'Phai-one'];
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController companyName = TextEditingController();
+  String? _selectedTime;
+
+  Future<void> _show() async {
+    final TimeOfDay? result =
+    await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    if (result != null) {
+      setState(() {
+        _selectedTime = result.format(context);
+      });
+    }
+  }
+
+  var nda;
+  bool valuefirst = false;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -228,7 +254,8 @@ class _guestRegisterState extends State<guestRegister> {
                                         child: Container(
                                           height: 35,
                                           width: 200,
-                                          child: TextField(
+                                          child: TextFormField(
+                                            controller: nameController,
                                             cursorColor: Color(0xff031627),
                                             decoration: InputDecoration(
                                               contentPadding: const EdgeInsets.all(10.0),
@@ -261,7 +288,8 @@ class _guestRegisterState extends State<guestRegister> {
                                         child: Container(
                                           height: 35,
                                           width: 200,
-                                          child: TextField(
+                                          child: TextFormField(
+                                            controller: companyName,
                                             cursorColor: Color(0xff031627),
                                             decoration: InputDecoration(
                                               contentPadding: const EdgeInsets.all(10.0),
@@ -272,9 +300,19 @@ class _guestRegisterState extends State<guestRegister> {
                                                       left: BorderSide(color: Colors.grey),
                                                     )
                                                 ),
-                                                child: IconButton(
-                                                  onPressed: (){},
-                                                    icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
+                                                child: PopupMenuButton<String>(
+                                                  icon: const Icon(Icons.arrow_drop_down),
+                                                  onSelected: (String value) {
+                                                    companyName.text = value;
+                                                  },
+                                                  itemBuilder: (BuildContext context) {
+                                                    return items
+                                                        .map<PopupMenuItem<String>>((String value) {
+                                                      return new PopupMenuItem(
+                                                          child: new Text(value), value: value);
+                                                    }).toList();
+                                                  },
+                                                ),
                                               ),
                                               enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(color: Colors.grey),
@@ -306,7 +344,8 @@ class _guestRegisterState extends State<guestRegister> {
                                         child: Container(
                                           height: 35,
                                           width: 200,
-                                          child: TextField(
+                                          child: TextFormField(
+                                            controller: phoneController,
                                             cursorColor: Color(0xff031627),
                                             decoration: InputDecoration(
                                               contentPadding: const EdgeInsets.all(10.0),
@@ -351,7 +390,8 @@ class _guestRegisterState extends State<guestRegister> {
                                         child: Container(
                                           height: 35,
                                           width: 200,
-                                          child: TextField(
+                                          child: TextFormField(
+                                            controller: emailController,
                                             cursorColor: Color(0xff031627),
                                             decoration: InputDecoration(
                                               contentPadding: const EdgeInsets.all(10.0),
@@ -371,6 +411,27 @@ class _guestRegisterState extends State<guestRegister> {
                                             ),
                                           ),
                                         ),
+                                      ),
+                                    ],
+                                  ),
+
+
+
+
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Nda Sign?"),
+                                      Checkbox(
+                                        checkColor: Colors.greenAccent,
+                                        activeColor: Colors.red,
+                                        value: this.valuefirst,
+                                        onChanged: (bool? value) {
+                                          setState(() {
+                                            this.valuefirst = value!;
+                                            print(valuefirst);
+                                          });
+                                        },
                                       ),
                                     ],
                                   ),
@@ -426,58 +487,73 @@ class _guestRegisterState extends State<guestRegister> {
                                   fontSize: 16
                                 ),),
 
+
                                 Row(
                                   children: [
-                                    Column(
-                                      children: const [
-                                        Icon(Icons.keyboard_arrow_up, color: Color(0xff2980B9),),
-                                        Text("11", style: TextStyle(
-                                            fontSize: 16
-                                        ),),
-                                        Icon(Icons.keyboard_arrow_down, color: Color(0xff2980B9),)
-                                      ],
-                                    ),
-
-                                    Text(":"),
-                                    Column(
-                                      children:const [
-                                        Icon(Icons.keyboard_arrow_up, color: Color(0xff2980B9)),
-                                        Text("38", style: TextStyle(
-                                            fontSize: 16
-                                        ),),
-                                        Icon(Icons.keyboard_arrow_down, color: Color(0xff2980B9))
-                                      ],
+                                    IconButton(
+                                        onPressed: _show, icon: const Icon(Icons.punch_clock)),
+                                    Text(
+                                      _selectedTime != null ? _selectedTime! : 'No time selected!',
+                                      style: const TextStyle(fontSize: 20),
                                     ),
                                   ],
                                 ),
 
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                          color: Color(0xff9FE6FF),
-                                          borderRadius: BorderRadius.circular(10)
-                                      ),
-                                      child: Text("AM", style: TextStyle(
-                                          fontSize:16
-                                      ),),
-                                    ),
 
-                                    SizedBox(width: 10,),
+                                // Row(
+                                //   children: [
+                                //     Column(
+                                //       children: const [
+                                //         Icon(Icons.keyboard_arrow_up, color: Color(0xff2980B9),),
+                                //         Text("11", style: TextStyle(
+                                //             fontSize: 16
+                                //         ),),
+                                //         Icon(Icons.keyboard_arrow_down, color: Color(0xff2980B9),)
+                                //       ],
+                                //     ),
+                                //
+                                //     Text(":"),
+                                //     Column(
+                                //       children:const [
+                                //         Icon(Icons.keyboard_arrow_up, color: Color(0xff2980B9)),
+                                //         Text("38", style: TextStyle(
+                                //             fontSize: 16
+                                //         ),),
+                                //         Icon(Icons.keyboard_arrow_down, color: Color(0xff2980B9))
+                                //       ],
+                                //     ),
+                                //   ],
+                                // ),
 
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(10)
-                                      ),
-                                      child: Text("PM", style: TextStyle(
-                                          fontSize:16
-                                      ),),
-                                    )
-                                  ],
-                                )
+
+
+                                // Row(
+                                //   children: [
+                                //     Container(
+                                //       padding: EdgeInsets.all(10),
+                                //       decoration: BoxDecoration(
+                                //           color: Color(0xff9FE6FF),
+                                //           borderRadius: BorderRadius.circular(10)
+                                //       ),
+                                //       child: Text("AM", style: TextStyle(
+                                //           fontSize:16
+                                //       ),),
+                                //     ),
+                                //
+                                //     SizedBox(width: 10,),
+                                //
+                                //     Container(
+                                //       padding: EdgeInsets.all(10),
+                                //       decoration: BoxDecoration(
+                                //           color: Colors.white,
+                                //           borderRadius: BorderRadius.circular(10)
+                                //       ),
+                                //       child: Text("PM", style: TextStyle(
+                                //           fontSize:16
+                                //       ),),
+                                //     )
+                                //   ],
+                                // )
 
 
 
@@ -550,8 +626,60 @@ class _guestRegisterState extends State<guestRegister> {
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
                     onPressed: (){
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context)=>scanQr()));
+                      if (valuefirst.toString() == "true"){
+                        nda = "1";
+                      }
+                      else if (valuefirst.toString() == "false"){
+                        nda = "0";
+                      }
+
+                      if(nameController.text.isNotEmpty &&
+                      phoneController.text.isNotEmpty && emailController.text.isNotEmpty &&
+                      companyName.text.isNotEmpty &&
+                          Storage.get_date().toString().isNotEmpty && _selectedTime!.isNotEmpty){
+                        access().guestRegister(nameController.text,
+                            ("+91"+phoneController.text), emailController.text,
+                            companyName.text, nda, Storage.get_date().toString(), _selectedTime).then((value) {
+                              if(value["success"]){
+                                Fluttertoast.showToast(
+                                    msg: "${"Register done"}",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.grey,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                                nameController.clear();
+                                phoneController.clear();
+                                emailController.clear();
+                                companyName.clear();
+                                _selectedTime = '';
+                                valuefirst = false;
+                              } else{
+                                Fluttertoast.showToast(
+                                    msg: "${"Error registering"}",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.grey,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              }
+                        });
+                      } else{
+                        Fluttertoast.showToast(
+                            msg: "${"Fields cannot be empty"}",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.grey,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      }
+
+
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context)=>scanQr()));
                     },
                     child: Text("Confirm"),
                     style: ButtonStyle(

@@ -62,8 +62,7 @@ class _Home2State extends State<Home2> {
                 ),
                 TextButton(
                   onPressed: () {
-                    print("stats");
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>stats()));
+                  //  Navigator.push(context, MaterialPageRoute(builder: (context)=>stats()));
                   },
                   child: Column(
                     children: [

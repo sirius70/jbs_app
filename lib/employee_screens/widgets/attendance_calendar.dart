@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'dart:math';
-
+import 'package:http/http.dart'  as http;
 import 'package:flutter/material.dart';
 
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
@@ -7,6 +8,11 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:intl/intl.dart';
+import 'package:jbs_app/api/access.dart';
+import 'package:jiffy/jiffy.dart';
+
+import '../../models/emp_abs_pres_model.dart';
+import '../../storage.dart';
 
 class CalendarPage2 extends StatefulWidget {
   @override
@@ -14,8 +20,8 @@ class CalendarPage2 extends StatefulWidget {
 }
 
 
-List<DateTime> presentDates = [
-  DateTime(2022, 6, 3),
+List presentDates = [
+  DateTime(2022,6,3),
   DateTime(2022, 6, 4),
   DateTime(2022, 6, 6),
   DateTime(2022, 6, 7),
@@ -28,13 +34,13 @@ List<DateTime> presentDates = [
   DateTime(2022, 6, 17),
   DateTime(2022, 6, 18),
 ];
-List<DateTime> absentDates = [
+List absentDates = [
   DateTime(2022, 6, 2),
-  DateTime(2022, 6, 13),
-  DateTime(2022, 6, 14),
+  DateTime(2022, 6, 6),
+  DateTime(2022, 6, 7),
 ];
 
-List<DateTime> sundays = [
+List sundays = [
   DateTime(2022, 6, 5),
   DateTime(2022, 6, 12),
   DateTime(2022, 6, 19),
@@ -77,68 +83,81 @@ class _CalendarPage2State extends State<CalendarPage2> {
 
   CalendarCarousel? _calendarCarouselNoHeader;
 
-  var len0 = presentDates.length;
-  var len1 = absentDates.length;
-  var len2 = sundays.length;
   double? cHeight;
+
 
   @override
   Widget build(BuildContext context) {
+    print(DateTime.now().month);
+    access().empAbsPres().then((value) async {
+      if (value["success"]){
+        EmpAbsPresentRes absPres = await EmpAbsPresentRes.fromJson(value);
+        final presLen = absPres.data.presentDates.length;
+        print(presLen);
+        for (int i = 0; i < presLen; i++) {
+          final year = DateTime.parse(absPres.data.presentDates[i].DateTime).year;
+          final month = DateTime.parse(absPres.data.presentDates[i].DateTime).month;
+          final day = DateTime.parse(absPres.data.presentDates[i].DateTime).day;
+
+
+          _markedDateMap.add(
+            DateTime(year, month, day),
+            Event(
+              date:  DateTime(year, month, day),
+              title: 'Event 5',
+              icon: _presentIcon(
+                day.toString(),
+              ),
+            ),
+          );
+        }
+      }
+    });
+
+    access().empAbsPres().then((value) async {
+      if (value["success"]){
+        EmpAbsPresentRes absPres = await EmpAbsPresentRes.fromJson(value);
+        final absLen = absPres.data.absentDates.length;
+        print(absLen);
+        for (int i = 0; i < absLen; i++) {
+          final year = DateTime.parse(absPres.data.absentDates[i].DateTime).year;
+          final month = DateTime.parse(absPres.data.absentDates[i].DateTime).month;
+          final day = DateTime.parse(absPres.data.absentDates[i].DateTime).day;
+
+          _markedDateMap.add(
+            DateTime(year, month, day),
+            Event(
+              date:  DateTime(year, month, day),
+              title: 'Event 5',
+              icon: _absentIcon(
+                day.toString(),
+              ),
+            ),
+          );
+        }
+      }
+    });
+
     cHeight = MediaQuery.of(context).size.height;
-    for (int i = 0; i < len0; i++) {
-      _markedDateMap.add(
-        presentDates[i],
-        new Event(
-          date: presentDates[i],
-          title: 'Event 5',
-          icon: _presentIcon(
-            presentDates[i].day.toString(),
-          ),
-        ),
-      );
-    }
-
-    for (int i = 0; i < len1; i++) {
-      _markedDateMap.add(
-        absentDates[i],
-        new Event(
-          date: absentDates[i],
-          title: 'Event 5',
-          icon: _absentIcon(
-            absentDates[i].day.toString(),
-          ),
-        ),
-      );
-    }
-
-    for (int i = 0; i < len2; i++) {
-      _markedDateMap.add(
-        sundays[i],
-        new Event(
-          date: sundays[i],
-          title: 'Event 5',
-          icon: _sundaysIcon(
-            sundays[i].day.toString(),
-          ),
-        ),
-      );
-    }
 
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      //dayButtonColor: Color(0xff333333),
-     // headerText: DateFormat('MMMM yyyy').format(DateTime.now()).toString(),
-      iconColor: Color(0xff1AA7EC),
-        headerTextStyle: TextStyle(color: Color(0xff005993),
+      onDayPressed: (date, events){
+        setState(() => _currentDate2 = date);
+        events.forEach((event) => print(event.title));
+      },
+      iconColor: const Color(0xff1AA7EC),
+        headerTextStyle: const TextStyle(color: Color(0xff005993),
           fontSize: 20, fontWeight: FontWeight.bold ),
-      daysTextStyle: TextStyle(color: Color(0xff666666), fontSize: 15),
-      weekdayTextStyle: TextStyle( fontSize: 16,
+      daysTextStyle: const TextStyle(color: Color(0xff666666), fontSize: 15),
+      weekdayTextStyle: const TextStyle( fontSize: 16,
           color: Color(0xff333333)),
       height: cHeight! * 0.4,
-      weekendTextStyle: TextStyle(
+      weekendTextStyle: const TextStyle(
         color: Colors.black,
       ),
-      todayButtonColor: Color(0xff59B2EC),
+      todayButtonColor: const Color(0xff59B2EC),
       markedDatesMap: _markedDateMap,
+      selectedDayButtonColor: Colors.yellow,
       markedDateShowIcon: true,
       markedDateIconMaxShown: 1,
       markedDateMoreShowTotal:
@@ -148,23 +167,213 @@ class _CalendarPage2State extends State<CalendarPage2> {
       },
     );
 
-    return  new Container(
-        height: MediaQuery.of(context).size.width,
-        width: MediaQuery.of(context).size.width,
-        child: _calendarCarouselNoHeader!,
+    return  Column(
+      children: [
+        Container(
+            height: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width,
+            child: _calendarCarouselNoHeader!,
+        ),
+        const SizedBox(height: 10,),
+        Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children:const [
+                        Text("09/16*",  style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff005993)
+                        ),),
+                        Text("Present",),],
+                    ),
 
+                    Container(
+                      width: MediaQuery.of(context).size.width*0.6,
+                      padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        border: Border.all(color: Colors.grey.shade200),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                height:8,
+                                width: 8,
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xff0EAF00)
+                                ),
+                              ),
+                            const  Text(" Present",
+                                style: TextStyle(
+                                    color: Color(0xff005993)
+                                ),)
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height:8,
+                                width: 8,
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xffFF3821)
+                                ),
+                              ),
+                              const Text(" Absent",
+                                style: TextStyle(
+                                    color: Color(0xff005993)
+                                ),)],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height:8,
+                                width: 8,
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xff59B2EC)
+                                ),
+                              ),
+                             const Text(" Today",
+                                style: TextStyle(
+                                    color: Color(0xff005993)
+                                ),)],
+                          )
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+                SizedBox(height: 20,),
+                Divider(),
+                SizedBox(height: 20,),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text("19 October, Today",
+                              style: TextStyle(
+                                  color: Color(0xff288EE3),
+                                  fontSize: 22
+                              ),),
+                            Text("ABSENT",
+                              style: TextStyle(color: Color(0xffFF2E00),
+                                  fontSize: 22
+                              ),)
+                          ],),
+                        Container(
+                          padding: EdgeInsets.only(top: 8, bottom: 8, left: 30, right: 30),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: Colors.white,
+                              border: Border.all(color: Color(0xff288EE3) )
+                          ),
+                          child: const Text("Regularize",  style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff005993)
+                          ),),
+                        )
+                      ],
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text("Check-in at 8:59 AM via QR",
+                            style: TextStyle(fontSize: 15
+                            ),),
+                          SizedBox(height: 10,),
+                          Text("Exit detected at 12:15PM",
+                            style: TextStyle(
+                                fontSize: 15
+                            ),),
+                          SizedBox(height: 10,),
+                          Text("Entry book detected at 12:45PM",
+                            style: TextStyle(
+                                fontSize: 15),),
+                          SizedBox(height: 10,),
+                          Text("Check-out at 6:59 AM via ID",
+                            style: TextStyle(
+                                fontSize: 15),),
+                          SizedBox(height: 10,),
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+
+                // ..._.map((event) => Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: Container(
+                //     height: MediaQuery.of(context).size.height/20,
+                //     width: MediaQuery.of(context).size.width/2,
+                //     decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.circular(30),
+                //         color: Colors.white,
+                //         border: Border.all(color: Colors.grey)
+                //     ),
+                //     child: Center(
+                //         child: Text(event,
+                //           style: TextStyle(color: Colors.blue,
+                //               fontWeight: FontWeight.bold,fontSize: 16),)
+                //     ),
+                //   ),
+                // )),
+              ],)
+        )]
     );
   }
 
   Widget markerRepresent(Color color, String data) {
-    return new ListTile(
-      leading: new CircleAvatar(
+    return  ListTile(
+      leading:  CircleAvatar(
         backgroundColor: color,
         radius: cHeight! * 0.022,
       ),
-      title: new Text(
+      title:  Text(
         data,
       ),
     );
   }
+}
+
+
+Future empAbsPresent() async {
+
+  var headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ${Storage.get_accessToken()}',
+  };
+
+  var url = Uri.parse('https://stg.visitormanager.net/v1/employee/attendance/date');
+  var response = await http.get(url, headers: headers);
+
+  if (response.statusCode == 200) {
+    return EmpAbsPresentRes.fromJson(jsonDecode(response.body));
+
+  } else {
+    throw Exception('Failed to load album');
+  }
+
 }

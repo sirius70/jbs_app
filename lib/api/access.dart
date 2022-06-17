@@ -1,3 +1,5 @@
+import 'package:jbs_app/employee_screens/guest_register_2.dart';
+
 import '../storage.dart';
 import 'NetworkHelper.dart';
 
@@ -115,8 +117,8 @@ class access {
     return data;
   }
 
-  Future<dynamic> empAttendanceLeave(String date, reason) async {
-    NetworkHelper helper = NetworkHelper(base_url + "employee/attedance/summary");
+  Future<dynamic> empAttendanceLeave(String date, String reason) async {
+    NetworkHelper helper = NetworkHelper(base_url + "employee/attendance/leave");
     var data = await helper.empAttendanceLeave(date, reason);
     return data;
   }
@@ -124,6 +126,25 @@ class access {
   Future<dynamic> managerApproveLeave(bool approvalStatus, reqId) async {
     NetworkHelper helper = NetworkHelper(base_url + "manager/request/approval/leave");
     var data = await helper.managerApproveLeave(approvalStatus, reqId);
+    return data;
+  }
+
+
+  Future<dynamic> empAttendanceRegularization(String date, String reason) async {
+    NetworkHelper helper = NetworkHelper(base_url + "employee/attedance/regularisation");
+    var data = await helper.empAttendanceRegularization(date, reason);
+    return data;
+  }
+
+  Future<dynamic> empAbsPres() async {
+    NetworkHelper helper = NetworkHelper(base_url + "employee/attendance/date");
+    var data = await helper.empAbsPres();
+    return data;
+  }
+
+  Future<dynamic> guestRegister(String name , String phNo, email, companyName, ndaSign,date, time) async {
+    NetworkHelper helper = NetworkHelper(base_url + "visit/preRegister");
+    var data = await helper.guestRegister(name ,  phNo, email, companyName, ndaSign, date, time);
     return data;
   }
 

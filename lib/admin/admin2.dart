@@ -167,6 +167,7 @@ class Admin2 extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,6 +178,7 @@ class Admin2 extends StatelessWidget {
                       style: TextStyle(color: Colors.lightBlue, fontSize: 15),
                     ),
                     Row(
+
                       children: [
                         Text(
                           "$name",
