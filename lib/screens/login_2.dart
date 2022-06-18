@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jbs_app/admin/admin2.dart';
 import 'package:jbs_app/manager/more.dart';
 import 'package:jbs_app/screens/otp_verify_3.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -350,6 +351,10 @@ class _loginScreenState extends State<loginScreen> {
 
                               Storage.set_location(location.toString());
 
+                              Storage.set_isAdmin(isAdmin.toString());
+
+                              Storage.set_isManager(isManager.toString());
+
                               access().profile().then((value) async{
                                 if(value["success"]) {
                                   ProfileApi profile = await ProfileApi.fromJson(value);
@@ -437,7 +442,9 @@ class _loginScreenState extends State<loginScreen> {
                                                 Navigator.push(context,
                                                     MaterialPageRoute(builder:
                                                         (context) =>
-                                                            More()
+                                                            Home2(empId: Storage.get_adminEmpID().toString(),
+                                                              location: Storage.get_location().toString(),
+                                                              name: Storage.get_name().toString(),)
                                                     ));
 
                                               },
@@ -486,7 +493,9 @@ class _loginScreenState extends State<loginScreen> {
                                                 });
                                                 Navigator.push(context,
                                                     MaterialPageRoute(builder:
-                                                        (context) => adminProfile()));
+                                                        (context) => Admin2(location: Storage.get_location().toString(),
+                                                  empID: Storage.get_adminEmpID().toString(),
+                                                  name: Storage.get_name().toString(),)));
                                               },
                                               child: Text("Admin", style: TextStyle(
                                                   color: Color(0xff005993), letterSpacing: 1,

@@ -157,7 +157,7 @@ class _Admin2State extends State<Admin2> {
               TextButton(
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Appdrawer();
+                    return adminProfile();
                   }));
                 },
                 child: Column(
@@ -205,6 +205,9 @@ class _Admin2State extends State<Admin2> {
                           ),
                           IconButton(
                               onPressed: () {
+                                print("admin: ${Storage.get_isAdmin()}");
+                                print("manager: ${Storage.get_isManager()}");
+
                                 showMaterialModalBottomSheet(
                                   context: context,
                                   builder: (context) => SingleChildScrollView(
@@ -223,44 +226,54 @@ class _Admin2State extends State<Admin2> {
                                             SizedBox(
                                               height: 25,
                                             ),
-                                            GestureDetector(
-                                              onTap: (){
-                                                Navigator.pushReplacement(
-                                                    (context as Element),
-                                                    MaterialPageRoute(
-                                                        builder: (BuildContext context) => Home2(empId: Storage.get_adminEmpID().toString(),
-                                                          location: Storage.get_location().toString(),
-                                                          name: Storage.get_name().toString(),)));
-                                              },
-                                              child: ListTile(
-                                                leading: Image(
-                                                    image: AssetImage(
-                                                        'lib/images/face.png')),
-                                                title: Text('Manager',
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.bold,
-                                                        color: Colors.blue.shade900)),
-                                              ),),
+
+                                            if (Storage.get_isManager() == "1")...[
+                                              GestureDetector(
+                                                onTap: (){
+                                                  Navigator.pushReplacement(
+                                                      (context as Element),
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext context) => Home2(empId: Storage.get_adminEmpID().toString(),
+                                                            location: Storage.get_location().toString(),
+                                                            name: Storage.get_name().toString(),)));
+                                                },
+                                                child: ListTile(
+                                                  leading: Image(
+                                                      image: AssetImage(
+                                                          'lib/images/face.png')),
+                                                  title: Text('Manager',
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.normal,
+                                                          color: Colors.blue.shade900)),
+                                                ),)
+                                            ],
                                             SizedBox(
                                               height: 25,
                                             ),
-                                            GestureDetector(
-                                              onTap: (){
-                                                Navigator.pushReplacement(
-                                                    (context as Element),
-                                                    MaterialPageRoute(
-                                                        builder: (BuildContext context) => Admin1()));
-                                              },
-                                              child: ListTile(
-                                                leading: Image(
-                                                    image: AssetImage(
-                                                        'lib/images/face.png')),
-                                                title: Text('Admin',
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.normal,
-                                                        color: Colors.blue.shade900)),
+
+                                            if(Storage.get_isAdmin()=="1")...[
+                                              GestureDetector(
+                                                onTap: (){
+                                                  Navigator.pushReplacement(
+                                                      (context as Element),
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext context) => Admin2(
+                                                            location: Storage.get_location().toString(),
+                                                            empID: Storage.get_adminEmpID().toString(),
+                                                            name: Storage.get_name().toString(),)));
+                                                },
+                                                child: ListTile(
+                                                  leading: Image(
+                                                      image: AssetImage(
+                                                          'lib/images/face.png')),
+                                                  title: Text('Admin',
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Colors.blue.shade900)),
+                                                ),
                                               ),
-                                            ),
+                                            ],
+
                                             SizedBox(
                                               height: 25,
                                             ),
@@ -299,6 +312,7 @@ class _Admin2State extends State<Admin2> {
                     children: [
                       GestureDetector(
                         onTap: (){
+
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>
                               adminProfile()));
                           },

@@ -24,6 +24,7 @@ class _myAttendanceState extends State<myAttendance> {
   void initState() {
     dateinput.text = ""; //set the initial value of text field
     super.initState();
+
   }
 
 
@@ -126,7 +127,6 @@ class _myAttendanceState extends State<myAttendance> {
                       Column(
                         children: [
                           IconButton(
-                            //padding: EdgeInsets.only(left:10),
                               onPressed: (){
                                 Navigator
                                     .of(context)

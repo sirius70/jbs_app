@@ -290,7 +290,7 @@ class _adminProfileState extends State<adminProfile> {
                     SizedBox(height: 10),
                     Center(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.mail, color: Color(0xff009AFF),),
                           Text(" ${profilee.data.email}"),

@@ -85,6 +85,11 @@ class _CalendarPage2State extends State<CalendarPage2> {
 
   double? cHeight;
 
+  @override
+  void initState() { //set the initial value of text field
+    super.initState();
+    access().empAbsPres();
+  }
 
   @override
   Widget build(BuildContext context) {

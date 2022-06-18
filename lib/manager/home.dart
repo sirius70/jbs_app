@@ -7,6 +7,7 @@ import 'package:jbs_app/employee_screens/widgets/egg.dart';
 import 'package:jbs_app/manager/reqManagerRegularization.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
+import '../admin/admin2.dart';
 import '../api/access.dart';
 import '../storage.dart';
 import 'approvereq.dart';
@@ -155,93 +156,104 @@ class _Home2State extends State<Home2> {
                           ),
                           IconButton(
                               onPressed: () {
+                                print("admin: ${Storage.get_isAdmin()}");
+                                print("manager: ${Storage.get_isManager()}");
+
                                 showMaterialModalBottomSheet(
                                   context: context,
                                   builder: (context) => SingleChildScrollView(
                                     controller:
-                                        ModalScrollController.of(context),
+                                    ModalScrollController.of(context),
                                     child: Container(
                                         child: Column(
-                                      //  mainAxisAlignment:
-                                      //    MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Divider(
-                                          thickness: 3,
-                                          color: Colors.blue.shade900,
-                                          height: 1,
-                                          endIndent: 120,
-                                          indent: 120,
-                                        ),
-                                        SizedBox(
-                                          height: 25,
-                                        ),
-                                        GestureDetector(
-                                          onTap: (){
-                                            Navigator.pushReplacement(
-                                                (context as Element),
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext context) => Home2(empId: Storage.get_adminEmpID().toString(),
-                                                      location: Storage.get_location().toString(),
-                                                    name: Storage.get_name().toString(),)));
-                                          },
-                                          child: ListTile(
-                                            leading: Image(
-                                                image: AssetImage(
-                                                    'lib/images/face.png')),
-                                            title: Text('Manager',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.blue.shade900)),
-                                          ),),
-                                        SizedBox(
-                                          height: 25,
-                                        ),
-                                        GestureDetector(
-                                          onTap: (){
-                                            Navigator.pushReplacement(
-                                                (context as Element),
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext context) => Admin1()));
-                                          },
-                                          child: ListTile(
-                                            leading: Image(
-                                                image: AssetImage(
-                                                    'lib/images/face.png')),
-                                            title: Text('Admin',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.normal,
-                                                    color: Colors.blue.shade900)),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 25,
-                                        ),
-                                        GestureDetector(
-                                          onTap: (){
-                                            Navigator.pushReplacement(
-                                                (context as Element),
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext context) => employeeWelcome()));
-                                          },
-                                            child: ListTile(
-                                          leading: Image(
-                                              image: AssetImage(
-                                                  'lib/images/face.png')),
-                                          title: Text('Employee',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Colors.blue.shade900)),
+                                          children: [
+                                            Divider(
+                                              thickness: 3,
+                                              color: Colors.blue.shade900,
+                                              height: 1,
+                                              endIndent: 120,
+                                              indent: 120,
+                                            ),
+                                            SizedBox(
+                                              height: 25,
+                                            ),
+
+                                            if (Storage.get_isManager() == "1")...[
+                                              GestureDetector(
+                                                onTap: (){
+                                                  Navigator.pushReplacement(
+                                                      (context as Element),
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext context) => Home2(empId: Storage.get_adminEmpID().toString(),
+                                                            location: Storage.get_location().toString(),
+                                                            name: Storage.get_name().toString(),)));
+                                                },
+                                                child: ListTile(
+                                                  leading: Image(
+                                                      image: AssetImage(
+                                                          'lib/images/face.png')),
+                                                  title: Text('Manager',
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Colors.blue.shade900)),
+                                                ),)
+                                            ],
+                                            SizedBox(
+                                              height: 25,
+                                            ),
+
+                                            if(Storage.get_isAdmin()=="1")...[
+                                              GestureDetector(
+                                                onTap: (){
+                                                  Navigator.pushReplacement(
+                                                      (context as Element),
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext context) => Admin2(
+                                                            location: Storage.get_location().toString(),
+                                                            empID: Storage.get_adminEmpID().toString(),
+                                                            name: Storage.get_name().toString(),)));
+                                                },
+                                                child: ListTile(
+                                                  leading: Image(
+                                                      image: AssetImage(
+                                                          'lib/images/face.png')),
+                                                  title: Text('Admin',
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.normal,
+                                                          color: Colors.blue.shade900)),
+                                                ),
+                                              ),
+                                            ],
+
+                                            SizedBox(
+                                              height: 25,
+                                            ),
+                                            GestureDetector(
+                                                onTap: (){
+                                                  Navigator.pushReplacement(
+                                                      (context as Element),
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext context) => employeeWelcome()));
+                                                },
+                                                child: ListTile(
+                                                  leading: Image(
+                                                      image: AssetImage(
+                                                          'lib/images/face.png')),
+                                                  title: Text('Employee',
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.normal,
+                                                          color: Colors.blue.shade900)),
+                                                )),
+                                            SizedBox(
+                                              height: 25,
+                                            )
+                                          ],
                                         )),
-                                        SizedBox(
-                                          height: 25,
-                                        )
-                                      ],
-                                    )),
                                   ),
                                 );
                               },
                               icon: Icon(Icons.arrow_drop_down,
-                                  color: Colors.lightBlue))
+                                  color: Colors.lightBlue)),
                         ],
                       ),
                     ],

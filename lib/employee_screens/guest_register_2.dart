@@ -646,7 +646,7 @@ class _guestRegisterState extends State<guestRegister> {
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.BOTTOM,
                                     timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.grey,
+                                    backgroundColor: Colors.green.shade300,
                                     textColor: Colors.white,
                                     fontSize: 16.0);
                                 nameController.clear();
@@ -661,9 +661,16 @@ class _guestRegisterState extends State<guestRegister> {
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.BOTTOM,
                                     timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.grey,
+                                    backgroundColor: Colors.red.shade300,
                                     textColor: Colors.white,
                                     fontSize: 16.0);
+
+                                nameController.clear();
+                                phoneController.clear();
+                                emailController.clear();
+                                companyName.clear();
+                                _selectedTime = '';
+                                valuefirst = false;
                               }
                         });
                       } else{
