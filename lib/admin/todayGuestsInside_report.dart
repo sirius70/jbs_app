@@ -90,10 +90,10 @@ class _todayGuestsReportState extends State<todayGuestsReport> {
                                   backgroundImage: AssetImage("lib/images/face3.png")
                                // backgroundImage: NetworkImage(guestReport.visitorReportsToday![index].vISITORPHOTO.toString()),
                               ),
-                              Text(guestReport.visitorReportsToday[index].VISITORNAME.toString()),
-                              Text(guestReport.visitorReportsToday[index].VISITORCOMPANYNAME.toString()),
-                              Text(guestReport.visitorReportsToday[index].VISITORPHONENUMBER.toString()),
-                              Text(guestReport.visitorReportsToday[index].VISITOREmail.toString()),
+                              Text(guestReport.visitorReportsToday[index].visitorName.toString()),
+                              Text(guestReport.visitorReportsToday[index].visitorCompanyName.toString()),
+                              Text(guestReport.visitorReportsToday[index].visitorPhoneNumber.toString()),
+                              Text(guestReport.visitorReportsToday[index].visitorEmail.toString()),
 
                             ],
                           ),
@@ -121,7 +121,7 @@ class _todayGuestsReportState extends State<todayGuestsReport> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("entry time: ${guestReport.visitorReportsToday[index].VISITORENTRYTIME}"),
+                          Text("entry time: ${guestReport.visitorReportsToday[index].visitorEntryTime}"),
                           Text("checkout time: ${guestReport.visitorReportsToday[index].checkOutTime}")
                         ],
                       ),
@@ -134,10 +134,10 @@ class _todayGuestsReportState extends State<todayGuestsReport> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("emp name: ${guestReport.visitorReportsToday[index].EMPLOYEENAME}"),
-                              Text("emp email: ${guestReport.visitorReportsToday[index].EMPLOYEEEMAIL}"),
-                              Text("emp phNo: ${guestReport.visitorReportsToday[index].EMPLOYEEPHONENUMBER}"),
-                              Text("nda sign: ${guestReport.visitorReportsToday[index].NDASign==0? "not signed":"signed"}")
+                              Text("emp name: ${guestReport.visitorReportsToday[index].employeeName}"),
+                              Text("emp email: ${guestReport.visitorReportsToday[index].employeeEmail}"),
+                              Text("emp phNo: ${guestReport.visitorReportsToday[index].employeePhoneNumber}"),
+                              Text("nda sign: ${guestReport.visitorReportsToday[index].visitorNdaSign==0? "not signed":"signed"}")
                             ],
                           )
                         ],

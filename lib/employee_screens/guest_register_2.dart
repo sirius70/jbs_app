@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:jbs_app/employee_screens/profile_page_3.dart';
 import 'package:jbs_app/employee_screens/scan_qr.dart';
 import 'package:jbs_app/employee_screens/widgets/calendar_guest.dart';
@@ -26,7 +27,24 @@ class _guestRegisterState extends State<guestRegister> {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController companyName = TextEditingController();
+  TextEditingController _time1 = TextEditingController();
+  TextEditingController _time2 = TextEditingController();
+
+  bool isChecked = false;
   String? _selectedTime;
+  int? _selectedValueIndex;
+
+  List<String> buttonText = ["AM", "PM"];
+
+
+  @override
+  void initState() {//set the initial value of text field
+    super.initState();
+    _time1.text = "6";
+    _time2.text = "30";
+    _selectedValueIndex = 0;
+  }
+
 
   Future<void> _show() async {
     final TimeOfDay? result =
@@ -48,7 +66,7 @@ class _guestRegisterState extends State<guestRegister> {
         bottomNavigationBar: Container(
             color: Colors.white,
             child: BottomAppBar(
-              shape: CircularNotchedRectangle(),
+              shape: const CircularNotchedRectangle(),
               color: Colors.transparent,
               elevation: 0,
               child: SizedBox(
@@ -68,12 +86,12 @@ class _guestRegisterState extends State<guestRegister> {
                                 Navigator
                                     .of(context)
                                     .push(MaterialPageRoute(builder:
-                                    (BuildContext context) => employeeWelcome()));
+                                    (BuildContext context) => const employeeWelcome()));
                               },
-                              icon: Icon(CupertinoIcons.home, size: 30,
+                              icon: const Icon(CupertinoIcons.home, size: 30,
                                   color: Color(0xff717171))),
 
-                          Text("Home",
+                          const Text("Home",
                             style: TextStyle(
                                 fontSize: 12,
                                 color: Color(0xff717171)
@@ -85,16 +103,16 @@ class _guestRegisterState extends State<guestRegister> {
                           IconButton(
                             //padding: EdgeInsets.only(left:10),
                               onPressed: (){
-                                Icon(Icons.ac_unit, color :Colors.teal);
+                                const Icon(Icons.ac_unit, color :Colors.teal);
                                 Navigator
                                     .of(context)
                                     .pushReplacement(MaterialPageRoute(builder:
-                                    (BuildContext context) => guestRegister()));
+                                    (BuildContext context) => const guestRegister()));
                               },
-                              icon: Icon(CupertinoIcons.person_crop_circle_fill_badge_plus,
+                              icon: const Icon(CupertinoIcons.person_crop_circle_fill_badge_plus,
                                   size: 30,
                                   color: Color(0xff0093CB))),
-                          Text("Add guest",
+                         const Text("Add guest",
                             style: TextStyle(
                                 fontSize: 12,
                                 color: Color(0xff0093CB)
@@ -104,7 +122,7 @@ class _guestRegisterState extends State<guestRegister> {
                       Container(
                         height: 60,
                         width: 60,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Color(0xffE8F9FF)
                         ),
@@ -114,9 +132,9 @@ class _guestRegisterState extends State<guestRegister> {
                               Navigator
                                   .of(context)
                                   .push(MaterialPageRoute(builder:
-                                  (BuildContext context) => scanQr()));
+                                  (BuildContext context) => const scanQr()));
                             },
-                            icon: Icon(CupertinoIcons.qrcode_viewfinder,  size: 40,
+                            icon: const Icon(CupertinoIcons.qrcode_viewfinder,  size: 40,
                                 color: Color(0xff717171))),
                       ),
                       Column(
@@ -127,11 +145,11 @@ class _guestRegisterState extends State<guestRegister> {
                                 Navigator
                                     .of(context)
                                     .push(MaterialPageRoute(builder:
-                                    (BuildContext context) => myAttendance()));
+                                    (BuildContext context) => const myAttendance()));
                               },
-                              icon: Icon(CupertinoIcons.chart_bar, size: 30,
+                              icon: const Icon(CupertinoIcons.chart_bar, size: 30,
                                   color: Color(0xff717171))),
-                          Text("Attendance",
+                          const Text("Attendance",
                             style: TextStyle(
                                 fontSize: 12,
                                 color: Color(0xff717171)
@@ -147,11 +165,11 @@ class _guestRegisterState extends State<guestRegister> {
                                 Navigator
                                     .of(context)
                                     .push(MaterialPageRoute(builder:
-                                    (BuildContext context) => employeeProfile()));
+                                    (BuildContext context) => const employeeProfile()));
                               },
-                              icon: Icon(Icons.more_horiz_rounded, size: 30,
+                              icon: const Icon(Icons.more_horiz_rounded, size: 30,
                                   color: Color(0xff717171))),
-                          Text("Menu",
+                          const Text("Menu",
                             style: TextStyle(
                                 fontSize: 12,
                                 color: Color(0xff717171)
@@ -171,26 +189,24 @@ class _guestRegisterState extends State<guestRegister> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  child: ElevatedButton.icon(
-                    icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 15,),
-                    onPressed: (){
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context)=>otpVerify()));
-                    },
-                    label: Text("Cancel", style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16
-                    ),),
-                    style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
-                                side: BorderSide(color: Color(0xff005993))
-                            )
-                        ),
-                        backgroundColor: MaterialStateProperty.all(Color(0xff005993),)
-                    ),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 15,),
+                  onPressed: (){
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context)=>otpVerify()));
+                  },
+                  label: const Text("Cancel", style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16
+                  ),),
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                              side: BorderSide(color: Color(0xff005993))
+                          )
+                      ),
+                      backgroundColor: MaterialStateProperty.all(Color(0xff005993),)
                   ),
                 ),
                 SizedBox(height: 20,),
@@ -490,77 +506,170 @@ class _guestRegisterState extends State<guestRegister> {
 
                                 Row(
                                   children: [
-                                    IconButton(
-                                        onPressed: _show, icon: const Icon(Icons.punch_clock)),
-                                    Text(
-                                      _selectedTime != null ? _selectedTime! : 'No time selected!',
-                                      style: const TextStyle(fontSize: 20),
+                                    Column(
+                                      children:  [
+                                        GestureDetector(
+                                            onTap:(){
+                                              int currentValue = int.parse(_time1.text);
+                                              setState(() {
+                                                currentValue++;
+                                                _time1.text = (currentValue < 12? currentValue : 12)
+                                                    .toString(); // incrementing value
+                                              });
+                                            },
+                                            child: Icon(Icons.keyboard_arrow_up,
+                                              color: Color(0xff2980B9),)),
+                                        // Container(
+                                        //   height:40,
+                                        //   width: 50,
+                                        //   child: TextFormField(
+                                        //     keyboardType: TextInputType.numberWithOptions(
+                                        //       decimal: false,
+                                        //       signed: true,
+                                        //     ),
+                                        //
+                                        //     textAlign: TextAlign.center,
+                                        //     decoration: InputDecoration(
+                                        //       contentPadding: EdgeInsets.all(4.0),
+                                        //       enabledBorder: OutlineInputBorder(
+                                        //         borderSide: BorderSide(color: Colors.white),
+                                        //       ),
+                                        //       focusedBorder: OutlineInputBorder(
+                                        //         borderSide: BorderSide(color: Colors.white),
+                                        //       ),
+                                        //       focusColor: Color(0xff031627),
+                                        //       border: OutlineInputBorder(
+                                        //         borderRadius: BorderRadius.circular(10.0),
+                                        //         borderSide: BorderSide(color: Colors.white),
+                                        //       ),
+                                        //     ),
+                                        //     controller: _time1,
+                                        //     style: TextStyle(
+                                        //       fontSize: 16
+                                        //   ),),
+                                        // ),
+
+                                        Text(_time1.text,
+                                          style: TextStyle(
+                                              fontSize: 16
+                                          ),),
+
+                                        GestureDetector(
+                                            onTap:(){
+                                              int currentValue = int.parse(_time1.text);
+                                              setState(() {
+                                                print("Setting state");
+                                                currentValue--;
+                                                _time1.text =
+                                                    (currentValue > 1 ? currentValue : 1)
+                                                        .toString(); // decrementing value
+                                              });
+                                            },
+                                            child: Icon(Icons.keyboard_arrow_down, color: Color(0xff2980B9),))
+                                      ],
+                                    ),
+
+                                    Text(":"),
+                                    Column(
+                                      children: [
+                                        GestureDetector(
+                                            onTap:(){
+                                              int currentValue = int.parse(_time2.text);
+                                              setState(() {
+                                                currentValue++;
+                                                _time2.text = (currentValue < 59? currentValue : 59)
+                                                    .toString(); // incrementing value
+                                              });
+                                            },
+                                            child: Icon(Icons.keyboard_arrow_up,
+                                              color: Color(0xff2980B9),)),
+                                        // Container(
+                                        //   height:40,
+                                        //   width: 50,
+                                        //   child: TextFormField(
+                                        //     keyboardType: TextInputType.numberWithOptions(
+                                        //       decimal: false,
+                                        //       signed: true,
+                                        //     ),
+                                        //
+                                        //     textAlign: TextAlign.center,
+                                        //     decoration: InputDecoration(
+                                        //       contentPadding: EdgeInsets.all(4.0),
+                                        //       enabledBorder: OutlineInputBorder(
+                                        //         borderSide: BorderSide(color: Colors.white),
+                                        //       ),
+                                        //       focusedBorder: OutlineInputBorder(
+                                        //         borderSide: BorderSide(color: Colors.white),
+                                        //       ),
+                                        //       focusColor: Color(0xff031627),
+                                        //       border: OutlineInputBorder(
+                                        //         borderRadius: BorderRadius.circular(10.0),
+                                        //         borderSide: BorderSide(color: Colors.white),
+                                        //       ),
+                                        //     ),
+                                        //     controller: _time1,
+                                        //     style: TextStyle(
+                                        //       fontSize: 16
+                                        //   ),),
+                                        // ),
+
+                                        Text(_time2.text,
+                                          style: TextStyle(
+                                              fontSize: 16
+                                          ),),
+
+                                        GestureDetector(
+                                            onTap:(){
+                                              int currentValue = int.parse(_time2.text);
+                                              setState(() {
+                                                print("Setting state");
+                                                currentValue--;
+                                                _time2.text =
+                                                    (currentValue >  00? currentValue : 00)
+                                                        .toString(); // decrementing value
+                                              });
+                                            },
+                                            child: Icon(Icons.keyboard_arrow_down,
+                                              color: Color(0xff2980B9),))
+                                      ],
                                     ),
                                   ],
                                 ),
 
 
-                                // Row(
-                                //   children: [
-                                //     Column(
-                                //       children: const [
-                                //         Icon(Icons.keyboard_arrow_up, color: Color(0xff2980B9),),
-                                //         Text("11", style: TextStyle(
-                                //             fontSize: 16
-                                //         ),),
-                                //         Icon(Icons.keyboard_arrow_down, color: Color(0xff2980B9),)
-                                //       ],
-                                //     ),
-                                //
-                                //     Text(":"),
-                                //     Column(
-                                //       children:const [
-                                //         Icon(Icons.keyboard_arrow_up, color: Color(0xff2980B9)),
-                                //         Text("38", style: TextStyle(
-                                //             fontSize: 16
-                                //         ),),
-                                //         Icon(Icons.keyboard_arrow_down, color: Color(0xff2980B9))
-                                //       ],
-                                //     ),
-                                //   ],
-                                // ),
+                                Row(
+                                  children: [
+                                    ...List.generate(
+                                      buttonText.length,
+                                          (index) => button(
+                                        index: index,
+                                        text: buttonText[index],
+                                      ),
+                                    )
+                                  ],
+                                ),
+
+                            // Row(
+                            //   children: [
+                            //
+                            //     // Row(
+                            //     //   children: [
+                            //     //     IconButton(
+                            //     //         onPressed: _show, icon: const Icon(Icons.punch_clock)),
+                            //     //     Text(
+                            //     //       _selectedTime != null ? _selectedTime! : 'No time selected!',
+                            //     //       style: const TextStyle(fontSize: 20),
+                            //     //     ),
+                            //     //   ],
+                            //     // ),
+                            //
+                            //
+                            //   ],
+                            // ),
 
 
-
-                                // Row(
-                                //   children: [
-                                //     Container(
-                                //       padding: EdgeInsets.all(10),
-                                //       decoration: BoxDecoration(
-                                //           color: Color(0xff9FE6FF),
-                                //           borderRadius: BorderRadius.circular(10)
-                                //       ),
-                                //       child: Text("AM", style: TextStyle(
-                                //           fontSize:16
-                                //       ),),
-                                //     ),
-                                //
-                                //     SizedBox(width: 10,),
-                                //
-                                //     Container(
-                                //       padding: EdgeInsets.all(10),
-                                //       decoration: BoxDecoration(
-                                //           color: Colors.white,
-                                //           borderRadius: BorderRadius.circular(10)
-                                //       ),
-                                //       child: Text("PM", style: TextStyle(
-                                //           fontSize:16
-                                //       ),),
-                                //     )
-                                //   ],
-                                // )
-
-
-
-                              ],
-                            ),
-                          )
-                        ],
+                          ])
+                          )],
                       )
                       ),
 
@@ -636,10 +745,15 @@ class _guestRegisterState extends State<guestRegister> {
                       if(nameController.text.isNotEmpty &&
                       phoneController.text.isNotEmpty && emailController.text.isNotEmpty &&
                       companyName.text.isNotEmpty &&
-                          Storage.get_date().toString().isNotEmpty && _selectedTime!.isNotEmpty){
+                          Storage.get_date().toString().isNotEmpty ){
+                        var df =  DateFormat("h:mma");
+                        var dt = df.parse("${_time1.text}:${_time2.text}${_selectedValueIndex==0?"AM":"PM"}");
+                        print(DateFormat('H:m:s').format(dt));
+                      //  print(DateTime(Storage.get_date().year.toString()))
                         access().guestRegister(nameController.text,
                             ("+91"+phoneController.text), emailController.text,
-                            companyName.text, nda, Storage.get_date().toString(), _selectedTime).then((value) {
+                            companyName.text, nda, Storage.get_date().toString(),
+                            "${DateFormat('H:m:s').format(dt)}").then((value) {
                               if(value["success"]){
                                 Fluttertoast.showToast(
                                     msg: "${"Register done"}",
@@ -649,12 +763,16 @@ class _guestRegisterState extends State<guestRegister> {
                                     backgroundColor: Colors.green.shade300,
                                     textColor: Colors.white,
                                     fontSize: 16.0);
-                                nameController.clear();
-                                phoneController.clear();
-                                emailController.clear();
-                                companyName.clear();
-                                _selectedTime = '';
-                                valuefirst = false;
+                                setState((){
+                                  nameController.clear();
+                                  phoneController.clear();
+                                  emailController.clear();
+                                  companyName.clear();
+                                  _selectedTime = '';
+                                  valuefirst = false;
+                                  _time1.text = "6";
+                                  _time2.text = "30";
+                                });
                               } else{
                                 Fluttertoast.showToast(
                                     msg: "${"Error registering"}",
@@ -665,12 +783,16 @@ class _guestRegisterState extends State<guestRegister> {
                                     textColor: Colors.white,
                                     fontSize: 16.0);
 
-                                nameController.clear();
-                                phoneController.clear();
-                                emailController.clear();
-                                companyName.clear();
-                                _selectedTime = '';
-                                valuefirst = false;
+                                setState((){
+                                  nameController.clear();
+                                  phoneController.clear();
+                                  emailController.clear();
+                                  companyName.clear();
+                                  _selectedTime = '';
+                                  valuefirst = false;
+                                  _time1.text = "6";
+                                  _time2.text = "30";
+                                });
                               }
                         });
                       } else{
@@ -708,4 +830,41 @@ class _guestRegisterState extends State<guestRegister> {
 
     );
   }
+
+  Widget button({required String text, required int index}) {
+    return InkWell(
+      splashColor: Colors.cyanAccent,
+      onTap: () {
+        setState(() {
+          _selectedValueIndex = index;
+          print(_selectedValueIndex);
+          print(_selectedValueIndex==0?"AM":"PM");
+        });
+      },
+      child: Container(
+
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: index == _selectedValueIndex ? Color(0xff9FE6FF) : Colors.white,
+            borderRadius: BorderRadius.circular(10)
+        ),
+        //color: index == _selectedValueIndex ? Colors.blue : Colors.white,
+        child: Text(
+          text,
+          style: TextStyle( fontSize:16,
+            color: index == _selectedValueIndex ? Colors.black : Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+
+}
+
+
+class RadioModel {
+  bool isSelected;
+  final String buttonText;
+
+  RadioModel(this.isSelected, this.buttonText);
 }

@@ -129,12 +129,26 @@ class access {
     return data;
   }
 
-
-  Future<dynamic> empAttendanceRegularization(String date, String reason) async {
-    NetworkHelper helper = NetworkHelper(base_url + "employee/attedance/regularisation");
-    var data = await helper.empAttendanceRegularization(date, reason);
+  Future<dynamic> managerApproveRegularization(String approvalStatus, reqId) async {
+    NetworkHelper helper = NetworkHelper(base_url + "manager/request/approval/regularisation");
+    var data = await helper.managerApproveRegularization(approvalStatus, reqId);
     return data;
   }
+
+
+  Future<dynamic> empRegularizationTime(String attId, time, reason) async {
+    NetworkHelper helper = NetworkHelper(base_url + "employee/attedance/regularisationTime");
+    var data = await helper.empRegularizationTime(attId, time, reason);
+    return data;
+  }
+
+  Future<dynamic> empRegularizationAttend(String attId, reason) async {
+    NetworkHelper helper = NetworkHelper(base_url + "employee/attedance/regularisationAttendance");
+    var data = await helper.empRegularizationAttend(attId, reason);
+    return data;
+  }
+
+
 
   Future<dynamic> empAbsPres() async {
     NetworkHelper helper = NetworkHelper(base_url + "employee/attendance/date");

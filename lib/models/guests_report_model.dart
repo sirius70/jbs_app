@@ -1,5 +1,5 @@
-class GuestsInsideReport {
-  GuestsInsideReport({
+class GuestsInsideReport  {
+  GuestsInsideReport ({
     required this.status,
     required this.success,
     required this.message,
@@ -10,7 +10,7 @@ class GuestsInsideReport {
   late final String message;
   late final List<VisitorReportsToday> visitorReportsToday;
 
-  GuestsInsideReport.fromJson(Map<String, dynamic> json){
+  GuestsInsideReport .fromJson(Map<String, dynamic> json){
     status = json['status'];
     success = json['success'];
     message = json['message'];
@@ -31,59 +31,59 @@ class VisitorReportsToday {
   VisitorReportsToday({
     required this.checkOut,
     this.checkOutTime,
-    required this.VISITORENTRYTIME,
-    required this.VISITORNAME,
-    required this.VISITOREmail,
-    required this.VISITORPHOTO,
-    required this.VISITORPHONENUMBER,
-    required this.VISITORCOMPANYNAME,
-    required this.NDASign,
-    required this.EMPLOYEENAME,
-    required this.EMPLOYEEEMAIL,
-    required this.EMPLOYEEPHONENUMBER,
+    required this.visitorEntryTime,
+    required this.visitorName,
+    required this.visitorEmail,
+    this.visitorPhoto,
+    required this.visitorPhoneNumber,
+    required this.visitorCompanyName,
+    required this.visitorNdaSign,
+    required this.employeeName,
+    required this.employeeEmail,
+    required this.employeePhoneNumber,
   });
   late final int checkOut;
   late final String? checkOutTime;
-  late final String VISITORENTRYTIME;
-  late final String VISITORNAME;
-  late final String VISITOREmail;
-  late final String VISITORPHOTO;
-  late final String VISITORPHONENUMBER;
-  late final String VISITORCOMPANYNAME;
-  late final int NDASign;
-  late final String EMPLOYEENAME;
-  late final String EMPLOYEEEMAIL;
-  late final String EMPLOYEEPHONENUMBER;
+  late final String visitorEntryTime;
+  late final String visitorName;
+  late final String visitorEmail;
+  late final String? visitorPhoto;
+  late final String visitorPhoneNumber;
+  late final String visitorCompanyName;
+  late final int visitorNdaSign;
+  late final String employeeName;
+  late final String employeeEmail;
+  late final String employeePhoneNumber;
 
   VisitorReportsToday.fromJson(Map<String, dynamic> json){
     checkOut = json['check_Out'];
     checkOutTime = null;
-    VISITORENTRYTIME = json['VISITOR_ENTRY_TIME'];
-    VISITORNAME = json['VISITOR_NAME'];
-    VISITOREmail = json['VISITOR_email'];
-    VISITORPHOTO = json['VISITOR_PHOTO'];
-    VISITORPHONENUMBER = json['VISITOR_PHONE_NUMBER'];
-    VISITORCOMPANYNAME = json['VISITOR_COMPANY_NAME'];
-    NDASign = json['NDA_sign'];
-    EMPLOYEENAME = json['EMPLOYEE_NAME'];
-    EMPLOYEEEMAIL = json['EMPLOYEE_EMAIL'];
-    EMPLOYEEPHONENUMBER = json['EMPLOYEE_PHONE_NUMBER'];
+    visitorEntryTime = json['visitor_Entry_Time'];
+    visitorName = json['visitor_Name'];
+    visitorEmail = json['visitor_Email'];
+    visitorPhoto = null;
+    visitorPhoneNumber = json['visitor_Phone_Number'];
+    visitorCompanyName = json['visitor_Company_Name'];
+    visitorNdaSign = json['visitor_nda_Sign'];
+    employeeName = json['employee_Name'];
+    employeeEmail = json['employee_Email'];
+    employeePhoneNumber = json['employee_Phone_Number'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['check_Out'] = checkOut;
     _data['check_Out_Time'] = checkOutTime;
-    _data['VISITOR_ENTRY_TIME'] = VISITORENTRYTIME;
-    _data['VISITOR_NAME'] = VISITORNAME;
-    _data['VISITOR_email'] = VISITOREmail;
-    _data['VISITOR_PHOTO'] = VISITORPHOTO;
-    _data['VISITOR_PHONE_NUMBER'] = VISITORPHONENUMBER;
-    _data['VISITOR_COMPANY_NAME'] = VISITORCOMPANYNAME;
-    _data['NDA_sign'] = NDASign;
-    _data['EMPLOYEE_NAME'] = EMPLOYEENAME;
-    _data['EMPLOYEE_EMAIL'] = EMPLOYEEEMAIL;
-    _data['EMPLOYEE_PHONE_NUMBER'] = EMPLOYEEPHONENUMBER;
+    _data['visitor_Entry_Time'] = visitorEntryTime;
+    _data['visitor_Name'] = visitorName;
+    _data['visitor_Email'] = visitorEmail;
+    _data['visitor_Photo'] = visitorPhoto;
+    _data['visitor_Phone_Number'] = visitorPhoneNumber;
+    _data['visitor_Company_Name'] = visitorCompanyName;
+    _data['visitor_nda_Sign'] = visitorNdaSign;
+    _data['employee_Name'] = employeeName;
+    _data['employee_Email'] = employeeEmail;
+    _data['employee_Phone_Number'] = employeePhoneNumber;
     return _data;
   }
 }

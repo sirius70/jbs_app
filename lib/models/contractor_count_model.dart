@@ -1,57 +1,66 @@
-// To parse this JSON data, do
-//
-//     final contractorTodaysCount = contractorTodaysCountFromJson(jsonString);
-
-import 'dart:convert';
-
-ContractorTodaysCount contractorTodaysCountFromJson(String str) => ContractorTodaysCount.fromJson(json.decode(str));
-
-String contractorTodaysCountToJson(ContractorTodaysCount data) => json.encode(data.toJson());
-
 class ContractorTodaysCount {
   ContractorTodaysCount({
     required this.status,
     required this.success,
     required this.message,
-    required this.contractorInsideToday,
-    required this.totalContractorVisitedToday,
+    required this.contractorInside,
+    required this.totalContractorVisited,
   });
+  late final String status;
+  late final bool success;
+  late final String message;
+  late final List<ContractorInside> contractorInside;
+  late final List<TotalContractorVisited> totalContractorVisited;
 
-  String status;
-  bool success;
-  String message;
-  List<Today> contractorInsideToday;
-  List<Today> totalContractorVisitedToday;
+  ContractorTodaysCount.fromJson(Map<String, dynamic> json){
+    status = json['status'];
+    success = json['success'];
+    message = json['message'];
+    contractorInside = List.from(json['Contractor_Inside']).map((e)=>ContractorInside.fromJson(e)).toList();
+    totalContractorVisited = List.from(json['Total_Contractor_Visited']).map((e)=>TotalContractorVisited.fromJson(e)).toList();
+  }
 
-  factory ContractorTodaysCount.fromJson(Map<String, dynamic> json) => ContractorTodaysCount(
-    status: json["status"],
-    success: json["success"],
-    message: json["message"],
-    contractorInsideToday: List<Today>.from(json["Contractor_Inside_Today"].map((x) => Today.fromJson(x))),
-    totalContractorVisitedToday: List<Today>.from(json["Total_Contractor_Visited_Today"].map((x) => Today.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "status": status,
-    "success": success,
-    "message": message,
-    "Contractor_Inside_Today": List<dynamic>.from(contractorInsideToday.map((x) => x.toJson())),
-    "Total_Contractor_Visited_Today": List<dynamic>.from(totalContractorVisitedToday.map((x) => x.toJson())),
-  };
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['status'] = status;
+    _data['success'] = success;
+    _data['message'] = message;
+    _data['Contractor_Inside'] = contractorInside.map((e)=>e.toJson()).toList();
+    _data['Total_Contractor_Visited'] = totalContractorVisited.map((e)=>e.toJson()).toList();
+    return _data;
+  }
 }
 
-class Today {
-  Today({
-    required this.count,
-  });
+class ContractorInside {
+  ContractorInside({
+  required this.COUNT,
+});
+late final int COUNT;
 
-  int count;
+ContractorInside.fromJson(Map<String, dynamic> json){
+COUNT = json['count(id)'];
+}
 
-  factory Today.fromJson(Map<String, dynamic> json) => Today(
-    count: json["COUNT(*)"],
-  );
+Map<String, dynamic> toJson() {
+  final _data = <String, dynamic>{};
+  _data['count(id)'] = COUNT;
+  return _data;
+}
+}
 
-  Map<String, dynamic> toJson() => {
-    "COUNT(*)": count,
-  };
+class TotalContractorVisited {
+  TotalContractorVisited({
+  required this.COUNT,
+});
+late final int COUNT;
+
+TotalContractorVisited.fromJson(Map<String, dynamic> json){
+COUNT = json['count(id)'];
+}
+
+Map<String, dynamic> toJson() {
+  final _data = <String, dynamic>{};
+  _data['count(id)'] = COUNT;
+  return _data;
+}
 }

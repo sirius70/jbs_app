@@ -232,12 +232,12 @@ class _otpVerifyState extends State<otpVerify> {
                         access().loginPhone2(("+91"+widget.phoneNo).toString(), tokenId).then((value) async{
                           if (value["success"]) {
                             LoginApi loginApiRes = await LoginApi.fromJson(value);
-                            final empId = loginApiRes.data!.employeeId;
-                            final location = loginApiRes.data!.locations[0].name;
-                            final token = loginApiRes.tokens!.accessToken;
-                            final isAdmin = loginApiRes.data!.isAdmin;
-                            final isManager = loginApiRes.data!.isManager;
-                            final locationID = loginApiRes.data!.locations![0].locationId;
+                            final empId = loginApiRes.data.employeeId;
+                            final location = loginApiRes.data.locations[0].name;
+                            final token = loginApiRes.tokens.accessToken;
+                            final isAdmin = loginApiRes.data.isAdmin;
+                            final isManager = loginApiRes.data.isManager;
+                            final locationID = loginApiRes.data.locations[0].locationId;
                             Storage.set_locationID(locationID.toString());
 
                             Storage.set_accessToken(token.toString());
@@ -302,7 +302,7 @@ class _otpVerifyState extends State<otpVerify> {
                                                     access().deliveryTodayCount().then((value) async{
                                                       if(value["success"]){
                                                         DeliveryTodaysCount deliveryCount = await DeliveryTodaysCount.fromJson(value);
-                                                        final deliCount = deliveryCount.data[0].count;
+                                                        final deliCount = deliveryCount.data[0].COUNT;
                                                         print(deliCount);
                                                         Storage.set_deliveryCount(deliCount.toString());
                                                       }
@@ -311,8 +311,8 @@ class _otpVerifyState extends State<otpVerify> {
                                                     access().visitorTodayCount().then((value) async{
                                                       if(value["success"]){
                                                         VisitorTodaysCount visitorCount = await VisitorTodaysCount.fromJson(value);
-                                                        final visitCount = visitorCount.visitorInsideToday[0].count;
-                                                        final totalVisitCount = visitorCount.totalVisitorVisitedToday[0].count;
+                                                        final visitCount = visitorCount.visitorInside[0].COUNT;
+                                                        final totalVisitCount = visitorCount.visitorVisited[0].COUNT;
                                                         print("${visitCount}, ${totalVisitCount }");
                                                         Storage.set_visitorCount(visitCount.toString());
                                                         Storage.set_totalVisitorCount(totalVisitCount.toString());
@@ -322,8 +322,8 @@ class _otpVerifyState extends State<otpVerify> {
                                                     access().contractorTodayCount().then((value) async{
                                                       if(value["success"]){
                                                         ContractorTodaysCount contractorCount = await ContractorTodaysCount.fromJson(value);
-                                                        final contracCount = contractorCount.contractorInsideToday[0].count;
-                                                        final totalContracCount = contractorCount.totalContractorVisitedToday[0].count;
+                                                        final contracCount = contractorCount.contractorInside[0].COUNT;
+                                                        final totalContracCount = contractorCount.totalContractorVisited[0].COUNT;
                                                         print("${contracCount}, ${totalContracCount }");
                                                         Storage.set_contractorCount(contracCount.toString());
                                                         Storage.set_totalContractorCount(totalContracCount.toString());

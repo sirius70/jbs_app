@@ -63,7 +63,7 @@ class _todayDeliveryReportState extends State<todayDeliveryReport> {
                 height: 20,
               );
             },
-            itemCount: delReport.deliveryReportsToday!.length,
+            itemCount: delReport.deliveryReportsToday.length,
             itemBuilder: (context, index){
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -89,10 +89,10 @@ class _todayDeliveryReportState extends State<todayDeliveryReport> {
                                   backgroundImage: AssetImage("lib/images/face3.png")
                                 //backgroundImage: NetworkImage(delReport.deliveryReportsToday![index].dELIVERYBOYPHOTO.toString()),
                               ),
-                              Text(delReport.deliveryReportsToday[index].DELIVERYNAME.toString()),
-                              Text(delReport.deliveryReportsToday[index].DELIVERYCOMPANYNAME.toString()),
-                              Text(delReport.deliveryReportsToday[index].DELIVERYPHONENUMBER.toString()),
-                              Text(delReport.deliveryReportsToday[index].DELIVERYEMAIL.toString()),
+                              Text(delReport.deliveryReportsToday[index].deliveryName.toString()),
+                              Text(delReport.deliveryReportsToday[index].deliveryCompanyName.toString()),
+                              Text(delReport.deliveryReportsToday[index].deliveryPhoneNumber.toString()),
+                              Text(delReport.deliveryReportsToday[index].deliveryEmail.toString()),
                             ],
                           ),
                           delReport.deliveryReportsToday![index].checkOut == 1?
@@ -119,7 +119,7 @@ class _todayDeliveryReportState extends State<todayDeliveryReport> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("entry time: ${delReport.deliveryReportsToday[index].DELIVERYENTRYTIME}"),
+                          Text("entry time: ${delReport.deliveryReportsToday[index].deliveryEntryTime}"),
                           Text("checkout time: ${delReport.deliveryReportsToday[index].checkOutTime}")
                         ],
                       ),
@@ -132,10 +132,10 @@ class _todayDeliveryReportState extends State<todayDeliveryReport> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("emp name: ${delReport.deliveryReportsToday[index].EMPLOYEENAME}"),
-                              Text("emp email: ${delReport.deliveryReportsToday[index].EMPLOYEEEMAIL}"),
-                              Text("emp phNo: ${delReport.deliveryReportsToday[index].EMPLOYEEPHONENUMBER}"),
-                              Text("nda sign: ${delReport.deliveryReportsToday[index].NDASign==0? "not signed":"signed"}")
+                              Text("emp name: ${delReport.deliveryReportsToday[index].employeeName}"),
+                              Text("emp email: ${delReport.deliveryReportsToday[index].employeeEmail}"),
+                              Text("emp phNo: ${delReport.deliveryReportsToday[index].employeePhoneNumber}"),
+                              Text("nda sign: ${delReport.deliveryReportsToday[index].deliveryNdaSign==0? "not signed":"signed"}")
                             ],
                           )
                         ],

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart'  as http;
+import 'package:intl/intl.dart';
 import '../models/contractors_report_model.dart';
 import '../storage.dart';
 
@@ -89,10 +90,10 @@ class _todayContractorsReportState extends State<todayContractorsReport> {
                                   backgroundImage: AssetImage("lib/images/face3.png")
                                // backgroundImage: NetworkImage(contactReport.contractorsReportsToday![index].cONTRACTORPHOTO.toString()),
                               ),
-                              Text(contactReport.contractorsReportsToday[index].CONTRACTORNAME.toString()),
-                              Text(contactReport.contractorsReportsToday[index].CONTRACTORCOMPANYNAME.toString()),
-                              Text(contactReport.contractorsReportsToday[index].CONTRACTORPHONENUMBER.toString()),
-                              Text(contactReport.contractorsReportsToday[index].CONTRACTOREMAIL.toString()),
+                              Text(contactReport.contractorsReportsToday[index].contractorsName.toString()),
+                              Text(contactReport.contractorsReportsToday[index].contractorsCompanyName.toString()),
+                              Text(contactReport.contractorsReportsToday[index].contractorsPhoneNumber.toString()),
+                              Text(contactReport.contractorsReportsToday[index].contractorsEmail.toString()),
 
                             ],
                           ),
@@ -120,7 +121,7 @@ class _todayContractorsReportState extends State<todayContractorsReport> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("entry time: ${contactReport.contractorsReportsToday[index].CONTRACTORSENTRYTIME}"),
+                          Text("entry time: ${contactReport.contractorsReportsToday[index].contractorsEntryTime}"),
                           Text("checkout time: ${contactReport.contractorsReportsToday[index].checkOutTime}")
                         ],
                       ),
@@ -133,10 +134,10 @@ class _todayContractorsReportState extends State<todayContractorsReport> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("emp name: ${contactReport.contractorsReportsToday[index].EMPLOYEENAME}"),
-                                Text("emp email: ${contactReport.contractorsReportsToday[index].EMPLOYEEEMAIL}"),
-                                Text("emp phNo: ${contactReport.contractorsReportsToday[index].EMPLOYEEPHONENUMBER}"),
-                                Text("nda sign: ${contactReport.contractorsReportsToday[index].NDASign==0? "not signed":"signed"}")
+                                Text("emp name: ${contactReport.contractorsReportsToday[index].employeeName}"),
+                                Text("emp email: ${contactReport.contractorsReportsToday[index].employeeEmail}"),
+                                Text("emp phNo: ${contactReport.contractorsReportsToday[index].employeePhoneNumber}"),
+                                Text("nda sign: ${contactReport.contractorsReportsToday[index].contractorsNdaSign==0? "not signed":"signed"}")
                               ],
                             )
                           ],

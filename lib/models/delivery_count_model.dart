@@ -33,17 +33,17 @@ class DeliveryTodaysCount {
 
 class Data {
   Data({
-  required this.count,
+  required this.COUNT,
 });
-late final int count;
+late final int COUNT;
 
 Data.fromJson(Map<String, dynamic> json){
-count = json['COUNT(*)'];
+COUNT = json['count(id)'];
 }
 
 Map<String, dynamic> toJson() {
   final _data = <String, dynamic>{};
-  _data['COUNT(*)'] = count;
+  _data['count(id)'] = COUNT;
   return _data;
 }
 }

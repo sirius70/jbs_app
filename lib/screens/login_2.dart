@@ -1,23 +1,18 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:jbs_app/admin/admin2.dart';
-import 'package:jbs_app/manager/more.dart';
 import 'package:jbs_app/screens/otp_verify_3.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'dart:math' as math;
-import '../admin/admin_profile.dart';
 import '../api/access.dart';
 import '../employee_screens/employee_welcome_1.dart';
 import '../manager/home.dart';
 import '../models/contractor_count_model.dart';
 import '../models/delivery_count_model.dart';
 import '../models/login_model.dart';
-import '../models/phone_login_model.dart';
 import '../models/profile_model.dart';
 
 import '../models/visitor_count_model.dart';
@@ -334,15 +329,15 @@ class _loginScreenState extends State<loginScreen> {
                         if(emailController.text.isNotEmpty && passController.text.isNotEmpty ){
                           access().login(emailController.text,
                               passController.text).then((value) async {
-                                print("value111: $value");
+                               // print("value111: $value");
                             if (value["success"]) {
                               LoginApi loginApiRes = await LoginApi.fromJson(value);
-                              final empId = loginApiRes.data!.employeeId;
-                              final location = loginApiRes.data!.locations[0].name;
-                              final token = loginApiRes.tokens!.accessToken;
-                              final isAdmin = loginApiRes.data!.isAdmin;
-                              final isManager = loginApiRes.data!.isManager;
-                              final locationID = loginApiRes.data!.locations![0].locationId;
+                              final empId = loginApiRes.data.employeeId;
+                              final location = loginApiRes.data.locations[0].name;
+                              final token = loginApiRes.tokens.accessToken;
+                              final isAdmin = loginApiRes.data.isAdmin;
+                              final isManager = loginApiRes.data.isManager;
+                              final locationID = loginApiRes.data.locations[0].locationId;
                               Storage.set_locationID(locationID.toString());
 
                               Storage.set_accessToken(token.toString());
@@ -363,10 +358,12 @@ class _loginScreenState extends State<loginScreen> {
                                 }
                               });
 
+                              print("${"startDate:" "${DateFormat("yyyy-MM-dd").format(DateTime.now())}\n"
+                                  "endDate:" "${DateFormat("yyyy-MM-dd").format(DateTime.now())}"}");
                               access().deliveryTodayCount().then((value) async{
                                 if(value["success"]){
                                   DeliveryTodaysCount deliveryCount = await DeliveryTodaysCount.fromJson(value);
-                                  final deliCount = deliveryCount.data[0].count;
+                                  final deliCount = deliveryCount.data[0].COUNT;
                                   print(deliCount);
                                   Storage.set_deliveryCount(deliCount.toString());
                                 }
@@ -375,8 +372,8 @@ class _loginScreenState extends State<loginScreen> {
                               access().visitorTodayCount().then((value) async{
                                 if(value["success"]){
                                   VisitorTodaysCount visitorCount = await VisitorTodaysCount.fromJson(value);
-                                  final visitCount = visitorCount.visitorInsideToday[0].count;
-                                  final totalVisitCount = visitorCount.totalVisitorVisitedToday[0].count;
+                                  final visitCount = visitorCount.visitorInside[0].COUNT;
+                                  final totalVisitCount = visitorCount.visitorVisited[0].COUNT;
                                   print("${visitCount}, ${totalVisitCount }");
                                   Storage.set_visitorCount(visitCount.toString());
                                   Storage.set_totalVisitorCount(totalVisitCount.toString());
@@ -386,8 +383,8 @@ class _loginScreenState extends State<loginScreen> {
                               access().contractorTodayCount().then((value) async{
                                 if(value["success"]){
                                   ContractorTodaysCount contractorCount = await ContractorTodaysCount.fromJson(value);
-                                  final contracCount = contractorCount.contractorInsideToday[0].count;
-                                  final totalContracCount = contractorCount.totalContractorVisitedToday[0].count;
+                                  final contracCount = contractorCount.contractorInside[0].COUNT;
+                                  final totalContracCount = contractorCount.totalContractorVisited[0].COUNT;
                                   print("${contracCount}, ${totalContracCount }");
                                   Storage.set_contractorCount(contracCount.toString());
                                   Storage.set_totalContractorCount(totalContracCount.toString());
@@ -464,7 +461,7 @@ class _loginScreenState extends State<loginScreen> {
                                                 access().deliveryTodayCount().then((value) async{
                                                   if(value["success"]){
                                                     DeliveryTodaysCount deliveryCount = await DeliveryTodaysCount.fromJson(value);
-                                                    final deliCount = deliveryCount.data[0].count;
+                                                    final deliCount = deliveryCount.data[0].COUNT;
                                                     print(deliCount);
                                                     Storage.set_deliveryCount(deliCount.toString());
                                                   }
@@ -473,8 +470,8 @@ class _loginScreenState extends State<loginScreen> {
                                                 access().visitorTodayCount().then((value) async{
                                                   if(value["success"]){
                                                     VisitorTodaysCount visitorCount = await VisitorTodaysCount.fromJson(value);
-                                                    final visitCount = visitorCount.visitorInsideToday[0].count;
-                                                    final totalVisitCount = visitorCount.totalVisitorVisitedToday[0].count;
+                                                    final visitCount = visitorCount.visitorInside[0].COUNT;
+                                                    final totalVisitCount = visitorCount.visitorVisited[0].COUNT;
                                                     print("${visitCount}, ${totalVisitCount }");
                                                     Storage.set_visitorCount(visitCount.toString());
                                                     Storage.set_totalVisitorCount(totalVisitCount.toString());
@@ -484,8 +481,8 @@ class _loginScreenState extends State<loginScreen> {
                                                 access().contractorTodayCount().then((value) async{
                                                   if(value["success"]){
                                                     ContractorTodaysCount contractorCount = await ContractorTodaysCount.fromJson(value);
-                                                    final contracCount = contractorCount.contractorInsideToday[0].count;
-                                                    final totalContracCount = contractorCount.totalContractorVisitedToday[0].count;
+                                                    final contracCount = contractorCount.contractorInside[0].COUNT;
+                                                    final totalContracCount = contractorCount.totalContractorVisited[0].COUNT;
                                                     print("${contracCount}, ${totalContracCount }");
                                                     Storage.set_contractorCount(contracCount.toString());
                                                     Storage.set_totalContractorCount(totalContracCount.toString());
@@ -510,8 +507,10 @@ class _loginScreenState extends State<loginScreen> {
                               }));
                               });
                             } else{
+                              print("invalid credentials");
+                              print("failed msg: ${value["message"]}");
                               Fluttertoast.showToast(
-                                  msg: "${"Invalid credentials"}",
+                                  msg: "${value["message"]}",
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.BOTTOM,
                                   timeInSecForIosWeb: 1,

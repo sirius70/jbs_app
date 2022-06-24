@@ -9,6 +9,7 @@ import 'package:jbs_app/employee_screens/my_scan_qr.dart';
 import 'package:jbs_app/employee_screens/my_service_request.dart';
 import 'package:jbs_app/employee_screens/profile_page_3.dart';
 import 'package:jbs_app/employee_screens/scan_qr.dart';
+import 'package:jbs_app/employee_screens/view_my_calendar.dart';
 import 'package:jbs_app/employee_screens/widgets/bottom_navigation.dart';
 import 'package:jbs_app/employee_screens/widgets/my_leave_application.dart';
 import 'package:marquee/marquee.dart';
@@ -22,6 +23,7 @@ import '../storage.dart';
 import 'package:http/http.dart'  as http;
 
 import 'my_regulaization_request.dart';
+import 'widgets/attendance_calendar.dart';
 
 enum Options { person_crop_circle, notifications, switch_account_outlined, }
 class employeeWelcome extends StatefulWidget {
@@ -597,11 +599,7 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                                       return CircularProgressIndicator();
                                     }
                                   },
-                                    // access().empAttendanceSummary("05-05-2022", "05-06-2022"),
                                   future: getEmpAttenSummary()
-                                  // access().empAttendanceSummary("05-05-2022", "05-06-2022").then((value) async{
-                                  //   return EmpAttendanceSummary.fromJson(jsonDecode(value));
-                                  // }),
                                 ),
 
 
@@ -621,8 +619,8 @@ class _employeeWelcomeState extends State<employeeWelcome> {
                     padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
                   child: GestureDetector(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder:
-                          (context)=>regularizationRequest()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context)=>myCalendar()));
                     },
                     child: Container(
                         padding: EdgeInsets.all(30),
@@ -995,6 +993,12 @@ Future getEmpAttenSummary() async {
   print(response.body);
 
   if (response.statusCode == 200) {
+    final absentLogs = jsonDecode(response.body)["data"]["Absent_logs"];
+    absentLog = absentLogs;
+    print("absent_logs: $absentLogs");
+    final presentLogs = jsonDecode(response.body)["data"]["Present_logs"];
+    presentLog = presentLogs;
+    print("present_logs: $presentLogs");
     return EmpAttendanceSummary.fromJson(jsonDecode(response.body));
   } else {
     print("Failed to fetch data");

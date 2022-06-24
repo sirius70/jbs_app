@@ -17,13 +17,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.light().copyWith(
+        scrollbarTheme: ScrollbarThemeData().copyWith(
+          crossAxisMargin: 3,
+          thumbVisibility: MaterialStateProperty.all(true),
+          thickness: MaterialStateProperty.all(8),
+          trackVisibility: MaterialStateProperty.all(true),
+          trackColor: MaterialStateProperty.all(Color(0xffD9F1FF)),
+          thumbColor: MaterialStateProperty.all(Color(0xff00A3FF)),
+        ),),
         // debugShowCheckedModeBanner: false,
         // home: const MyHomePage(),
-     home: //Approve_req()
-      splash1()
+     home: splash1()
     );
   }
 }

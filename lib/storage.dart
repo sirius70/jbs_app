@@ -15,13 +15,15 @@ class Storage{
   static const _deliveryCount = "deliveryCount";
   static const _contractorCount = "contractorCount";
   static const _visitorCount = "visitorCount";
-  static const _totalContractorCount = "totaContractorCount2";
+  static const _totalContractorCount = "totalContractorCount2";
   static const _totalVisitorCount = "totalVisitorCount";
   static const _reqId = "reqId";
   static const _date = "date";
   static const _reguAdminId = "reguAdminId";
   static const _isAdmin = "isadmin";
   static const _isManager = "ismanager";
+  static const _attId = "attId";
+  static const _attMark = "attMark";
 
   static Future init() async{
     sharedPreferences = await SharedPreferences.getInstance();
@@ -84,6 +86,12 @@ class Storage{
 
   static Future set_isManager(String ismanager)async=>await sharedPreferences!.setString(_isManager, ismanager);
   static String? get_isManager()=>sharedPreferences!.getString(_isManager)??"";
+
+  static Future set_attendanceId(String attId)async=>await sharedPreferences!.setString(_attId, attId);
+  static String? get_attendanceId()=>sharedPreferences!.getString(_attId)??"";
+
+  static Future set_attendanceMark(String attMark)async=>await sharedPreferences!.setString(_attMark, attMark);
+  static String? get_attendanceMark()=>sharedPreferences!.getString(_attMark)??"";
 
 }
 

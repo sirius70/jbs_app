@@ -8,13 +8,13 @@ class GetAdmins {
   late final String status;
   late final bool success;
   late final String message;
-  late final List<Data> data;
+  late final List<Data1> data;
 
   GetAdmins.fromJson(Map<String, dynamic> json){
     status = json['status'];
     success = json['success'];
     message = json['message'];
-    data = List.from(json['data']).map((e)=>Data.fromJson(e)).toList();
+    data = List.from(json['data']).map((e)=>Data1.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -27,15 +27,15 @@ class GetAdmins {
   }
 }
 
-class Data {
-  Data({
+class Data1 {
+  Data1({
     required this.name,
     required this.employeeId,
   });
   late final String name;
   late final int employeeId;
 
-  Data.fromJson(Map<String, dynamic> json){
+  Data1.fromJson(Map<String, dynamic> json){
     name = json['name'];
     employeeId = json['employee_Id'];
   }

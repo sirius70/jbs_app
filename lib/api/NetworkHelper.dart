@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 import '../models/disable_emp_model.dart';
 import '../models/empAttendance_summary_model.dart';
 import '../models/emp_regularization_model.dart';
@@ -33,12 +34,12 @@ class NetworkHelper {
     try {
       Response? response =
       await dio?.post(url, data: {'email': email, 'password': password});
-      LoginApi loginApiRes=LoginApi.fromJson(response?.data);
+      // LoginApi loginApiRes=LoginApi.fromJson(response?.data);
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {
-
-        print("access:${loginApiRes.tokens!.accessToken}");
-        print("refresh:${loginApiRes.tokens!.refreshToken}");
+        //
+        // print("access:${loginApiRes.tokens!.accessToken}");
+        // print("refresh:${loginApiRes.tokens!.refreshToken}");
 
         print(response?.data);
 
@@ -206,7 +207,12 @@ class NetworkHelper {
     dio = Dio(option);
     try {
 
-      Response? response = await dio?.get(url, queryParameters: {"location_Id": Storage.get_locationID()});
+      Response? response = await dio?.get(url,
+          queryParameters: {
+        "location_Id": Storage.get_locationID(),
+          "startDate": "${DateFormat("yyyy-MM-dd").format(DateTime.now())}",
+          "endDate": "${DateFormat("yyyy-MM-dd").format(DateTime.now())}"
+          });
 
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {
@@ -228,7 +234,11 @@ class NetworkHelper {
     dio = Dio(option);
     try {
 
-      Response? response = await dio?.get(url, queryParameters: {"location_Id": Storage.get_locationID()});
+      Response? response = await dio?.get(url, queryParameters: {
+        "location_Id": Storage.get_locationID(),
+        "startDate": "${DateFormat("yyyy-MM-dd").format(DateTime.now())}",
+        "endDate": "${DateFormat("yyyy-MM-dd").format(DateTime.now())}"
+      });
 
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {
@@ -250,7 +260,12 @@ class NetworkHelper {
     dio = Dio(option);
     try {
 
-      Response? response = await dio?.get(url, queryParameters: {"location_Id": Storage.get_locationID()});
+      Response? response = await dio?.get(url,
+          queryParameters: {
+            "location_Id": Storage.get_locationID(),
+            "startDate": "${DateFormat("yyyy-MM-dd").format(DateTime.now())}",
+            "endDate": "${DateFormat("yyyy-MM-dd").format(DateTime.now())}"
+      });
 
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {
@@ -436,12 +451,11 @@ class NetworkHelper {
     }
   }
 
-
-  Future empAttendanceRegularization(String date, String reason) async {
+  Future empRegularizationTime(String attId, time, reason) async {
     dio = Dio(option);
     try {
       Response? response =
-      await dio?.post(url, data: {'date': date, 'reason': reason});
+      await dio?.post(url, data: {"attendance_id": attId,"time": time,"reason":reason});
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {
 
@@ -456,6 +470,29 @@ class NetworkHelper {
       return {'success': false, 'message': e.message};
     }
   }
+
+  Future empRegularizationAttend(String attId, reason) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {"attendance_id": attId,"reason":reason});
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+
+
 
   Future managerApproveLeave(bool approvalStatus, String reqId) async {
     dio = Dio(option);
@@ -477,6 +514,30 @@ class NetworkHelper {
       return {'success': false, 'message': e.message};
     }
   }
+
+
+  Future managerApproveRegularization(String approvalStatus, String reqId) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: { "approval_status": approvalStatus,
+        "req_id": reqId});
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+
 
   Future guestRegister(String name , String phNo, email, companyName, ndaSign, date, time) async {
     dio = Dio(option);

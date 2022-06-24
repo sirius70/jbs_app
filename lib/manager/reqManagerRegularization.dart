@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../admin/more.dart';
+import '../api/access.dart';
 import '../models/manager_req_regularization_model.dart';
 import '../models/manager_request_leave_model.dart';
 import '../storage.dart';
+import 'approvereq.dart';
 import 'viewusers.dart';
 import 'package:http/http.dart'  as http;
 
@@ -268,7 +273,7 @@ class _reqRegularizationState extends State<reqRegularization> {
                         return weatherBox(context, reqReg);
                       }}
                     else{
-                      return CircularProgressIndicator();
+                      return Center(child: Center(child: Text("No requests"),),);
                     }
                   },
 
@@ -281,6 +286,82 @@ class _reqRegularizationState extends State<reqRegularization> {
 }
 
 
+// Widget weatherBox(BuildContext context, ManagerRequestRegularization reqRegListss){
+//   return Expanded(
+//       child: ListView.separated(
+//           separatorBuilder: (BuildContext context, int index) {
+//             return SizedBox(
+//               height: 20,
+//             );
+//           },
+//           itemCount: reqRegListss.data.length,
+//           itemBuilder: (context, index){
+//             return Container(
+//               padding: EdgeInsets.all(10),
+//               child: Column(
+//                 children: [
+//                   Row(
+//                       children: [
+//                         Image(
+//                           image: AssetImage('lib/images/face3.png'),
+//                           height: 70,
+//                         ),
+//                         SizedBox(
+//                           width: 10,
+//                         ),
+//                         Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             Text(reqRegListss.data[index].reqType,
+//                               style: TextStyle(
+//                                   backgroundColor: Colors.grey.shade300,
+//                                   fontSize: 15, fontWeight: FontWeight.bold
+//                               ),),
+//                             SizedBox(
+//                               height: 5,
+//                             ),
+//                             Text("empId: ${reqRegListss.data[index].employeeId}",
+//                               style: TextStyle(
+//                                 backgroundColor: Colors.grey.shade300,
+//                                 fontSize: 15,
+//                               ),),
+//                             SizedBox(
+//                               height: 5,
+//                             ),
+//                             Text("reason: ${reqRegListss.data[index].reason}",
+//                               style: TextStyle(
+//                                 backgroundColor: Colors.grey.shade300,
+//                                 fontSize: 15,
+//                               ),),
+//                             SizedBox(
+//                               height: 5,
+//                             ),
+//                             Text("date of req: ${reqRegListss.data[index].dateOfReq}",
+//                               style: TextStyle(
+//                                 backgroundColor: Colors.grey.shade300,
+//                                 fontSize: 15,
+//                               ),),
+//                             SizedBox(
+//                               height: 5,
+//                             ),
+//                             Text("date for: ${reqRegListss.data[index].dateFor}",
+//                               style: TextStyle(
+//                                 backgroundColor: Colors.grey.shade300,
+//                                 fontSize: 15,
+//                               ),),
+//                           ],
+//                         ),
+//                       ]),
+//
+//                 ],
+//               ),
+//             );
+//           }
+//       )
+//   );
+// }
+
+
 Widget weatherBox(BuildContext context, ManagerRequestRegularization reqRegListss){
   return Expanded(
       child: ListView.separated(
@@ -291,66 +372,294 @@ Widget weatherBox(BuildContext context, ManagerRequestRegularization reqRegLists
           },
           itemCount: reqRegListss.data.length,
           itemBuilder: (context, index){
-            return Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Row(
-                      children: [
-                        Image(
-                          image: AssetImage('lib/images/face3.png'),
-                          height: 70,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(reqRegListss.data[index].reqType,
-                              style: TextStyle(
-                                  backgroundColor: Colors.grey.shade300,
-                                  fontSize: 15, fontWeight: FontWeight.bold
-                              ),),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text("empId: ${reqRegListss.data[index].employeeId}",
-                              style: TextStyle(
-                                backgroundColor: Colors.grey.shade300,
-                                fontSize: 15,
-                              ),),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text("reason: ${reqRegListss.data[index].reason}",
-                              style: TextStyle(
-                                backgroundColor: Colors.grey.shade300,
-                                fontSize: 15,
-                              ),),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text("date of req: ${reqRegListss.data[index].dateOfReq}",
-                              style: TextStyle(
-                                backgroundColor: Colors.grey.shade300,
-                                fontSize: 15,
-                              ),),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text("leave date: ${reqRegListss.data[index].dateFor}",
-                              style: TextStyle(
-                                backgroundColor: Colors.grey.shade300,
-                                fontSize: 15,
-                              ),),
-                          ],
-                        ),
-                      ]),
-
-                ],
+            return Dismissible(
+              key: Key(reqRegListss.data[index].toString()),
+              //direction: DismissDirection.endToStart,
+              background: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade300,
+                  //borderRadius: BorderRadius.circular(15),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children:const [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Icon(
+                      Icons.check,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      "Approve",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
+                ),
               ),
+              secondaryBackground: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade300,
+                  //borderRadius: BorderRadius.circular(15),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Icon(
+                      Icons.delete_outlined,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      "Deny",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
+                ),
+              ),
+              confirmDismiss: (direction) async {
+                if (direction  == DismissDirection.endToStart){
+                  //status = true;
+                  return await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Center(
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          height: MediaQuery.of(context).size.width * 0.5,
+                          width: MediaQuery.of(context).size.width * 0.75,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [new BoxShadow(
+                                color: Colors.grey.withOpacity(0.4),
+                                blurRadius: 5.0,
+                              ),]
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Are you sure you want this \nrequest?", textAlign: TextAlign.center,
+                                style: TextStyle( fontSize: 20,
+                                    color: Color(0xff005993)
+                                ),),
+
+                              SizedBox(height: 20,),
+
+                              Divider(),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+
+                                  FlatButton(
+                                    onPressed: () => Navigator.of(context).pop(false),
+                                    child: const Text("Dismiss"),
+                                  ),
+
+                                  VerticalDividerWidget(),
+
+                                  FlatButton(
+                                      onPressed: () {
+                                        bool status = false;
+                                        final requestId = reqRegListss.data[index].id;
+                                        Storage.set_reqId(requestId.toString());
+                                        final reqId = Storage.get_reqId();
+                                        print(reqId);
+                                        print("reqId: $reqId");
+                                        access().managerApproveRegularization("false", reqId).then((value){
+                                          if (value["success"]){
+                                            Navigator.of(context).pop(true);
+                                            Fluttertoast.showToast(
+                                                msg: "The request has been addressed",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.green.shade400,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0);
+                                          }
+                                        });
+
+                                      },
+                                      child: const Text("Deny")
+                                  ),
+
+                                ],
+                              ),
+
+
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else{
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Center(
+                            child: Container(
+                              padding: EdgeInsets.all(20),
+                              height: MediaQuery.of(context).size.height * 0.25,
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [new BoxShadow(
+                                    color: Colors.grey,
+                                    blurRadius: 5.0,
+                                  ),]
+                              ),
+                              child:  Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Are you sure you want to \n approve the request?",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle( fontSize: 20,
+                                        color: Color(0xff005993)
+                                    ),),
+
+                                  SizedBox(height: 20,),
+
+                                  Divider(),
+
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+
+                                      FlatButton(
+                                        onPressed: () => Navigator.of(context).pop(false),
+                                        child: const Text("Dismiss"),
+                                      ),
+
+                                      VerticalDividerWidget(),
+
+                                      FlatButton(
+                                          onPressed: () {
+                                            bool status = true;
+                                            print("status: $status");
+                                            final requestId = reqRegListss.data[index].id;
+                                            Storage.set_reqId(requestId.toString());
+                                            final reqId = Storage.get_reqId();
+                                            print(reqId);
+                                            print("reqId: $reqId");
+                                            access().managerApproveRegularization("true", reqId).then((value){
+                                              if (value["success"]){
+                                                Navigator.of(context).pop(true);
+                                                Fluttertoast.showToast(
+                                                    msg: "${value["message"]}",
+                                                    toastLength: Toast.LENGTH_SHORT,
+                                                    gravity: ToastGravity.BOTTOM,
+                                                    timeInSecForIosWeb: 1,
+                                                    backgroundColor: Colors.green.shade400,
+                                                    textColor: Colors.white,
+                                                    fontSize: 16.0);
+                                              }
+                                            });
+
+                                          },
+                                          child: const Text("Approve")
+                                      ),
+
+                                    ],
+                                  ),
+
+
+                                ],
+                              ),
+                            ),
+                          );
+                    },
+                  );
+                }
+
+              },
+
+
+              child: Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Row(
+                            children: [
+                              Image(
+                                image: AssetImage('lib/images/face3.png'),
+                                height: 70,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(reqRegListss.data[index].reqType,
+                                    style: TextStyle(
+                                        backgroundColor: Colors.grey.shade300,
+                                        fontSize: 15, fontWeight: FontWeight.bold
+                                    ),),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text("empId: ${reqRegListss.data[index].employeeId}",
+                                    style: TextStyle(
+                                      backgroundColor: Colors.grey.shade300,
+                                      fontSize: 15,
+                                    ),),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text("reason: ${reqRegListss.data[index].reason}",
+                                    style: TextStyle(
+                                      backgroundColor: Colors.grey.shade300,
+                                      fontSize: 15,
+                                    ),),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text("date of req: ${reqRegListss.data[index].dateOfReq}",
+                                    style: TextStyle(
+                                      backgroundColor: Colors.grey.shade300,
+                                      fontSize: 15,
+                                    ),),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text("leave date: ${reqRegListss.data[index].dateFor}",
+                                    style: TextStyle(
+                                      backgroundColor: Colors.grey.shade300,
+                                      fontSize: 15,
+                                    ),),
+                                ],
+                              ),
+                            ]),
+
+                      ],
+                    ),
+                  )
+
+
+              ),
+
             );
+
+
+
+
           }
       )
   );
@@ -369,7 +678,7 @@ Future getManagerRegReqList() async {
   print(response.body);
 
   if (response.statusCode == 200) {
-    return managerRequestRegularizationFromJson(response.body);
+    return ManagerRequestRegularization.fromJson(jsonDecode(response.body));
   } else {
     print("Failed to fetch data");
   }

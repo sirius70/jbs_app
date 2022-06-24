@@ -24,6 +24,7 @@ class _myAttendanceState extends State<myAttendance> {
   void initState() {
     dateinput.text = ""; //set the initial value of text field
     super.initState();
+    empAbsPresent();
 
   }
 
@@ -253,6 +254,7 @@ class _myAttendanceState extends State<myAttendance> {
                                       children: [
                                         GestureDetector(
                                           onTap: (){
+                                            empAbsPresent();
                                             Navigator.push(context,
                                                 MaterialPageRoute(builder: (context)=>myCalendar()));
                                           },

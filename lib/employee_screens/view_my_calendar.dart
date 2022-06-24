@@ -1,14 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jbs_app/employee_screens/profile_page_3.dart';
 import 'package:jbs_app/employee_screens/scan_qr.dart';
 import 'package:jbs_app/employee_screens/widgets/attendance_calendar.dart';
-import 'dart:ui' as ui;
+import 'package:http/http.dart'  as http;
 
+import '../models/emp_abs_pres_model.dart';
+import '../storage.dart';
 import 'employee_welcome_1.dart';
 import 'guest_register_2.dart';
 import 'my_attendance.dart';
-import 'widgets/bar_graph.dart';
 
 class myCalendar extends StatefulWidget {
   const myCalendar({Key? key}) : super(key: key);
@@ -24,6 +27,7 @@ class _myCalendarState extends State<myCalendar> {
   void initState() {
     dateinput.text = ""; //set the initial value of text field
     super.initState();
+
   }
 
 
@@ -189,177 +193,6 @@ class _myCalendarState extends State<myCalendar> {
 
                 CalendarPage2(),
 
-                // SizedBox(height: 10,),
-                //
-                // Padding(
-                //   padding: const EdgeInsets.all(15.0),
-                //   child: Column(
-                //     children: [
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //         children: [
-                //           Column(
-                //             children: [
-                //               Text("09/16*",  style: TextStyle(
-                //                   fontSize: 28,
-                //                   fontWeight: FontWeight.bold,
-                //                   color: Color(0xff005993)
-                //               ),),
-                //
-                //               Text("Present",),
-                //
-                //             ],
-                //           ),
-                //
-                //           Container(
-                //             width: MediaQuery.of(context).size.width*0.6,
-                //             padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                //             decoration: BoxDecoration(
-                //               color: Colors.grey.shade200,
-                //               border: Border.all(color: Colors.grey.shade200),
-                //               borderRadius: BorderRadius.circular(20),
-                //
-                //             ),
-                //             child: Row(
-                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //               children: [
-                //                 Row(
-                //                   children: [
-                //                     Container(
-                //                       height:8,
-                //                       width: 8,
-                //                       decoration: BoxDecoration(
-                //                         shape: BoxShape.circle,
-                //                         color: Color(0xff0EAF00)
-                //                       ),
-                //                     ),
-                //                     Text(" Present",
-                //                       style: TextStyle(
-                //                           color: Color(0xff005993)
-                //                       ),)
-                //                   ],
-                //                 ),
-                //
-                //                 Row(
-                //                   children: [
-                //                     Container(
-                //                       height:8,
-                //                       width: 8,
-                //                       decoration: BoxDecoration(
-                //                           shape: BoxShape.circle,
-                //                           color: Color(0xffFF3821)
-                //                       ),
-                //                     ),
-                //                     Text(" Absent",
-                //                       style: TextStyle(
-                //                           color: Color(0xff005993)
-                //                       ),)
-                //                   ],
-                //                 ),
-                //
-                //                 Row(
-                //                   children: [
-                //                     Container(
-                //                       height:8,
-                //                       width: 8,
-                //                       decoration: BoxDecoration(
-                //                           shape: BoxShape.circle,
-                //                           color: Color(0xff59B2EC)
-                //                       ),
-                //                     ),
-                //                     Text(" Today",
-                //                       style: TextStyle(
-                //                           color: Color(0xff005993)
-                //                       ),)
-                //                   ],
-                //                 )
-                //               ],
-                //             ),
-                //           ),
-                //
-                //         ],
-                //       ),
-                //
-                //       SizedBox(height: 20,),
-                //       Divider(),
-                //       SizedBox(height: 20,),
-                //
-                //       Column(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           Row(
-                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //             children: [
-                //               Column(
-                //                 crossAxisAlignment: CrossAxisAlignment.start,
-                //                 children: [
-                //                   Text("19 October, Today",
-                //                   style: TextStyle(
-                //                     color: Color(0xff288EE3),
-                //                     fontSize: 22
-                //                   ),),
-                //                   Text("ABSENT",
-                //                     style: TextStyle(
-                //                         color: Color(0xffFF2E00),
-                //                         fontSize: 22
-                //                     ),)
-                //                 ],
-                //               ),
-                //               Container(
-                //                 padding: EdgeInsets.only(top: 8,
-                //                 bottom: 8, left: 30, right: 30),
-                //                 decoration: BoxDecoration(
-                //                   borderRadius: BorderRadius.circular(25),
-                //
-                //                   color: Colors.white,
-                //                   border: Border.all(color: Color(0xff288EE3) )
-                //                 ),
-                //                 child: Text("Regularize",  style: TextStyle(
-                //                     fontSize: 15,
-                //                     fontWeight: FontWeight.bold,
-                //                     color: Color(0xff005993)
-                //                 ),),
-                //               )
-                //             ],
-                //           ),
-                //
-                //           Padding(
-                //               padding: EdgeInsets.all(20),
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text("Check-in at 8:59 AM via QR",
-                //             style: TextStyle(
-                //               fontSize: 15
-                //             ),),
-                //             SizedBox(height: 10,),
-                //             Text("Exit detected at 12:15PM",
-                //               style: TextStyle(
-                //                   fontSize: 15
-                //               ),),
-                //             SizedBox(height: 10,),
-                //             Text("Entry book detected at 12:45PM",
-                //               style: TextStyle(
-                //                   fontSize: 15
-                //               ),),
-                //             SizedBox(height: 10,),
-                //             Text("Check-out at 6:59 AM via ID",
-                //               style: TextStyle(
-                //                   fontSize: 15
-                //               ),),
-                //             SizedBox(height: 10,),
-                //           ],
-                //           ),
-                //           ),
-                //
-                //         ],
-                //       )
-                //
-                //
-                //     ],
-                //   ),
-                // )
-
               ],
             ),
           ),
@@ -368,4 +201,79 @@ class _myCalendarState extends State<myCalendar> {
 
     );
   }
+}
+
+
+Future empAbsPresent() async {
+
+  var headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ${Storage.get_accessToken()}',
+  };
+
+  var url = Uri.parse('https://stg.visitormanager.net/v1/employee/attendance/date');
+  var response = await http.get(url, headers: headers);
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+
+    final  presentList=jsonDecode(response.body)["data"]["Present_Dates"];
+    print("PresentList: $presentList") ;
+
+    final presLen = presentList.length;
+    print("presLen: ${presLen}");
+
+    for (int i = 0; i < presLen; i++) {
+      final year = DateTime
+          .parse(presentList[i]["DateTime"])
+          .year;
+      print("years: $year");
+      final month = DateTime
+          .parse(presentList[i]["DateTime"])
+          .month;
+      print("months: $month");
+
+      final day = DateTime
+          .parse(presentList[i]["DateTime"])
+          .day;
+      print("days: $day");
+
+      presentDates.add(
+        DateTime(year, month, day),
+      );
+    }
+    print("print present days: ${presentDates}");
+
+    ///absent dates
+    final  absentList=jsonDecode(response.body)["data"]["Absent_Dates"];
+    print("AbsentList: $presentList") ;
+    final absLen = absentList.length;
+    print("absLen: ${absLen}");
+
+    for (int i = 0; i < absLen; i++) {
+      final year = DateTime
+          .parse(absentList[i]["DateTime"])
+          .year;
+      print("years: $year");
+      final month = DateTime
+          .parse(absentList[i]["DateTime"])
+          .month;
+      print("months: $month");
+
+      final day = DateTime
+          .parse(absentList[i]["DateTime"])
+          .day;
+      print("days: $day");
+
+      absentDates.add(
+        DateTime(year, month, day),
+      );
+    }
+    print("print absent days: ${absentDates}");
+
+    return presentList.map(((e)=>PresentDates.fromJson(e))).toList();
+
+  } else {
+    throw Exception('Failed to load album');
+  }
+
 }

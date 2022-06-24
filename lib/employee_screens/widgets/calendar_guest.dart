@@ -36,8 +36,10 @@ class _MyHomePageState extends State<MyHomePage> {
     final _calendarCarouselNoHeader = CalendarCarousel<Event>(
       onDayPressed: (date, events){
         setState(() => _currentDate2 = date);
-        print(_currentDate2);
-        Storage.set_date(_currentDate2.toString());
+        print(_currentDate2.month);
+        print("Hemashree: ${DateFormat('yyyy-MM-dd').format(_currentDate2)}");
+        final datess = DateFormat('yyyy-MM-dd').format(_currentDate2);
+        Storage.set_date(datess);
         events.forEach((event) => print(event.title));
 
       },
