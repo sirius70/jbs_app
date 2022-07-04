@@ -294,7 +294,7 @@ class _otpVerifyState extends State<otpVerify> {
                                                     access().profile().then((value) async{
                                                       if(value["success"]) {
                                                         ProfileApi profile = await ProfileApi.fromJson(value);
-                                                        final name = profile.data.name;
+                                                        final name = profile.data[0].name;
                                                         Storage.set_name(name);
                                                       }
                                                     });

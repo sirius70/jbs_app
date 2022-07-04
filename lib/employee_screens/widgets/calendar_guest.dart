@@ -46,41 +46,43 @@ class _MyHomePageState extends State<MyHomePage> {
       daysHaveCircularBorder: true,
       showOnlyCurrentMonthDate: false,
       weekFormat: false,
-      height: MediaQuery.of(context).size.width *0.6,
+      height: MediaQuery.of(context).size.width *0.7,
       selectedDateTime: _currentDate2,
       targetDateTime: _targetDateTime,
       customGridViewPhysics: NeverScrollableScrollPhysics(),
       markedDateCustomShapeBorder:
-      CircleBorder(side: BorderSide(color: Colors.yellow)),
-      markedDateCustomTextStyle: const TextStyle(
-        fontSize: 22,
+      const CircleBorder(side: BorderSide(color: Colors.yellow)),
+      markedDateCustomTextStyle:  TextStyle(
+        fontSize: MediaQuery.of(context).size.width *0.02,
         color: Colors.blue,
       ),
       showHeader: false,
-      todayTextStyle: const TextStyle(
-        color: Color(0xff00A3FF), fontWeight: FontWeight.bold,
-        fontSize: 20
+      todayTextStyle:  TextStyle(
+        color: const Color(0xff00A3FF), fontWeight: FontWeight.bold,
+        fontSize: MediaQuery.of(context).size.width *0.05
       ),
       todayButtonColor: Colors.transparent,
       todayBorderColor: Colors.transparent,
-      weekdayTextStyle: const TextStyle(color: Color(0xff00417C),
-          fontWeight: FontWeight.bold, fontSize: 15),
-      weekendTextStyle: const TextStyle(color: Color(0xff092F52), fontSize: 18),
+      weekdayTextStyle:  TextStyle(color: const Color(0xff00417C),
+          fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width *0.04),
+      weekendTextStyle:  TextStyle(color: const Color(0xff092F52),
+          fontSize: MediaQuery.of(context).size.width *0.04),
       selectedDayBorderColor: Colors.transparent,
       selectedDayButtonColor: Colors.transparent,
-      selectedDayTextStyle: const TextStyle(
-        color: Colors.green, fontSize: 20
+      selectedDayTextStyle:  TextStyle(
+        color: Colors.green, fontSize: MediaQuery.of(context).size.width *0.05
       ),
       minSelectedDate: _currentDate.subtract(Duration(days: 360)),
       maxSelectedDate: _currentDate.add(Duration(days: 360)),
-      daysTextStyle: const TextStyle(color: Color(0xff092F52), fontSize: 18),
-      prevDaysTextStyle: const TextStyle(
-        fontSize: 16,
+      daysTextStyle:  TextStyle(color: const Color(0xff092F52),
+          fontSize: MediaQuery.of(context).size.width *0.04),
+      prevDaysTextStyle:  TextStyle(
+        fontSize: MediaQuery.of(context).size.width *0.04,
         color: Colors.grey,
       ),
-      inactiveDaysTextStyle: const TextStyle(
+      inactiveDaysTextStyle:  TextStyle(
         color: Colors.teal,
-        fontSize: 16,
+        fontSize: MediaQuery.of(context).size.width *0.04,
       ),
       onCalendarChanged: (DateTime date) {
         setState(() {
@@ -125,11 +127,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             fontSize: 24.0,
                           ),
                         ),
-                        IconButton(
-                          onPressed: (){
-                           // _selectDateFromPicker()
-                          },
-                            icon: Icon(Icons.keyboard_arrow_down,), color: Color(0xff2980B9))
+                        // IconButton(
+                        //   onPressed: (){
+                        //    // _selectDateFromPicker()
+                        //   },
+                        //     icon: Icon(Icons.keyboard_arrow_down,), color: Color(0xff2980B9))
                       ],
                     ),
                     IconButton(

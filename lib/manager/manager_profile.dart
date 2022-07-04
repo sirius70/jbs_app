@@ -16,6 +16,7 @@ class managerProfile extends StatefulWidget {
 }
 
 class _managerProfileState extends State<managerProfile> {
+  bool loading = true;
 
   SharedPreferencesInit() async {
     await Storage.init();
@@ -25,6 +26,7 @@ class _managerProfileState extends State<managerProfile> {
   void initState(){
     super.initState();
     SharedPreferencesInit();
+    loading = false;
   }
 
   @override
@@ -34,213 +36,216 @@ class _managerProfileState extends State<managerProfile> {
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Container(
-                    padding: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [new BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
-                          blurRadius: 5.0,
-                        ),]
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 70,
-                          width: 70,
-                          decoration: BoxDecoration(
-                            //    borderRadius: BorderRadius.circular(20),
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: AssetImage("assets/images/loki.jpg"),
-                                  fit: BoxFit.fill
-                              )
-                          ),
+            child: loading?Center(child: CircularProgressIndicator(),):
+            SingleChildScrollView(
+              child: Container(
+                child: Column(
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [ BoxShadow(
+                              color: Colors.grey.withOpacity(0.4),
+                              blurRadius: 5.0,
+                            ),]
                         ),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 70,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                //    borderRadius: BorderRadius.circular(20),
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: AssetImage("assets/images/loki.jpg"),
+                                      fit: BoxFit.fill
+                                  )
+                              ),
+                            ),
 
-                        SizedBox(width: 20,),
+                            SizedBox(width: 20,),
 
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(Storage.get_name().toString(),
-                                style: TextStyle(
-                                    color: Color(0xff005993),
-                                    fontSize: 20
-                                ),),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(Storage.get_name().toString(),
+                                    style: TextStyle(
+                                        color: Color(0xff005993),
+                                        fontSize: 20
+                                    ),),
 
-                              SizedBox(height: 5,),
-                              GestureDetector(
-                                onTap: (){
-                                  access().profile().then((value) async{
-                                    if(value["success"]) {
-                                      ProfileApi profile = await ProfileApi.fromJson(value);
-                                      // final name = profile.data.name;
-                                      // Storage.set_name(name);
-                                      return _showEditProfileDialogue(context, profile);
-                                    }else{
-                                      return Center(child: CircularProgressIndicator(),);
-                                    }
-                                  });
+                                  SizedBox(height: 5,),
+                                  GestureDetector(
+                                    onTap: (){
+                                      access().profile().then((value) async{
+                                        if(value["success"]) {
+                                          ProfileApi profile = await ProfileApi.fromJson(value);
+                                          // final name = profile.data.name;
+                                          // Storage.set_name(name);
+                                          return _showEditProfileDialogue(context, profile);
+                                        }else{
+                                          return Center(child: CircularProgressIndicator(),);
+                                        }
+                                      });
 
-                                },
-                                child: Text("View Profile and settings",
-                                  style: TextStyle(
-                                      color: Color(0xff009AFF)
-                                  ),),
+                                    },
+                                    child: Text("View Profile and settings",
+                                      style: TextStyle(
+                                          color: Color(0xff009AFF)
+                                      ),),
 
-                              )
-                            ],
-                          ),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
                         )
-                      ],
-                    )
-                ),
-                SizedBox(height: 20,),
+                    ),
+                    SizedBox(height: 20,),
 
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [new BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
-                        blurRadius: 5.0,
-                      ),]
-                  ),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Manage service requests"),
-
-                            IconButton(onPressed: (){
-                              Navigator.push(
-                                  context, MaterialPageRoute(builder:
-                                  (context)=>Admin2(location: Storage.get_location().toString(),
-                                empID: Storage.get_adminEmpID().toString(),
-                                name: Storage.get_name().toString(),)));
-                            },
-                                icon: Icon(Icons.arrow_forward_ios, color: Colors.grey,))
-                          ],
-                        ),
-                      ),
-                      Divider(),
-
-                      Padding(
-                        padding: const EdgeInsets.only( left: 10, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Manage users"),
-
-                            IconButton(onPressed: (){
-                              Navigator.push(
-                                  context, MaterialPageRoute(builder:
-                                  (context)=>Appdrawer()));
-                            },
-                                icon: Icon(Icons.arrow_forward_ios, color: Colors.grey,))
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 20,),
-
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [new BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
-                        blurRadius: 5.0,
-                      ),]
-                  ),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Row(
-                            //   children: [
-                            //     Icon(Icons.my_location_rounded, size: 30,color: Color(0xff009AFF),),
-                            //     SizedBox(width: 10,),
-                            //     Text("Tracking")
-                            //   ],
-                            // ),
-                            Text("Visitor's history"),
-
-                            IconButton(onPressed: (){
-                              // Navigator.push(
-                              //     context, MaterialPageRoute(builder:
-                              //     (context)=>myTracking()));
-                            },
-                                icon: Icon(Icons.arrow_forward_ios, color: Colors.grey,))
-                          ],
-                        ),
-                      ),
-                      Divider(),
-
-                      Padding(
-                        padding: const EdgeInsets.only( left: 10, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Evacuation mode"),
-                            IconButton(onPressed: (){
-                            },
-                                icon: Icon(Icons.arrow_forward_ios, color: Colors.grey,))
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 10,)
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 70,),
-
-                Container(
-                  child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: ElevatedButton.icon(
-                      icon: Icon(Icons.logout, color: Colors.white,),
-                      onPressed: (){
-                        // Navigator.push(context,
-                        //     MaterialPageRoute(builder: (context)=>otpVerify()));
-                      },
-                      label: Text("    Logout", style: TextStyle(
+                    Container(
+                      decoration: BoxDecoration(
                           color: Colors.white,
-                          fontSize: 16
-                      ),),
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                  side: BorderSide(color: Color(0xff005993))
-                              )
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [new BoxShadow(
+                            color: Colors.grey.withOpacity(0.4),
+                            blurRadius: 5.0,
+                          ),]
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Manage service requests"),
+
+                                IconButton(onPressed: (){
+                                  Navigator.push(
+                                      context, MaterialPageRoute(builder:
+                                      (context)=>Admin2(location: Storage.get_location().toString(),
+                                    empID: Storage.get_adminEmpID().toString(),)));
+                                },
+                                    icon: Icon(Icons.arrow_forward_ios, color: Colors.grey,))
+                              ],
+                            ),
                           ),
-                          backgroundColor: MaterialStateProperty.all(Color(0xff005993),)
+                          Divider(),
+
+                          Padding(
+                            padding: const EdgeInsets.only( left: 10, right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Manage users"),
+
+                                IconButton(onPressed: (){
+                                  Navigator.push(
+                                      context, MaterialPageRoute(builder:
+                                      (context)=>Appdrawer()));
+                                },
+                                    icon: Icon(Icons.arrow_forward_ios, color: Colors.grey,))
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+
+                        ],
                       ),
                     ),
-                  ),
+
+                    SizedBox(height: 20,),
+
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [new BoxShadow(
+                            color: Colors.grey.withOpacity(0.4),
+                            blurRadius: 5.0,
+                          ),]
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Row(
+                                //   children: [
+                                //     Icon(Icons.my_location_rounded, size: 30,color: Color(0xff009AFF),),
+                                //     SizedBox(width: 10,),
+                                //     Text("Tracking")
+                                //   ],
+                                // ),
+                                Text("Visitor's history"),
+
+                                IconButton(onPressed: (){
+                                  // Navigator.push(
+                                  //     context, MaterialPageRoute(builder:
+                                  //     (context)=>myTracking()));
+                                },
+                                    icon: Icon(Icons.arrow_forward_ios, color: Colors.grey,))
+                              ],
+                            ),
+                          ),
+                          Divider(),
+
+                          Padding(
+                            padding: const EdgeInsets.only( left: 10, right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Evacuation mode"),
+                                IconButton(onPressed: (){
+                                },
+                                    icon: Icon(Icons.arrow_forward_ios, color: Colors.grey,))
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 10,)
+                        ],
+                      ),
+                    ),
+
+
+                    Container(
+                      child: Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: ElevatedButton.icon(
+                          icon: Icon(Icons.logout, color: Colors.white,),
+                          onPressed: (){
+                            // Navigator.push(context,
+                            //     MaterialPageRoute(builder: (context)=>otpVerify()));
+                          },
+                          label: Text("    Logout", style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16
+                          ),),
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                      side: BorderSide(color: Color(0xff005993))
+                                  )
+                              ),
+                              backgroundColor: MaterialStateProperty.all(Color(0xff005993),)
+                          ),
+                        ),
+                      ),
+                    ),
+
+
+                  ],
                 ),
-
-
-              ],
+              ),
             ),
           ),
         ),
@@ -278,7 +283,7 @@ class _managerProfileState extends State<managerProfile> {
                     ),
 
                     SizedBox(height: 20),
-                    Text("${profilee.data.name}",
+                    Text("${profilee.data[0].name}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 20
@@ -290,7 +295,7 @@ class _managerProfileState extends State<managerProfile> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.call, color: Color(0xff009AFF),),
-                          Text(" ${profilee.data.phoneNumber}"),
+                          Text(" ${profilee.data[0].phoneNumber}"),
                         ],
                       ),
                     ),
@@ -301,7 +306,7 @@ class _managerProfileState extends State<managerProfile> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Icon(Icons.mail, color: Color(0xff009AFF),),
-                          Text(" ${profilee.data.email}"),
+                          Text(" ${profilee.data[0].email}"),
                         ],
                       ),
                     ),

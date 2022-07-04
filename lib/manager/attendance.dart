@@ -17,17 +17,32 @@ class _AttendanceState extends State<Attendance> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+          backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: Row(
-          children: [
-            Icon(Icons.arrow_left_sharp, color: Colors.black),
-            Text(
-              'back',
-              style: TextStyle(color: Colors.black),
-            ),
-          ],
+        leading: Builder(
+            builder: (context) {
+              return Padding(
+                padding: const EdgeInsets.only(left:3.0),
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.pop(context,);
+                  },
+                  child: Row(
+                    children: const[
+                      Icon(Icons.arrow_back_ios,
+                          color: Color(0xff005993), size: 12),
+                      Text("back",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xff005993)
+                        ),)
+                    ],
+                  ),
+                ),
+              );
+            }
         ),
       ),
       bottomNavigationBar: BottomAppBar(
@@ -116,56 +131,84 @@ class _AttendanceState extends State<Attendance> {
         ),
       )),
       body: SingleChildScrollView(
-        child: Column(children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text('Attendance',
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Attendance',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.blue.shade900,
-                        fontSize: 35)),
-              ),
-              SizedBox(
-                width: 100,
-              ),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        'This month',
-                        style: TextStyle(color: Colors.blue, fontSize: 10),
+                        fontSize: MediaQuery.of(context).size.width*0.08)),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'This month',
+                          style: TextStyle(color: Colors.blue, fontSize: MediaQuery.of(context).size.width*0.035),
+                        ),
+                        GestureDetector(
+                          onTap: (){
+
+                          },
+                            child: Icon(Icons.arrow_drop_down, color: Colors.blue))
+                      ],
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Color(0xff1AA7EC)),
+                        borderRadius: BorderRadius.circular(8)
                       ),
-                      Icon(Icons.arrow_drop_down, color: Colors.blue)
-                    ],
-                  ),
-                ],
-              )
-            ],
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          Material(
-            elevation: 5,
-            child: Container(
-              padding: EdgeInsets.all(20),
-              height: 100,
+                      child: Row(
+                        children: [
+
+                          Text("27", style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width*0.035,
+                            color: Color(0xff206EA0)
+                          ),),
+                          VerticalDivider(),
+                          Text("AUG", style: TextStyle(
+                              fontSize: MediaQuery.of(context).size.width*0.035,
+                              color: Color(0xff206EA0)
+                          ),),
+                          VerticalDivider(),
+                          Text("22", style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width*0.035,
+                              color: Color(0xff206EA0)
+                          ),)
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [ BoxShadow(
+                    color: Colors.grey.withOpacity(0.4),
+                    blurRadius: 5.0,
+                  ),],),
               width: MediaQuery.of(context).size.width,
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(18)),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Employees present today: '),
                       SizedBox(
-                        width: 50,
+                        width: MediaQuery.of(context).size.width*0.1,
                       ),
                       Text(
                         '52',
@@ -173,16 +216,16 @@ class _AttendanceState extends State<Attendance> {
                       )
                     ],
                   ),
+                  SizedBox(height: 10,),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         width: 1,
                       ),
                       Text('Working days this month: '),
                       SizedBox(
-                        width: 50,
+                        width: MediaQuery.of(context).size.width*0.1,
                       ),
                       Text(
                         '28',
@@ -190,16 +233,13 @@ class _AttendanceState extends State<Attendance> {
                       )
                     ],
                   ),
+                  SizedBox(height: 10,),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children:const [
-                      SizedBox(
-                        width: 70,
-                      ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Text('Average rate: '),
                       SizedBox(
-                        width: 50,
+                        width: MediaQuery.of(context).size.width*0.29,
                       ),
                       Text(
                         '50',
@@ -210,20 +250,86 @@ class _AttendanceState extends State<Attendance> {
                 ],
               ),
             ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                    height: 170,
+                    width: 180,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.0),
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(0.0, 1.0),
+                          blurRadius: 6.0,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          'Stats',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: Colors.blue.shade900,
+                              fontSize: 20),
+                        ),
+                        const Center(
+                          child:  Image(
+                            image: AssetImage('lib/images/bars2.png'),
+                            height: 100,
+                          ),
+                        ),
+                        Row(
+                          children: const [
+                            CircleAvatar(
+                              backgroundColor: Colors.red,
+                              radius: 5,
+                            ),
+                            Text(
+                              ' On Time',
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            CircleAvatar(
+                              backgroundColor: Colors.amber,
+                              radius: 5,
+                            ),
+                            Text(
+                              ' Late',
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            CircleAvatar(
+                              backgroundColor: Colors.purple,
+                              radius: 5,
+                            ),
+                            Text(
+                              ' Leave',
+                              style: TextStyle(color: Colors.blue),
+                            )
+                          ],
+                        )
+                      ],
+                    )),
+                Container(
                   height: 170,
-                  width: 180,
+                  width: 160,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.0),
                     color: Colors.white,
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
                         color: Colors.grey,
                         offset: Offset(0.0, 1.0),
@@ -232,61 +338,86 @@ class _AttendanceState extends State<Attendance> {
                     ],
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        'Stats',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: Colors.blue.shade900,
-                            fontSize: 20),
-                      ),
-                      const Center(
-                        child:  Image(
-                          image: AssetImage('lib/images/bars2.png'),
-                          height: 100,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Logs',
+                              style: TextStyle(
+                                  color: Colors.blue.shade900,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20),
+                            ),
+                            IconButton(
+                                padding: EdgeInsets.all(0),
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.arrow_circle_right_outlined,
+                                  color: Colors.blue.shade900,
+                                ))
+                          ],
                         ),
-                      ),
-                      Row(
-                        children: const [
-                          CircleAvatar(
-                            backgroundColor: Colors.red,
-                            radius: 5,
-                          ),
-                          Text(
-                            ' On Time',
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          CircleAvatar(
-                            backgroundColor: Colors.amber,
-                            radius: 5,
-                          ),
-                          Text(
-                            ' Late',
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          CircleAvatar(
-                            backgroundColor: Colors.purple,
-                            radius: 5,
-                          ),
-                          Text(
-                            ' Leave',
-                            style: TextStyle(color: Colors.blue),
-                          )
-                        ],
-                      )
-                    ],
-                  )),
-              Container(
-                height: 170,
-                width: 160,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(child: Text('Today')),
+                        ),
+                        Row(
+                          children: [
+                            Text('Vinod'),
+                            Spacer(),
+                            Text('Checkout'),
+                            Spacer(),
+                            Text('9:40 am')
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          children: [
+                            Text('Vinod'),
+                            Spacer(),
+                            Text('Checkout'),
+                            Spacer(),
+                            Text('9:40 am')
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          children: [
+                            Text('Vinod'),
+                            Spacer(),
+                            Text('Checkout'),
+                            Spacer(),
+                            Text('9:40 am')
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          children: [
+                            Text('Vinod'),
+                            Spacer(),
+                            Text('Checkout'),
+                            Spacer(),
+                            Text('9:40 am')
+                          ],
+                        )
+                      ]),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.0),
                   color: Colors.white,
@@ -298,606 +429,515 @@ class _AttendanceState extends State<Attendance> {
                     ),
                   ],
                 ),
+                padding: EdgeInsets.all(15),
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Late',
+                      style: TextStyle(color: Colors.blue.shade900),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Image(
+                        image: AssetImage('lib/images/face3.png'),
+                        height: 60,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Logs',
-                            style: TextStyle(
-                                color: Colors.blue.shade900,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 20),
+                          Container(
+                            height: 10,
+                            width: 120,
+                            color: Colors.grey,
                           ),
-                          IconButton(
-                              padding: EdgeInsets.all(0),
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.arrow_circle_right_outlined,
-                                color: Colors.blue.shade900,
-                              ))
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 150,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 80,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 100,
+                            color: Colors.grey,
+                          )
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(child: Text('Today')),
-                      ),
-                      Row(
-                        children: [
-                          Text('Vinod'),
-                          Spacer(),
-                          Text('Checkout'),
-                          Spacer(),
-                          Text('9:40 am')
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          Text('Vinod'),
-                          Spacer(),
-                          Text('Checkout'),
-                          Spacer(),
-                          Text('9:40 am')
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          Text('Vinod'),
-                          Spacer(),
-                          Text('Checkout'),
-                          Spacer(),
-                          Text('9:40 am')
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          Text('Vinod'),
-                          Spacer(),
-                          Text('Checkout'),
-                          Spacer(),
-                          Text('9:40 am')
-                        ],
-                      )
                     ]),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(0.0, 1.0),
-                    blurRadius: 6.0,
-                  ),
-                ],
-              ),
-              padding: EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Late',
-                    style: TextStyle(color: Colors.blue.shade900),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Row(children: [
                     SizedBox(
-                      width: 10,
+                      height: 5,
                     ),
-                    Image(
-                      image: AssetImage('lib/images/face3.png'),
-                      height: 60,
-                    ),
+                    Row(children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Image(
+                        image: AssetImage('lib/images/face3.png'),
+                        height: 60,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 10,
+                            width: 120,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 150,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 80,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 100,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ]),
                     SizedBox(
-                      width: 10,
+                      height: 5,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 10,
-                          width: 120,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 150,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 80,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 100,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ]),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Image(
-                      image: AssetImage('lib/images/face3.png'),
-                      height: 60,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 10,
-                          width: 120,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 150,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 80,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 100,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ]),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Image(
-                      image: AssetImage('lib/images/face3.png'),
-                      height: 60,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 10,
-                          width: 120,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 150,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 80,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 100,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ]),
-                ],
+                    Row(children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Image(
+                        image: AssetImage('lib/images/face3.png'),
+                        height: 60,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 10,
+                            width: 120,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 150,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 80,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 100,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ]),
+                  ],
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(0.0, 1.0),
-                    blurRadius: 6.0,
-                  ),
-                ],
-              ),
-              padding: EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Leave',
-                    style: TextStyle(color: Colors.blue.shade900),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Row(children: [
-                    SizedBox(
-                      width: 10,
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0.0, 1.0),
+                      blurRadius: 6.0,
                     ),
-                    Image(
-                      image: AssetImage('lib/images/face3.png'),
-                      height: 60,
+                  ],
+                ),
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Leave',
+                      style: TextStyle(color: Colors.blue.shade900),
                     ),
                     SizedBox(
-                      width: 10,
+                      height: 15,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 10,
-                          width: 120,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 150,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 80,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 100,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ]),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(children: [
+                    Row(children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Image(
+                        image: AssetImage('lib/images/face3.png'),
+                        height: 60,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 10,
+                            width: 120,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 150,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 80,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 100,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ]),
                     SizedBox(
-                      width: 10,
+                      height: 5,
                     ),
-                    Image(
-                      image: AssetImage('lib/images/face3.png'),
-                      height: 60,
-                    ),
+                    Row(children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Image(
+                        image: AssetImage('lib/images/face3.png'),
+                        height: 60,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 10,
+                            width: 120,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 150,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 80,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 100,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ]),
                     SizedBox(
-                      width: 10,
+                      height: 5,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 10,
-                          width: 120,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 150,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 80,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 100,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ]),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Image(
-                      image: AssetImage('lib/images/face3.png'),
-                      height: 60,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 10,
-                          width: 120,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 150,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 80,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 100,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ]),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(0.0, 1.0),
-                    blurRadius: 6.0,
-                  ),
-                ],
-              ),
-              padding: EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'On time',
-                    style: TextStyle(color: Colors.blue.shade900),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Row(children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Image(
-                      image: AssetImage('lib/images/face3.png'),
-                      height: 60,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 10,
-                          width: 120,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 150,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 80,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 100,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ]),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Image(
-                      image: AssetImage('lib/images/face3.png'),
-                      height: 60,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 10,
-                          width: 120,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 150,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 80,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 100,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ]),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Image(
-                      image: AssetImage('lib/images/face3.png'),
-                      height: 60,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 10,
-                          width: 120,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 150,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 80,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 10,
-                          width: 100,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ]),
-                ],
+                    Row(children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Image(
+                        image: AssetImage('lib/images/face3.png'),
+                        height: 60,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 10,
+                            width: 120,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 150,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 80,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 100,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ]),
+                  ],
+                ),
               ),
             ),
-          )
-        ]),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0.0, 1.0),
+                      blurRadius: 6.0,
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'On time',
+                      style: TextStyle(color: Colors.blue.shade900),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Image(
+                        image: AssetImage('lib/images/face3.png'),
+                        height: 60,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 10,
+                            width: 120,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 150,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 80,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 100,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Image(
+                        image: AssetImage('lib/images/face3.png'),
+                        height: 60,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 10,
+                            width: 120,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 150,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 80,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 100,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Image(
+                        image: AssetImage('lib/images/face3.png'),
+                        height: 60,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 10,
+                            width: 120,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 150,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 80,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 100,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ]),
+                  ],
+                ),
+              ),
+            )
+          ]),
+        ),
       ),
     ));
   }

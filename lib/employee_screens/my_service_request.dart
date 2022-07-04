@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:http/http.dart'  as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,7 @@ import '../storage.dart';
 import 'employee_welcome_1.dart';
 import 'guest_register_2.dart';
 import 'my_attendance.dart';
+import 'my_scan_qr.dart';
 
 class serviceRequest extends StatefulWidget {
   const serviceRequest({Key? key}) : super(key: key);
@@ -117,7 +120,7 @@ class _serviceRequestState extends State<serviceRequest> {
                               Navigator
                                   .of(context)
                                   .push(MaterialPageRoute(builder:
-                                  (BuildContext context) => scanQr()));
+                                  (BuildContext context) => profileQr()));
                             },
                             icon: Icon(CupertinoIcons.qrcode_viewfinder,  size: 40,
                                 color: Color(0xff717171))),
@@ -177,6 +180,7 @@ class _serviceRequestState extends State<serviceRequest> {
                   child: ElevatedButton.icon(
                     icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 13,),
                     onPressed: (){
+                      Get.back();
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (context)=>otpVerify()));
                     },
@@ -228,40 +232,40 @@ class _serviceRequestState extends State<serviceRequest> {
                                 SizedBox(height: 10,),
                                 Column(
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Name"),
-                                        Flexible(
-                                          child: Container(
-                                            height: 38,
-                                            width: 200,
-                                            child: TextField(
-                                              cursorColor: Color(0xff031627),
-                                              decoration: InputDecoration(
-                                                contentPadding: const EdgeInsets.all(10.0),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusColor: Color(0xff031627),
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                filled: true,
-                                                fillColor: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text("Name"),
+                                    //     Flexible(
+                                    //       child: Container(
+                                    //         height: 38,
+                                    //         width: 200,
+                                    //         child: TextField(
+                                    //           cursorColor: Color(0xff031627),
+                                    //           decoration: InputDecoration(
+                                    //             contentPadding: const EdgeInsets.all(10.0),
+                                    //             enabledBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusedBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusColor: Color(0xff031627),
+                                    //             border: OutlineInputBorder(
+                                    //               borderRadius: BorderRadius.circular(10.0),
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             filled: true,
+                                    //             fillColor: Colors.white,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ],
+                                    // ),
 
 
-                                    SizedBox(height: 18,),
+                                    // SizedBox(height: 18,),
 
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -269,9 +273,11 @@ class _serviceRequestState extends State<serviceRequest> {
                                         Text("Department"),
                                         Flexible(
                                           child: Container(
-                                            height: 35,
-                                            width: 200,
+                                            height: MediaQuery.of(context).size.width*0.1,
+                                            width: MediaQuery.of(context).size.width*0.5,
                                             child: TextFormField(
+                                              // enabled: true,
+                                              readOnly: true,
                                               controller: deptController,
                                               cursorColor: Color(0xff031627),
                                               decoration: InputDecoration(
@@ -303,11 +309,17 @@ class _serviceRequestState extends State<serviceRequest> {
                                                                   },
                                                                   value: item.name.toString(),)).toList()
                                                         );
+
                                                       }
-                                                      else{
-                                                        return const Center(
-                                                          child: Text(""),
-                                                        );
+                                                      else if(snapshot.hasError){
+                                                        // deptController.text = "No admins to select";
+
+                                                        print(deptController.text);
+                                                        return Center(child: Text("No admins to select"),);
+
+
+                                                      } else{
+                                                        return Center(child:Text(""));
                                                       }
                                                     },
 
@@ -404,9 +416,10 @@ class _serviceRequestState extends State<serviceRequest> {
                                         Text("Issue section"),
                                         Flexible(
                                           child: Container(
-                                            height: 35,
-                                            width: 200,
+                                            height: MediaQuery.of(context).size.width*0.1,
+                                            width: MediaQuery.of(context).size.width*0.5,
                                             child: TextFormField(
+                                              readOnly: true,
                                               controller: sectionController,
                                               cursorColor: Color(0xff031627),
                                               decoration: InputDecoration(
@@ -533,6 +546,7 @@ class _serviceRequestState extends State<serviceRequest> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: TextFormField(
+                                      autofocus: false,
                                       controller: issueController,
                                       textInputAction: TextInputAction.newline,
                                       keyboardType: TextInputType.multiline,
@@ -619,7 +633,7 @@ class _serviceRequestState extends State<serviceRequest> {
                                            toastLength: Toast.LENGTH_SHORT,
                                            gravity: ToastGravity.BOTTOM,
                                            timeInSecForIosWeb: 1,
-                                           backgroundColor: Colors.grey,
+                                           backgroundColor: Colors.red,
                                            textColor: Colors.white,
                                            fontSize: 16.0);
                                      }

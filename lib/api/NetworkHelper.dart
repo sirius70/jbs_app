@@ -75,7 +75,8 @@ class NetworkHelper {
     }
   }
 
-  Future createEmployee(String name, String phoneNo, String email, String Manager) async {
+  Future createEmployee(String name, String phoneNo, String email, String Manager,
+      int controllerId, String dept, String address) async {
     dio = Dio(option);
     try {
       Response? response =
@@ -83,7 +84,105 @@ class NetworkHelper {
         "phone_Number": phoneNo,
         "email": email,
         "is_Manager":Manager,
-        'location_Id':Storage.get_locationID()});
+        'location_id':Storage.get_locationID(),
+        "controller_id": controllerId,
+        "department": dept,
+        "address": address
+      });
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else if(response?.statusCode == 409){
+        return(response?.data);
+      }
+      else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future respondServiceReq(String feedback, serviceId) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {
+        "feedback": feedback,
+        "service_Id": serviceId
+      });
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else if(response?.statusCode == 409){
+        return(response?.data);
+      }
+      else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future updateProfileAdmin(String name, email, phoneNo,
+      address, empId, dept, int isManager) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {
+        "name": name,
+        "email": email,
+        "phone_Number": phoneNo,
+        "is_Manager": isManager,
+        "address": address,
+        "employee_Id": empId,
+        "base_Url": "s3.com",
+        "department": dept,
+        "location_Id":Storage.get_locationID()
+      });
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else if(response?.statusCode == 409){
+        return(response?.data);
+      }
+      else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future updateEmpProfile(String name, email, phoneNo,address) async {
+    dio = Dio(option);
+    try {
+      Response? response =
+      await dio?.post(url, data: {
+        "name": name,
+        "email": email,
+        "phone_Number": phoneNo,
+        "address": address
+      });
 
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {
@@ -108,11 +207,149 @@ class NetworkHelper {
     dio = Dio(option);
     try {
       var queryParams = {
-        'pageNo': 2,
         'locationId': Storage.get_locationID()
       };
 
       Response? response = await dio?.get(url, queryParameters: queryParams);
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future logout() async {
+    dio = Dio(option);
+    try {
+
+
+      Response? response = await dio?.get(url);
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future getEmpProfile(int empId) async {
+    dio = Dio(option);
+    try {
+      var queryParams = {
+        'location_Id': Storage.get_locationID(),
+        "employee_Id": empId
+      };
+
+      Response? response = await dio?.get(url, queryParameters: queryParams);
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future pendingReqCount() async {
+    dio = Dio(option);
+    try {
+
+      Response? response = await dio?.get(url,);
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future visitorCount() async {
+    dio = Dio(option);
+    try {
+      var queryParams = {
+        'location_Id': Storage.get_locationID(),
+      };
+      Response? response = await dio?.get(url,queryParameters: queryParams);
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future attendanceMark() async {
+    dio = Dio(option);
+    try {
+
+      Response? response = await dio?.get(url);
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future currMonthAttendance() async {
+    dio = Dio(option);
+    try {
+
+      Response? response = await dio?.get(url);
 
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {
@@ -180,12 +417,231 @@ class NetworkHelper {
     }
   }
 
+  Future getRegularizationManager() async {
+    dio = Dio(option);
+    try {
+      Response? response = await dio?.get(url);
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future managerRequestLeave() async {
+    dio = Dio(option);
+    try {
+      Response? response = await dio?.get(url);
+
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future getIssuesList() async {
+    dio = Dio(option);
+    try {
+
+      var queryParams = {
+        "location_Id" : "0000${Storage.get_locationID()}"
+      };
+      Response? response = await dio?.get(url, queryParameters: queryParams);
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future getGuestsReportList() async {
+    dio = Dio(option);
+    try {
+
+      var queryParams = {
+        "location_Id" : "0000${Storage.get_locationID()}"
+      };
+      Response? response = await dio?.get(url, queryParameters: queryParams);
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future getContractorsReportList() async {
+    dio = Dio(option);
+    try {
+
+      var queryParams = {
+        "location_Id" : "0000${Storage.get_locationID()}"
+      };
+      Response? response = await dio?.get(url, queryParameters: queryParams);
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future getDeliveriesReportList() async {
+    dio = Dio(option);
+    try {
+
+      var queryParams = {
+        "location_Id" : "0000${Storage.get_locationID()}"
+      };
+      Response? response = await dio?.get(url, queryParameters: queryParams);
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future disabledEmployees() async {
+    dio = Dio(option);
+    try {
+
+      var queryParams = {
+        "location_Id" : "0000${Storage.get_locationID()}"
+      };
+      Response? response = await dio?.get(url, queryParameters: queryParams);
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future visitorData(String startDate, endDate) async {
+    dio = Dio(option);
+    try {
+
+      var queryParams = {
+        "location_Id" : "0000${Storage.get_locationID()}",
+        "startDate": startDate,
+        "endDate": endDate
+
+      };
+      Response? response = await dio?.get(url, queryParameters: queryParams);
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
+  Future getAttendanceinAdmin() async {
+    dio = Dio(option);
+    try {
+    // ?EmployeeId=0000${Storage.get_empID()}&startDate=2022-06-01&endDate=2022-06-31&location_Id=0000${Storage.get_locationID()
+      var queryParams = {
+        "EmployeeId": "000${Storage.get_empID()}",
+        "startDate": "2022-06-01",
+        "endDate": "2022-06-31",
+        "location_Id" : "0000${Storage.get_locationID()}",
+      };
+      Response? response = await dio?.get(url,);
+
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+
+
+        print(response?.data);
+
+        return response?.data;
+      } else {
+        return {'success': false, 'message': 'Failed'};
+      }
+    } on DioError catch (e) {
+      print(e.message.toString());
+      return {'success': false, 'message': e.message};
+    }
+  }
+
 
   Future profile() async {
     dio = Dio(option);
     try {
+      var queryParams = {
+        "location_Id" : Storage.get_locationID()
+      };
 
-      Response? response = await dio?.get(url);
+      Response? response = await dio?.get(url, queryParameters: queryParams);
 
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {

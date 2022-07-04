@@ -20,9 +20,10 @@ class access {
     return data;
   }
 
-  Future<dynamic> createEmployee(String name, String phoneNo, String email, String Manager) async {
+  Future<dynamic> createEmployee(String name, String phoneNo, String email, String Manager,
+      int controllerId, String dept, String address) async {
     NetworkHelper helper = NetworkHelper(base_url + "admin/create/employee",);
-    var data = await helper.createEmployee(name, phoneNo, email, Manager);
+    var data = await helper.createEmployee(name, phoneNo, email, Manager, controllerId, dept, address );
     return data;
   }
 
@@ -49,7 +50,7 @@ class access {
 
   Future<dynamic> profile() async {
 
-    NetworkHelper helper = NetworkHelper(base_url + "profile");
+    NetworkHelper helper = NetworkHelper(base_url + "loginProfile");
     var data = await helper.profile();
     return data;
   }
@@ -174,44 +175,115 @@ class access {
     return data;
   }
 
-  //
-  // Future<dynamic> uploadVisitorImage(String path) async {
-  //   NetworkHelper helper = NetworkHelper(base_url + "upload/img/VisitorImg",);
-  //   var data=await helper.uploadVisitorImage(path);
-  //   return data;
-  //
-  // }
-  //
-  // Future<dynamic> visitor(String visitorName, String visitorEmail, String visitorPhone, String company, int employeeId, String? imageurl) async {
-  //   NetworkHelper helper = NetworkHelper(base_url + "visit",);
-  //   var data=await helper.visitor(visitorName,visitorEmail,visitorPhone,company,employeeId,imageurl);
-  //   return data;
-  // }
-  //
-  // Future<dynamic> delivery(String deliveryPersonName, String deliverPersonPhone, String deliverCompany, int employeeID) async {
-  //   NetworkHelper helper = NetworkHelper(base_url + "delivery",);
-  //   var data=await helper.delivery(deliveryPersonName,deliverPersonPhone,deliverCompany,employeeID);
-  //   return data;
-  // }
-  //
-  // Future<dynamic> contractor(String visitorName, String visitorEmail, String visitorPhone, String company, int employeeId, String? imageurl) async {
-  //   NetworkHelper helper = NetworkHelper(base_url + "contractor",);
-  //   var data=await helper.contractor(visitorName,visitorEmail,visitorPhone,company,employeeId,imageurl);
-  //   return data;
-  // }
-  //
-  // Future<dynamic>signout(String? code) async{
-  //   NetworkHelper helper = NetworkHelper(base_url + "signout",);
-  //   var data=await helper.signout(code);
-  //   return data;
-  // }
-  //
-  // Future<dynamic>attendance(String employeeId, String? imageurl)async {
-  //   NetworkHelper helper = NetworkHelper(base_url + "employee/attendance/mark",);
-  //   var data=await helper.attendance(employeeId,imageurl);
-  //   return data;
-  // }
+  Future<dynamic> getRegularizationManager() async {
+    NetworkHelper helper = NetworkHelper(base_url + "manager/request/regularisation");
+    var data = await helper.getRegularizationManager();
+    return data;
+  }
 
+  Future<dynamic> managerRequestLeave() async {
+    NetworkHelper helper = NetworkHelper(base_url + "manager/request/leave");
+    var data = await helper.managerRequestLeave();
+    return data;
+  }
+
+  Future<dynamic> getIssuesList() async {
+    NetworkHelper helper = NetworkHelper(base_url + "get/service/request");
+    var data = await helper.getIssuesList();
+    return data;
+  }
+
+  Future<dynamic> getGuestsReportList() async {
+    NetworkHelper helper = NetworkHelper(base_url + "reportsTodayGuests");
+    var data = await helper.getGuestsReportList();
+    return data;
+  }
+
+  Future<dynamic> getContractorsReportList() async {
+    NetworkHelper helper = NetworkHelper(base_url + "reportsTodayContractors");
+    var data = await helper.getContractorsReportList();
+    return data;
+  }
+
+  Future<dynamic> getDeliveriesReportList() async {
+    NetworkHelper helper = NetworkHelper(base_url + "reportsTodayDeleveries");
+    var data = await helper.getDeliveriesReportList();
+    return data;
+  }
+
+  Future<dynamic> getAttendanceinAdmin() async {
+    NetworkHelper helper = NetworkHelper(base_url+"attendance/show?EmployeeId=0000${Storage.get_empID()}&startDate=2022-06-01&endDate=2022-06-31&location_Id=0000${Storage.get_locationID()}");
+    var data = await helper.getAttendanceinAdmin();
+    return data;
+  }
+
+  Future<dynamic> disabledEmployees() async {
+    NetworkHelper helper = NetworkHelper(base_url+"totalDisaledEmployees");
+    var data = await helper.disabledEmployees();
+    return data;
+  }
+
+  Future<dynamic> visitorData(String startDate, endDate) async {
+    NetworkHelper helper = NetworkHelper(base_url+"visitor/history");
+    var data = await helper.visitorData(startDate, endDate);
+    return data;
+  }
+
+  Future<dynamic> respondServiceReq(String feedback, String serviceID) async {
+    NetworkHelper helper = NetworkHelper(base_url+"respond/serviceRequest");
+    var data = await helper.respondServiceReq(feedback, serviceID);
+    return data;
+  }
+
+  Future<dynamic> getEmpProfile(int empID) async {
+    NetworkHelper helper = NetworkHelper(base_url+"employeeProfile");
+    var data = await helper.getEmpProfile(empID);
+    return data;
+  }
+
+  Future<dynamic> pendingReqCount() async {
+    NetworkHelper helper = NetworkHelper(base_url+"manager/count/pendingRequest");
+    var data = await helper.pendingReqCount();
+    return data;
+  }
+
+  Future<dynamic> visitorCount() async {
+    NetworkHelper helper = NetworkHelper(base_url+"totalGuest/todaywithYou");
+    var data = await helper.visitorCount();
+    return data;
+  }
+
+  Future<dynamic> updateProfileAdmin(String name, email, phoneNo,
+      address, empId, dept, int isManager) async {
+    NetworkHelper helper = NetworkHelper(base_url+"update/byAdmin");
+    var data = await helper.updateProfileAdmin( name, email, phoneNo,
+        address, empId, dept, isManager);
+    return data;
+  }
+
+  Future<dynamic> attendanceMark() async {
+    NetworkHelper helper = NetworkHelper(base_url+"update/byAdmin");
+    var data = await helper.attendanceMark();
+    return data;
+  }
+
+  Future<dynamic> currMonthAttendance() async {
+    NetworkHelper helper = NetworkHelper(base_url+"currentMonth/Attendance");
+    var data = await helper.currMonthAttendance();
+    return data;
+  }
+
+  Future<dynamic> updateEmpProfile(String name, email, phoneNo,address) async {
+    NetworkHelper helper = NetworkHelper(base_url+"update");
+    var data = await helper.updateEmpProfile(name, email, phoneNo,address);
+    return data;
+  }
+
+  Future<dynamic> logout() async {
+    NetworkHelper helper = NetworkHelper(base_url+"logout");
+    var data = await helper.logout();
+    return data;
+  }
 
 
 }

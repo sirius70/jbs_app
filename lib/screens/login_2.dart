@@ -37,6 +37,8 @@ class _loginScreenState extends State<loginScreen> {
     await Storage.init();
   }
 
+
+
   @override
   void initState(){
     super.initState();
@@ -46,6 +48,7 @@ class _loginScreenState extends State<loginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       backgroundColor: Colors.white,
       body: Center(
         child: Stack(
@@ -246,7 +249,7 @@ class _loginScreenState extends State<loginScreen> {
                                               access().profile().then((value) async{
                                                 if(value["success"]) {
                                                   ProfileApi profile = await ProfileApi.fromJson(value);
-                                                  final name = profile.data.name;
+                                                  final name = profile.data[0].name;
                                                   Storage.set_name(name);
                                                 }
                                               });
@@ -278,7 +281,7 @@ class _loginScreenState extends State<loginScreen> {
                                               toastLength: Toast.LENGTH_SHORT,
                                               gravity: ToastGravity.BOTTOM,
                                               timeInSecForIosWeb: 1,
-                                              backgroundColor: Colors.grey,
+                                              backgroundColor: Colors.red,
                                               textColor: Colors.white,
                                               fontSize: 16.0);
                                         }
@@ -353,8 +356,9 @@ class _loginScreenState extends State<loginScreen> {
                               access().profile().then((value) async{
                                 if(value["success"]) {
                                   ProfileApi profile = await ProfileApi.fromJson(value);
-                                  final name = profile.data.name;
+                                  final name = profile.data[0].name;
                                   Storage.set_name(name);
+
                                 }
                               });
 
@@ -440,8 +444,7 @@ class _loginScreenState extends State<loginScreen> {
                                                     MaterialPageRoute(builder:
                                                         (context) =>
                                                             Home2(empId: Storage.get_adminEmpID().toString(),
-                                                              location: Storage.get_location().toString(),
-                                                              name: Storage.get_name().toString(),)
+                                                              location: Storage.get_location().toString(),)
                                                     ));
 
                                               },
@@ -491,8 +494,7 @@ class _loginScreenState extends State<loginScreen> {
                                                 Navigator.push(context,
                                                     MaterialPageRoute(builder:
                                                         (context) => Admin2(location: Storage.get_location().toString(),
-                                                  empID: Storage.get_adminEmpID().toString(),
-                                                  name: Storage.get_name().toString(),)));
+                                                  empID: Storage.get_adminEmpID().toString(),)));
                                               },
                                               child: Text("Admin", style: TextStyle(
                                                   color: Color(0xff005993), letterSpacing: 1,
@@ -525,7 +527,7 @@ class _loginScreenState extends State<loginScreen> {
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
                               timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.grey,
+                              backgroundColor: Colors.red,
                               textColor: Colors.white,
                               fontSize: 16.0);
                         }

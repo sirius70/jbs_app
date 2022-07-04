@@ -16,13 +16,28 @@ class Appdrawer extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: Row(
-          children: [
-            IconButton(
-              icon: Icon(Icons.arrow_back_sharp, color: Colors.black),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
+        leading: Builder(
+            builder: (context) {
+              return Padding(
+                padding: const EdgeInsets.only(left:3.0),
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  child: Row(
+                    children: const[
+                      Icon(Icons.arrow_back_ios,
+                          color: Color(0xff005993), size: 12),
+                      Text("back",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xff005993)
+                        ),)
+                    ],
+                  ),
+                ),
+              );
+            }
         ),
         title: Text(
           'Manage Users',
@@ -33,56 +48,72 @@ class Appdrawer extends StatelessWidget {
       body: Column(children: [
         Padding(
           padding: const EdgeInsets.all(15),
-          child: Container(
-            padding: EdgeInsets.only(left: 10, right: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(color: Color(0xffE9E9E9))
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Create User',
-                  style: TextStyle(fontSize: 20, color: Color(0xff092F52)),
-                ),
+          child: GestureDetector(
+            onTap: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) {
+                    return Create_user();
+                  }));
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Color(0xffE9E9E9))
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Create User',
+                    style: TextStyle(fontSize: 20, color: Color(0xff092F52)),
+                  ),
 
-                IconButton(onPressed: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                        return Create_user();
-                      }));
-                }, icon: Icon(Icons.arrow_forward_ios),color: Color(0xff005993)),
+                  IconButton(onPressed: (){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return Create_user();
+                        }));
+                  }, icon: Icon(Icons.arrow_forward_ios),color: Color(0xff005993)),
 
-              ],
+                ],
+              ),
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(15),
-          child: Container(
-            padding: EdgeInsets.only(left: 10, right: 10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Color(0xffE9E9E9))
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-              'Disabled User',
-                  style: TextStyle(fontSize: 20, color: Color(0xff092F52)),
-                ),
+          child: GestureDetector(
+            onTap: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) {
+                    return Disabled_users();
+                  }));
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Color(0xffE9E9E9))
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                'Disabled User',
+                    style: TextStyle(fontSize: 20, color: Color(0xff092F52)),
+                  ),
 
-                IconButton(onPressed: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                        return Disabled_users();
-                      }));
-                }, icon: Icon(Icons.arrow_forward_ios),color: Color(0xff005993)),
+                  IconButton(onPressed: (){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return Disabled_users();
+                        }));
+                  }, icon: Icon(Icons.arrow_forward_ios),color: Color(0xff005993)),
 
 
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -115,27 +146,35 @@ class Appdrawer extends StatelessWidget {
 
         Padding(
           padding: const EdgeInsets.all(15),
-          child: Container(
-            padding: EdgeInsets.only(left: 10, right: 10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Color(0xffE9E9E9))
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'View all Users',
-                  style: TextStyle(fontSize: 20, color: Color(0xff092F52)),
-                ),
+          child: GestureDetector(
+            onTap: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) {
+                    return UsersLists();
+                  }));
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Color(0xffE9E9E9))
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'View all Users',
+                    style: TextStyle(fontSize: 20, color: Color(0xff092F52)),
+                  ),
 
-                IconButton(onPressed: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                        return UsersLists();
-                      }));
-                }, icon: Icon(Icons.arrow_forward_ios),color: Color(0xff005993)),
-              ],
+                  IconButton(onPressed: (){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return UsersLists();
+                        }));
+                  }, icon: Icon(Icons.arrow_forward_ios),color: Color(0xff005993)),
+                ],
+              ),
             ),
           ),
         ),

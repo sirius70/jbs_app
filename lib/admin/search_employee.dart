@@ -43,7 +43,7 @@ class _searchEmployeeState extends State<searchEmployee> {
                       access().employeeList(nameController.text)
                           .then((value) async {
                         SearchEmpRes searchEmpRes = await SearchEmpRes.fromJson(value);
-                        final emp = searchEmpRes.employee!;
+                        final emp = searchEmpRes.employee;
                         setState((){
                           empList = emp;
                           print(empList[0].employeeId);
@@ -112,7 +112,7 @@ class _searchEmployeeState extends State<searchEmployee> {
   Widget searchEmpList(SearchEmpRes searchEmpRes){
     return  Expanded(
       child: ListView.builder(
-        itemCount: searchEmpRes.employee!.length,
+        itemCount: searchEmpRes.employee.length,
         itemBuilder: (context, index){
           return Card(
             child: ListTile(

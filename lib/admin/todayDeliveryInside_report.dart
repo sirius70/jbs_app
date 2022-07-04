@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart'  as http;
+import '../api/access.dart';
 import '../models/delivery_report_model.dart';
 import '../storage.dart';
 
@@ -13,11 +14,31 @@ class todayDeliveryReport extends StatefulWidget {
 }
 
 class _todayDeliveryReportState extends State<todayDeliveryReport> {
+  DeliveryInsideReport? insideDeliveriesReport;
   var inside;
+  bool loading = true;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState(){
+    super.initState();
+    loading = false;
+    access().getDeliveriesReportList().then((value) async{
+      if(value["success"]){
+        print("deli count: $value");
+        setState(() {
+          insideDeliveriesReport =  DeliveryInsideReport.fromJson(value);
+        });
+        loading = false;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
           appBar: AppBar(
             title: Text("Todays Deliveries reports"),
             backgroundColor: Colors.white,
@@ -27,26 +48,149 @@ class _todayDeliveryReportState extends State<todayDeliveryReport> {
           backgroundColor: Colors.white,
           body: Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 10,),
+                insideDeliveriesReport == null?
+                const Center(child: Text("No deliveies today in your organization"),):
+                insideDeliveriesReport!.deliveryReportsToday.length==0?
+                const Text("No deliveies today in your organization"):
                 Expanded(
-                  child: FutureBuilder(
-                    builder: (context, snapshot) {
-                      if (snapshot != null){
-                        DeliveryInsideReport delReport = snapshot.data as DeliveryInsideReport ;
-                        if (delReport == null){
-                          return Center(child: Text("No deleveries today in your organization"),);
-                        }
-                        else{
-                          return weatherBox(context, delReport);
-                        }}
-                      else{
-                        return CircularProgressIndicator();
-                      }
-                    },
+                  child: ListView.separated(
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(
+                          height: 20,
+                        );
+                      },
+                      itemCount: insideDeliveriesReport!.deliveryReportsToday.length,
+                      itemBuilder: (context, index){
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow:  [new BoxShadow(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  blurRadius: 5.0,
+                                ),]
+                            ),
+                            padding: EdgeInsets.all(20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CircleAvatar(
+                                              backgroundImage: AssetImage("lib/images/face3.png")
+                                            //backgroundImage: NetworkImage(delReport.deliveryReportsToday![index].dELIVERYBOYPHOTO.toString()),
+                                          ),
+                                          Text(insideDeliveriesReport!.deliveryReportsToday[index].deliveryName.toString(),
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context).size.width*0.035
+                                            ),),
+                                          Text(insideDeliveriesReport!.deliveryReportsToday[index].deliveryCompanyName.toString(),
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context).size.width*0.035
+                                            ),),
+                                          Text(insideDeliveriesReport!.deliveryReportsToday[index].deliveryPhoneNumber.toString(),
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context).size.width*0.035
+                                            ),),
+                                          Text(insideDeliveriesReport!.deliveryReportsToday[index].deliveryEmail.toString(),
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context).size.width*0.035
+                                            ),),
+                                        ],
+                                      ),
+                                    ),
+                                    insideDeliveriesReport!.deliveryReportsToday[index].checkOut == 1?
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context).size.width * 0.065,
+                                          width: MediaQuery.of(context).size.width * 0.065,
+                                          decoration: BoxDecoration(
+                                            color: Colors.green, shape: BoxShape.circle
+                                        ),),
+                                        SizedBox(height: 4,),
+                                        Text("Checked out")
+                                      ],
+                                    ):Column(
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context).size.width * 0.065,
+                                          width: MediaQuery.of(context).size.width * 0.065,
+                                          decoration: BoxDecoration(
+                                            color: Colors.red, shape: BoxShape.circle
+                                        ),),
+                                        SizedBox(height: 4,),
+                                        Text("Still inside")
+                                      ],
+                                    )
 
-                    future: getDeliveryReportList(),
-                  ),
+                                  ],
+                                ),
+
+                                Divider(thickness: 2,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("entry time: ${insideDeliveriesReport!.deliveryReportsToday[index].deliveryEntryTime}",
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context).size.width*0.035
+                                      ),),
+                                    Text("checkout time: ${insideDeliveriesReport!.deliveryReportsToday[index].checkOutTime}",
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context).size.width*0.035
+                                      ),)
+                                  ],
+                                ),
+                                SizedBox(height: 15,),
+
+                                Row(
+
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("emp name: ${insideDeliveriesReport!.deliveryReportsToday[index].employeeName}",
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context).size.width*0.035
+                                          ),),
+                                        Text("emp email: ${insideDeliveriesReport!.deliveryReportsToday[index].employeeEmail}",
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context).size.width*0.035
+                                          ),),
+                                        Text("emp phNo: ${insideDeliveriesReport!.deliveryReportsToday[index].employeePhoneNumber}",
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context).size.width*0.035
+                                          ),),
+                                        Text("nda sign: ${insideDeliveriesReport!.deliveryReportsToday[index].deliveryNdaSign==0? "not signed":"signed"}",
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context).size.width*0.035
+                                          ),)
+                                      ],
+                                    )
+                                  ],
+                                )
+
+
+
+                                // inside
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                  )
                 ),
               ],
             ),
@@ -55,103 +199,7 @@ class _todayDeliveryReportState extends State<todayDeliveryReport> {
     );
   }
 
-  Widget weatherBox(BuildContext context, DeliveryInsideReport delReport){
-    return Expanded(
-        child: ListView.separated(
-            separatorBuilder: (BuildContext context, int index) {
-              return SizedBox(
-                height: 20,
-              );
-            },
-            itemCount: delReport.deliveryReportsToday.length,
-            itemBuilder: (context, index){
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow:  [new BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
-                        blurRadius: 5.0,
-                      ),]
-                  ),
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              CircleAvatar(
-                                  backgroundImage: AssetImage("lib/images/face3.png")
-                                //backgroundImage: NetworkImage(delReport.deliveryReportsToday![index].dELIVERYBOYPHOTO.toString()),
-                              ),
-                              Text(delReport.deliveryReportsToday[index].deliveryName.toString()),
-                              Text(delReport.deliveryReportsToday[index].deliveryCompanyName.toString()),
-                              Text(delReport.deliveryReportsToday[index].deliveryPhoneNumber.toString()),
-                              Text(delReport.deliveryReportsToday[index].deliveryEmail.toString()),
-                            ],
-                          ),
-                          delReport.deliveryReportsToday![index].checkOut == 1?
-                          Column(
-                            children: [
-                              Container(height: 20,width: 20, decoration: BoxDecoration(
-                                  color: Colors.green, shape: BoxShape.circle
-                              ),),
-                              Text("Checked out")
-                            ],
-                          ):Column(
-                            children: [
-                              Container(height: 20,width: 20, decoration: BoxDecoration(
-                                  color: Colors.red, shape: BoxShape.circle
-                              ),),
-                              Text("Still inside")
-                            ],
-                          )
 
-                        ],
-                      ),
-
-                      Divider(thickness: 2,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("entry time: ${delReport.deliveryReportsToday[index].deliveryEntryTime}"),
-                          Text("checkout time: ${delReport.deliveryReportsToday[index].checkOutTime}")
-                        ],
-                      ),
-                      SizedBox(height: 15,),
-
-                      Row(
-
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("emp name: ${delReport.deliveryReportsToday[index].employeeName}"),
-                              Text("emp email: ${delReport.deliveryReportsToday[index].employeeEmail}"),
-                              Text("emp phNo: ${delReport.deliveryReportsToday[index].employeePhoneNumber}"),
-                              Text("nda sign: ${delReport.deliveryReportsToday[index].deliveryNdaSign==0? "not signed":"signed"}")
-                            ],
-                          )
-                        ],
-                      )
-
-
-
-                      // inside
-                    ],
-                  ),
-                ),
-              );
-            }
-        )
-    );
-  }
 }
 
 

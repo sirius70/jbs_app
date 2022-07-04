@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jbs_app/api/access.dart';
 import 'package:jbs_app/employee_screens/request_success.dart';
@@ -10,6 +11,7 @@ import '../../models/emp_leave_applica_model.dart';
 import '../employee_welcome_1.dart';
 import '../guest_register_2.dart';
 import '../my_attendance.dart';
+import '../my_scan_qr.dart';
 import '../profile_page_3.dart';
 import '../scan_qr.dart';
 
@@ -106,7 +108,7 @@ class _leaveApplicationState extends State<leaveApplication> {
                               Navigator
                                   .of(context)
                                   .push(MaterialPageRoute(builder:
-                                  (BuildContext context) => scanQr()));
+                                  (BuildContext context) => profileQr()));
                             },
                             icon: Icon(CupertinoIcons.qrcode_viewfinder,  size: 40,
                                 color: Color(0xff717171))),
@@ -169,6 +171,7 @@ class _leaveApplicationState extends State<leaveApplication> {
                     onPressed: (){
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (context)=>otpVerify()));
+                      Get.back();
                     },
                     label: Text("Cancel", style: TextStyle(
                         color: Colors.white,
@@ -218,84 +221,84 @@ class _leaveApplicationState extends State<leaveApplication> {
                                 SizedBox(height: 10,),
                                 Column(
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Name"),
-                                        Flexible(
-                                          child: Container(
-                                            height: 35,
-                                            width: 200,
-                                            child: TextField(
-                                              cursorColor: Color(0xff031627),
-                                              decoration: InputDecoration(
-                                                contentPadding: const EdgeInsets.all(10.0),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusColor: Color(0xff031627),
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                filled: true,
-                                                fillColor: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 18,),
-
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Department"),
-                                        Flexible(
-                                          child: Container(
-                                            height: 35,
-                                            width: 200,
-                                            child: TextField(
-                                              cursorColor: Color(0xff031627),
-                                              decoration: InputDecoration(
-                                                contentPadding: const EdgeInsets.all(10.0),
-                                                suffixIcon: Container(
-                                                  //margin: EdgeInsets.only(left: 10),
-                                                  decoration: BoxDecoration(
-                                                      border: Border(
-                                                        left: BorderSide(color: Colors.grey),
-                                                      )
-                                                  ),
-                                                  child: IconButton(
-                                                      onPressed: (){},
-                                                      icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
-                                                ),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusColor: Color(0xff031627),
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                filled: true,
-                                                fillColor: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-
-
-                                    SizedBox(height: 18,),
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text("Name"),
+                                    //     Flexible(
+                                    //       child: Container(
+                                    //         height: 35,
+                                    //         width: 200,
+                                    //         child: TextField(
+                                    //           cursorColor: Color(0xff031627),
+                                    //           decoration: InputDecoration(
+                                    //             contentPadding: const EdgeInsets.all(10.0),
+                                    //             enabledBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusedBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusColor: Color(0xff031627),
+                                    //             border: OutlineInputBorder(
+                                    //               borderRadius: BorderRadius.circular(10.0),
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             filled: true,
+                                    //             fillColor: Colors.white,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    // SizedBox(height: 18,),
+                                    //
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text("Department"),
+                                    //     Flexible(
+                                    //       child: Container(
+                                    //         height: 35,
+                                    //         width: 200,
+                                    //         child: TextField(
+                                    //           cursorColor: Color(0xff031627),
+                                    //           decoration: InputDecoration(
+                                    //             contentPadding: const EdgeInsets.all(10.0),
+                                    //             suffixIcon: Container(
+                                    //               //margin: EdgeInsets.only(left: 10),
+                                    //               decoration: BoxDecoration(
+                                    //                   border: Border(
+                                    //                     left: BorderSide(color: Colors.grey),
+                                    //                   )
+                                    //               ),
+                                    //               child: IconButton(
+                                    //                   onPressed: (){},
+                                    //                   icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
+                                    //             ),
+                                    //             enabledBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusedBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusColor: Color(0xff031627),
+                                    //             border: OutlineInputBorder(
+                                    //               borderRadius: BorderRadius.circular(10.0),
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             filled: true,
+                                    //             fillColor: Colors.white,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    //
+                                    //
+                                    // SizedBox(height: 18,),
 
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.start,
@@ -305,8 +308,31 @@ class _leaveApplicationState extends State<leaveApplication> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
+                                            GestureDetector(
+                                                onTap: () async {
+                                                  DateTime? pickedDate = await showDatePicker(
+                                                      context: context, initialDate: DateTime.now(),
+                                                      firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                                                      lastDate: DateTime(2101)
+                                                  );
+
+                                                  if(pickedDate != null ){
+                                                    print(pickedDate);
+                                                    String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                                    print(formattedDate);
+                                                    setState(() {
+                                                      dateinput.text = formattedDate; //set output date to TextField value.
+                                                    });
+                                                  }else{
+                                                    print("Date is not selected");
+                                                  }
+                                                },
+                                                child: Icon(Icons.calendar_today, size: 15,)
+                                            ),
+
+                                            SizedBox(width: 4,),
                                             Container(
-                                                width: 100,
+                                              width: MediaQuery.of(context).size.width*0.3,
                                                 child:Center(
                                                     child:TextField(
                                                       controller: dateinput,
@@ -337,7 +363,7 @@ class _leaveApplicationState extends State<leaveApplication> {
                                                     )
                                                 )
                                             ),
-                                            Icon(Icons.calendar_today, size: 15,),
+
                                           ],
                                         ),
                                       ],
@@ -546,7 +572,7 @@ class _leaveApplicationState extends State<leaveApplication> {
                                 ),
 
 
-                                SizedBox(height: 50,),
+                                SizedBox(height: 30,),
 
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10, left: 10),
@@ -631,7 +657,7 @@ class _leaveApplicationState extends State<leaveApplication> {
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.BOTTOM,
                                             timeInSecForIosWeb: 1,
-                                            backgroundColor: Colors.grey,
+                                            backgroundColor: Colors.red,
                                             textColor: Colors.white,
                                             fontSize: 16.0);
                                       }

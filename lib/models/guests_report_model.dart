@@ -1,5 +1,5 @@
-class GuestsInsideReport  {
-  GuestsInsideReport ({
+class GuestsInsideReport {
+  GuestsInsideReport({
     required this.status,
     required this.success,
     required this.message,
@@ -10,7 +10,7 @@ class GuestsInsideReport  {
   late final String message;
   late final List<VisitorReportsToday> visitorReportsToday;
 
-  GuestsInsideReport .fromJson(Map<String, dynamic> json){
+  GuestsInsideReport.fromJson(Map<String, dynamic> json){
     status = json['status'];
     success = json['success'];
     message = json['message'];
@@ -37,7 +37,7 @@ class VisitorReportsToday {
     this.visitorPhoto,
     required this.visitorPhoneNumber,
     required this.visitorCompanyName,
-    required this.visitorNdaSign,
+    this.visitorNdaSign,
     required this.employeeName,
     required this.employeeEmail,
     required this.employeePhoneNumber,
@@ -50,18 +50,18 @@ class VisitorReportsToday {
   late final String? visitorPhoto;
   late final String visitorPhoneNumber;
   late final String visitorCompanyName;
-  late final int visitorNdaSign;
+  late final int? visitorNdaSign;
   late final String employeeName;
   late final String employeeEmail;
   late final String employeePhoneNumber;
 
   VisitorReportsToday.fromJson(Map<String, dynamic> json){
     checkOut = json['check_Out'];
-    checkOutTime = null;
+    checkOutTime = json['check_Out_Time'];
     visitorEntryTime = json['visitor_Entry_Time'];
     visitorName = json['visitor_Name'];
     visitorEmail = json['visitor_Email'];
-    visitorPhoto = null;
+    visitorPhoto = json['check_Out_Time'];
     visitorPhoneNumber = json['visitor_Phone_Number'];
     visitorCompanyName = json['visitor_Company_Name'];
     visitorNdaSign = json['visitor_nda_Sign'];
@@ -84,6 +84,48 @@ class VisitorReportsToday {
     _data['employee_Name'] = employeeName;
     _data['employee_Email'] = employeeEmail;
     _data['employee_Phone_Number'] = employeePhoneNumber;
+    return _data;
+  }
+}
+
+
+///no guests present
+class GuestsInsideNull {
+  GuestsInsideNull({
+    required this.status,
+    required this.success,
+    required this.message,
+    required this.data,
+  });
+  late final int status;
+  late final bool success;
+  late final String message;
+  late final Data data;
+
+  GuestsInsideNull.fromJson(Map<String, dynamic> json){
+    status = json['status'];
+    success = json['success'];
+    message = json['message'];
+    data = Data.fromJson(json['data']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['status'] = status;
+    _data['success'] = success;
+    _data['message'] = message;
+    _data['data'] = data.toJson();
+    return _data;
+  }
+}
+
+class Data {
+  Data();
+
+  Data.fromJson(Map json);
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
     return _data;
   }
 }

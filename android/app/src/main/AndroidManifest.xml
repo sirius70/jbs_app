@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="jbs_app"
+        android:label="JBS"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
        <activity android:name="com.djgeo.majascan.g_scanner.QrCodeScannerActivity"/>

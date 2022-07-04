@@ -59,7 +59,7 @@ class ContractorsReportsToday {
 
   ContractorsReportsToday.fromJson(Map<String, dynamic> json){
     checkOut = json['check_Out'];
-    checkOutTime = null;
+    checkOutTime = json['check_Out_Time'];
     contractorsEntryTime = json['contractors_Entry_Time'];
     contractorsName = json['contractors_Name'];
     contractorsEmail = json['contractors_Email'];

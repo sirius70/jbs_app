@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jbs_app/admin/admin2.dart';
 import 'package:jbs_app/admin/admin_profile.dart';
 import 'package:jbs_app/employee_screens/employee_welcome_1.dart';
 import 'package:jbs_app/manager/home.dart';
+import 'package:get/get.dart';
 
-import '../admin/admin1.dart';
+import '../api/access.dart';
+import '../models/profile_model.dart';
 import '../storage.dart';
 
 class onBoarding extends StatefulWidget {
@@ -36,9 +37,17 @@ class _onBoardingState extends State<onBoarding> {
 
             GestureDetector(
               onTap: (){
-                Navigator.push(context,
-                    MaterialPageRoute(builder:
-                        (context)=>employeeWelcome()));
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder:
+                //         (context)=>employeeWelcome()));
+                access().profile().then((value) async{
+                  if(value["success"]) {
+                    ProfileApi profile = await ProfileApi.fromJson(value);
+                    final name = profile.data[0].name;
+                    Storage.set_name(name);
+                  }
+                });
+                Get.to(employeeWelcome());
               },
               child: Text("Employee", style: TextStyle(
                   color: Color(0xff005993), letterSpacing: 1,
@@ -50,11 +59,20 @@ class _onBoardingState extends State<onBoarding> {
 
             GestureDetector(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder:
-                        (context) => Home2(empId: Storage.get_adminEmpID().toString(),
-                          location: Storage.get_location().toString(),
-                        name: Storage.get_name().toString(),)));
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder:
+                //         (context) => Home2(empId: Storage.get_adminEmpID().toString(),
+                //           location: Storage.get_location().toString(),
+                //         name: Storage.get_name().toString(),)));
+                access().profile().then((value) async{
+                  if(value["success"]) {
+                    ProfileApi profile = await ProfileApi.fromJson(value);
+                    final name = profile.data[0].name;
+                    Storage.set_name(name);
+                  }
+                });
+                Get.to(Home2(empId: Storage.get_adminEmpID().toString(),
+                  location: Storage.get_location().toString(),));
               },
               child: Text("Manager", style: TextStyle(
                   color: Color(0xff005993), letterSpacing: 1,
@@ -67,9 +85,17 @@ class _onBoardingState extends State<onBoarding> {
 
             GestureDetector(
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder:
-                  (context) => adminProfile()));
+          // Navigator.push(context,
+          //     MaterialPageRoute(builder:
+          //         (context) => adminProfile()));
+          access().profile().then((value) async{
+            if(value["success"]) {
+              ProfileApi profile = await ProfileApi.fromJson(value);
+              final name = profile.data[0].name;
+              Storage.set_name(name);
+            }
+          });
+          Get.to(adminProfile());
         },
               child: Text("Admin", style: TextStyle(
                   color: Color(0xff005993), letterSpacing: 1,

@@ -1,39 +1,30 @@
-// To parse this JSON data, do
-//
-//     final profileApi = profileApiFromJson(jsonString);
-
-import 'dart:convert';
-
-ProfileApi profileApiFromJson(String str) => ProfileApi.fromJson(json.decode(str));
-
-String profileApiToJson(ProfileApi data) => json.encode(data.toJson());
-
 class ProfileApi {
   ProfileApi({
     required this.status,
-    required this.message,
     required this.success,
+    required this.message,
     required this.data,
   });
+  late final String status;
+  late final bool success;
+  late final String message;
+  late final List<Data> data;
 
-  String status;
-  String message;
-  bool success;
-  Data data;
+  ProfileApi.fromJson(Map<String, dynamic> json){
+    status = json['status'];
+    success = json['success'];
+    message = json['message'];
+    data = List.from(json['data']).map((e)=>Data.fromJson(e)).toList();
+  }
 
-  factory ProfileApi.fromJson(Map<String, dynamic> json) => ProfileApi(
-    status: json["status"],
-    message: json["message"],
-    success: json["success"],
-    data: Data.fromJson(json["data"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "success": success,
-    "data": data.toJson(),
-  };
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['status'] = status;
+    _data['success'] = success;
+    _data['message'] = message;
+    _data['data'] = data.map((e)=>e.toJson()).toList();
+    return _data;
+  }
 }
 
 class Data {
@@ -41,25 +32,26 @@ class Data {
     required this.name,
     required this.email,
     required this.phoneNumber,
-    this.baseUrl,
+    required this.address,
   });
+  late final String name;
+  late final String email;
+  late final String phoneNumber;
+  late final String address;
 
-  String name;
-  String email;
-  String phoneNumber;
-  dynamic baseUrl;
+  Data.fromJson(Map<String, dynamic> json){
+    name = json['name'];
+    email = json['email'];
+    phoneNumber = json['phone_Number'];
+    address = json['address'];
+  }
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-    name: json["name"],
-    email: json["email"],
-    phoneNumber: json["phone_Number"],
-    baseUrl: json["base_Url"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "name": name,
-    "email": email,
-    "phone_Number": phoneNumber,
-    "base_Url": baseUrl,
-  };
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['name'] = name;
+    _data['email'] = email;
+    _data['phone_Number'] = phoneNumber;
+    _data['address'] = address;
+    return _data;
+  }
 }

@@ -453,7 +453,7 @@ class Admin1 extends StatelessWidget {
                             MaterialPageRoute(builder: (context) {
                               return Admin2(location: Storage.get_location().toString(),
                                 empID: Storage.get_adminEmpID().toString(),
-                              name: Storage.get_name().toString(),);
+                              );
                             }));
                       },
                       style: ButtonStyle(

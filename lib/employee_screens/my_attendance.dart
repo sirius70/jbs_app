@@ -1,13 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jbs_app/employee_screens/profile_page_3.dart';
 import 'package:jbs_app/employee_screens/scan_qr.dart';
 import 'package:jbs_app/employee_screens/view_my_calendar.dart';
 import 'dart:ui' as ui;
 
+import '../api/access.dart';
+import '../models/attendance_mark_model.dart';
+import '../models/current_month_attendance.dart';
 import '../models/empAttendance_summary_model.dart';
 import 'employee_welcome_1.dart';
 import 'guest_register_2.dart';
+import 'my_scan_qr.dart';
 import 'widgets/bar_graph.dart';
 
 class myAttendance extends StatefulWidget {
@@ -19,12 +24,33 @@ class myAttendance extends StatefulWidget {
 
 class _myAttendanceState extends State<myAttendance> {
   TextEditingController dateinput = TextEditingController();
+  CurrentMonthAttendance? currAttendance;
+  bool loading = true;
+  AttendanceMark? checkMark;
 
   @override
   void initState() {
     dateinput.text = ""; //set the initial value of text field
     super.initState();
     empAbsPresent();
+
+    access().currMonthAttendance().then((value) {
+      if(value["success"]){
+        setState((){
+          currAttendance = CurrentMonthAttendance.fromJson(value);
+        });
+        loading=false;
+      }
+    });
+
+    access().attendanceMark().then((value) {
+      if(value["success"]){
+        setState((){
+          checkMark = AttendanceMark.fromJson(value);
+        });
+        loading=false;
+      }
+    });
 
   }
 
@@ -102,7 +128,7 @@ class _myAttendanceState extends State<myAttendance> {
                               Navigator
                                   .of(context)
                                   .push(MaterialPageRoute(builder:
-                                  (BuildContext context) => scanQr()));
+                                  (BuildContext context) => profileQr()));
                             },
                             icon: Icon(CupertinoIcons.qrcode_viewfinder,  size: 40,
                                 color: Color(0xff717171))),
@@ -160,6 +186,7 @@ class _myAttendanceState extends State<myAttendance> {
                   child: ElevatedButton.icon(
                     icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 13,),
                     onPressed: (){
+                      Get.back();
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (context)=>otpVerify()));
                     },
@@ -202,78 +229,136 @@ class _myAttendanceState extends State<myAttendance> {
                             blurRadius: 5.0,
                           ),]
                       ),
-                      child: FutureBuilder(
-                          builder: (context, snapshot) {
-                            if (snapshot != null){
-                              EmpAttendanceSummary empAttSummary = snapshot.data as EmpAttendanceSummary ;
-                              if (empAttSummary == null){
-                                return Center(child: CircularProgressIndicator());
-                              }
-                              else{
-                                return  Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
 
 
-                                    Row(
-                                      children: [
-                                        Text("Today's attendance: "),
-                                        SizedBox(width: MediaQuery.of(context).size.width*0.18,),
-                                        Text("Marked", style: TextStyle(
-                                            color: Color(0xff0EAF00)
-                                        ),)
-                                      ],
-                                    ),
+                          Row(
+                            children: [
+                              Text("Today's attendance: "),
+                              SizedBox(width: MediaQuery.of(context).size.width*0.18,),
+                              Text(checkMark== null? "Not marked": "Marked", style: TextStyle(
+                                  color:checkMark== null? Color(0xffFF2E00) : Color(0xff0EAF00)
+                              ),)
+                            ],
+                          ),
 
-                                    SizedBox(height: 10,),
+                          SizedBox(height: 10,),
 
-                                    Row(
-                                      children: [
-                                        Text("Present days this month: "),
-                                        SizedBox(width: MediaQuery.of(context).size.width*0.11,),
-                                        Text("${empAttSummary.data.Present}", style: TextStyle(
-                                            color: Color(0xff0EAF00)
-                                        ),)
-                                      ],
-                                    ),
-                                    SizedBox(height: 10,),
+                          Row(
+                            children: [
+                              Text("Present days this month: "),
+                              SizedBox(width: MediaQuery.of(context).size.width*0.11,),
+                              Text(currAttendance==null?"0":"${currAttendance!.present[0].COUNT}", style: TextStyle(
+                                  color: Color(0xff0EAF00)
+                              ),)
+                            ],
+                          ),
+                          SizedBox(height: 10,),
 
-                                    Row(
-                                      children: [
-                                        Text("Absent days this month: "),
-                                        SizedBox(width: MediaQuery.of(context).size.width*0.12,),
-                                        Text("${empAttSummary.data.Absent}", style: TextStyle(
-                                            color: Color(0xffFF2E00)
-                                        ),)
-                                      ],
-                                    ),
-                                    SizedBox(height: 10,),
+                          Row(
+                            children: [
+                              Text("Absent days this month: "),
+                              SizedBox(width: MediaQuery.of(context).size.width*0.12,),
+                              Text(currAttendance==null?"0":"${currAttendance!.absent[0].COUNT}", style: TextStyle(
+                                  color: Color(0xffFF2E00)
+                              ),)
+                            ],
+                          ),
+                          SizedBox(height: 10,),
 
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: (){
-                                            empAbsPresent();
-                                            Navigator.push(context,
-                                                MaterialPageRoute(builder: (context)=>myCalendar()));
-                                          },
-                                          child: Text("View in Calendar", style: TextStyle(
-                                              color: Color(0xff092F52),
-                                              decoration: TextDecoration.underline
-                                          ),),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                );
-                              }}
-                            else{
-                              return CircularProgressIndicator();
-                            }
-                          },
-                          future: getEmpAttenSummary()
-                      ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              GestureDetector(
+                                onTap: (){
+                                  empAbsPresent();
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context)=>myCalendar()));
+                                },
+                                child: Text("View in Calendar", style: TextStyle(
+                                    color: Color(0xff092F52),
+                                    decoration: TextDecoration.underline
+                                ),),
+                              )
+                            ],
+                          )
+                        ],
+                      )
+
+                      // FutureBuilder(
+                      //     builder: (context, snapshot) {
+                      //       if (snapshot != null){
+                      //         EmpAttendanceSummary empAttSummary = snapshot.data as EmpAttendanceSummary ;
+                      //         if (empAttSummary == null){
+                      //           return Center(child: CircularProgressIndicator());
+                      //         }
+                      //         else{
+                      //           return  Column(
+                      //             crossAxisAlignment: CrossAxisAlignment.start,
+                      //             children: [
+                      //
+                      //
+                      //               Row(
+                      //                 children: [
+                      //                   Text("Today's attendance: "),
+                      //                   SizedBox(width: MediaQuery.of(context).size.width*0.18,),
+                      //                   Text("Marked", style: TextStyle(
+                      //                       color: Color(0xff0EAF00)
+                      //                   ),)
+                      //                 ],
+                      //               ),
+                      //
+                      //               SizedBox(height: 10,),
+                      //
+                      //               Row(
+                      //                 children: [
+                      //                   Text("Present days this month: "),
+                      //                   SizedBox(width: MediaQuery.of(context).size.width*0.11,),
+                      //                   Text("${empAttSummary.data.Present}", style: TextStyle(
+                      //                       color: Color(0xff0EAF00)
+                      //                   ),)
+                      //                 ],
+                      //               ),
+                      //               SizedBox(height: 10,),
+                      //
+                      //               Row(
+                      //                 children: [
+                      //                   Text("Absent days this month: "),
+                      //                   SizedBox(width: MediaQuery.of(context).size.width*0.12,),
+                      //                   Text("${empAttSummary.data.Absent}", style: TextStyle(
+                      //                       color: Color(0xffFF2E00)
+                      //                   ),)
+                      //                 ],
+                      //               ),
+                      //               SizedBox(height: 10,),
+                      //
+                      //               Row(
+                      //                 mainAxisAlignment: MainAxisAlignment.end,
+                      //                 children: [
+                      //                   GestureDetector(
+                      //                     onTap: (){
+                      //                       empAbsPresent();
+                      //                       Navigator.push(context,
+                      //                           MaterialPageRoute(builder: (context)=>myCalendar()));
+                      //                     },
+                      //                     child: Text("View in Calendar", style: TextStyle(
+                      //                         color: Color(0xff092F52),
+                      //                         decoration: TextDecoration.underline
+                      //                     ),),
+                      //                   )
+                      //                 ],
+                      //               )
+                      //             ],
+                      //           );
+                      //         }}
+                      //       else{
+                      //         return CircularProgressIndicator();
+                      //       }
+                      //     },
+                      //     future: getEmpAttenSummary()
+                      // ),
 
 
                     ),

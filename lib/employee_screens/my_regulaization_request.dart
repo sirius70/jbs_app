@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jbs_app/api/access.dart';
 import 'package:jbs_app/employee_screens/profile_page_3.dart';
@@ -11,7 +12,7 @@ import '../storage.dart';
 import 'employee_welcome_1.dart';
 import 'guest_register_2.dart';
 import 'my_attendance.dart';
-import 'widgets/attendance_calendar.dart';
+import 'my_scan_qr.dart';
 
 class regularizationRequest extends StatefulWidget {
    regularizationRequest({Key? key,}) : super(key: key);
@@ -126,7 +127,7 @@ class _regularizationRequestState extends State<regularizationRequest> {
                               Navigator
                                   .of(context)
                                   .push(MaterialPageRoute(builder:
-                                  (BuildContext context) => scanQr()));
+                                  (BuildContext context) => profileQr()));
                             },
                             icon: Icon(CupertinoIcons.qrcode_viewfinder,  size: 40,
                                 color: Color(0xff717171))),
@@ -187,6 +188,7 @@ class _regularizationRequestState extends State<regularizationRequest> {
                   child: ElevatedButton.icon(
                     icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 13,),
                     onPressed: (){
+                      Get.back();
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (context)=>otpVerify()));
                     },
@@ -238,131 +240,131 @@ class _regularizationRequestState extends State<regularizationRequest> {
                                 SizedBox(height: 10,),
                                 Column(
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Name"),
-                                        Flexible(
-                                          child: Container(
-                                            height: 35,
-                                            width: 200,
-                                            child: TextField(
-                                              cursorColor: Color(0xff031627),
-                                              decoration: InputDecoration(
-                                                contentPadding: const EdgeInsets.all(10.0),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusColor: Color(0xff031627),
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                filled: true,
-                                                fillColor: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 18,),
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text("Name"),
+                                    //     Flexible(
+                                    //       child: Container(
+                                    //         height: MediaQuery.of(context).size.width * 0.1,
+                                    //         width: MediaQuery.of(context).size.width * 0.55,
+                                    //         child: TextField(
+                                    //           cursorColor: Color(0xff031627),
+                                    //           decoration: InputDecoration(
+                                    //             contentPadding: const EdgeInsets.all(10.0),
+                                    //             enabledBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusedBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusColor: Color(0xff031627),
+                                    //             border: OutlineInputBorder(
+                                    //               borderRadius: BorderRadius.circular(10.0),
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             filled: true,
+                                    //             fillColor: Colors.white,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    // SizedBox(height: 18,),
+                                    //
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text("Department"),
+                                    //     Flexible(
+                                    //       child: Container(
+                                    //         height: MediaQuery.of(context).size.width * 0.1,
+                                    //         width: MediaQuery.of(context).size.width * 0.55,
+                                    //         child: TextField(
+                                    //           cursorColor: Color(0xff031627),
+                                    //           decoration: InputDecoration(
+                                    //             contentPadding: const EdgeInsets.all(10.0),
+                                    //             suffixIcon: Container(
+                                    //               //margin: EdgeInsets.only(left: 10),
+                                    //               decoration: BoxDecoration(
+                                    //                   border: Border(
+                                    //                     left: BorderSide(color: Colors.grey),
+                                    //                   )
+                                    //               ),
+                                    //               child: IconButton(
+                                    //                   onPressed: (){},
+                                    //                   icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
+                                    //             ),
+                                    //             enabledBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusedBorder: OutlineInputBorder(
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             focusColor: Color(0xff031627),
+                                    //             border: OutlineInputBorder(
+                                    //               borderRadius: BorderRadius.circular(10.0),
+                                    //               borderSide: BorderSide(color: Colors.grey),
+                                    //             ),
+                                    //             filled: true,
+                                    //             fillColor: Colors.white,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ],
+                                    // ),
 
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Department"),
-                                        Flexible(
-                                          child: Container(
-                                            height: 35,
-                                            width: 200,
-                                            child: TextField(
-                                              cursorColor: Color(0xff031627),
-                                              decoration: InputDecoration(
-                                                contentPadding: const EdgeInsets.all(10.0),
-                                                suffixIcon: Container(
-                                                  //margin: EdgeInsets.only(left: 10),
-                                                  decoration: BoxDecoration(
-                                                      border: Border(
-                                                        left: BorderSide(color: Colors.grey),
-                                                      )
-                                                  ),
-                                                  child: IconButton(
-                                                      onPressed: (){},
-                                                      icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey,)),
-                                                ),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                focusColor: Color(0xff031627),
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                filled: true,
-                                                fillColor: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
 
+                                    // SizedBox(height: 18,),
 
-                                    SizedBox(height: 18,),
-
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Text("Date"),
-                                        SizedBox(width: MediaQuery.of(context).size.width*0.19,),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                                width: 100,
-                                                child:Center(
-                                                    child:TextField(
-                                                      controller: dateinput,
-                                                      decoration: InputDecoration(
-                                                        hintText: 'Enter date',
-                                                        border: InputBorder.none,
-                                                        focusColor: Color(0xff031627),
-                                                      ),
-                                                      readOnly: true,
-                                                      onTap: () async {
-                                                        DateTime? pickedDate = await showDatePicker(
-                                                            context: context, initialDate: DateTime.now(),
-                                                            firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
-                                                            lastDate: DateTime(2101)
-                                                        );
-
-                                                        if(pickedDate != null ){
-                                                          print(pickedDate);
-                                                          String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                                          print(formattedDate);
-                                                          setState(() {
-                                                            dateinput.text = formattedDate; //set output date to TextField value.
-                                                          });
-                                                        }else{
-                                                          print("Date is not selected");
-                                                        }
-                                                      },
-                                                    )
-                                                )
-                                            ),
-                                            Icon(Icons.calendar_today, size: 15,),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 18,),
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.start,
+                                    //   children: [
+                                    //     Text("Date"),
+                                    //     SizedBox(width: MediaQuery.of(context).size.width*0.19,),
+                                    //     Row(
+                                    //       mainAxisAlignment: MainAxisAlignment.start,
+                                    //       children: [
+                                    //         Container(
+                                    //             width: 100,
+                                    //             child:Center(
+                                    //                 child:TextField(
+                                    //                   controller: dateinput,
+                                    //                   decoration: InputDecoration(
+                                    //                     hintText: 'Enter date',
+                                    //                     border: InputBorder.none,
+                                    //                     focusColor: Color(0xff031627),
+                                    //                   ),
+                                    //                   readOnly: true,
+                                    //                   onTap: () async {
+                                    //                     DateTime? pickedDate = await showDatePicker(
+                                    //                         context: context, initialDate: DateTime.now(),
+                                    //                         firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                                    //                         lastDate: DateTime(2101)
+                                    //                     );
+                                    //
+                                    //                     if(pickedDate != null ){
+                                    //                       print(pickedDate);
+                                    //                       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                    //                       print(formattedDate);
+                                    //                       setState(() {
+                                    //                         dateinput.text = formattedDate; //set output date to TextField value.
+                                    //                       });
+                                    //                     }else{
+                                    //                       print("Date is not selected");
+                                    //                     }
+                                    //                   },
+                                    //                 )
+                                    //             )
+                                    //         ),
+                                    //         Icon(Icons.calendar_today, size: 15,),
+                                    //       ],
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    // SizedBox(height: 18,),
 
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -370,293 +372,293 @@ class _regularizationRequestState extends State<regularizationRequest> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
-                                            Text("Regularize for"),
+                                            Text("Regularize for attendance"),
                                           ],
                                         ),
 
-                                        Column(
-                                          children: [
-                                            Container(
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                children: choices.map((data) =>
-                                                SizedBox(
-                                                  width:160,
-                                                  child:  RadioListTile(
-                                                      title: Text("${data.choice}", style: TextStyle(
-                                                        fontSize: 15,
-                                                      ),),
-                                                      activeColor: Colors.blue,
-                                                      contentPadding: EdgeInsets.all(0),
-                                                      value: data.index,
-                                                      groupValue: default_index,
-                                                      onChanged: (value){
-                                                        setState((){
-                                                          default_choice = data.choice;
-                                                          default_index = data.index;
-
-                                                        });
-                                                      },
-                                                    toggleable: true,
-                                                  ),
-                                                )
-                                                ).toList(),
-                                              ),
-                                            ),
-
-                                             (default_choice == "Time") ?
-
-                                             Column(
-                                               children: [
-                                                 SizedBox(height:20),
-                                                 Text("Choose the time to regularize"),
-                                                 SizedBox(height: 10),
-                                                 Container(
-                                                     decoration: BoxDecoration(
-                                                         borderRadius: BorderRadius.circular(10),
-                                                         border: Border.all(color: Color(0xffF3F3F3))
-                                                     ),
-                                                     height:MediaQuery.of(context).size.height * 0.2,
-                                                     child: Scrollbar(
-                                                       scrollbarOrientation: ScrollbarOrientation.left,
-                                                       radius: Radius.circular(10),
-                                                       controller: _scrollController,
-                                                       child: ListView.separated(
-                                                         controller: _scrollController,
-                                                         separatorBuilder: (BuildContext context, int index){
-                                                           return Divider();
-                                                         },
-                                                         itemCount: 10,
-                                                         itemBuilder: (BuildContext context, int index){
-                                                           return ListTile(
-                                                             onTap: (){
-                                                               print(index);
-                                                             },
-                                                             contentPadding: EdgeInsets.only(left: 20, top: 0, bottom: 0),
-                                                             selectedTileColor: Colors.blue,
-                                                             trailing: IconButton(
-                                                               icon: Icon(Icons.arrow_forward_ios),
-                                                               iconSize: 15,
-                                                               onPressed: (){
-                                                                 print(index);
-                                                               },
-                                                             ),
-                                                             title : Text('Item $index', style: TextStyle(
-                                                                 fontSize: 15
-                                                             ),),
-
-                                                           );
-                                                         },
-                                                       ),
-                                                     )
-                                                 ),
-
-
-
-
-                                                 SizedBox(height:30),
-
-
-                                                 Text("change 08:59 AM"),
-                                                 SizedBox(height: 10,),
-                                                 Text("to", style: TextStyle(
-                                                     fontWeight: FontWeight.bold, fontSize: 15
-                                                 ),),
-                                                 SizedBox(height:10),
-
-
-
-                                                 Column(
-                                                   children: [
-
-                                                     Row(
-                                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                       children: [
-                                                         Row(
-                                                           children: [
-                                                             Column(
-                                                               children:  [
-                                                                 GestureDetector(
-                                                                     onTap:(){
-                                                                       int currentValue = int.parse(_time1.text);
-                                                                       setState(() {
-                                                                         currentValue++;
-                                                                         _time1.text = (currentValue < 12? currentValue : 12)
-                                                                             .toString(); // incrementing value
-                                                                       });
-                                                                     },
-                                                                     child: Icon(Icons.keyboard_arrow_up,
-                                                                       color: Color(0xff2980B9),)),
-                                                                 // Container(
-                                                                 //   height:40,
-                                                                 //   width: 50,
-                                                                 //   child: TextFormField(
-                                                                 //     keyboardType: TextInputType.numberWithOptions(
-                                                                 //       decimal: false,
-                                                                 //       signed: true,
-                                                                 //     ),
-                                                                 //
-                                                                 //     textAlign: TextAlign.center,
-                                                                 //     decoration: InputDecoration(
-                                                                 //       contentPadding: EdgeInsets.all(4.0),
-                                                                 //       enabledBorder: OutlineInputBorder(
-                                                                 //         borderSide: BorderSide(color: Colors.white),
-                                                                 //       ),
-                                                                 //       focusedBorder: OutlineInputBorder(
-                                                                 //         borderSide: BorderSide(color: Colors.white),
-                                                                 //       ),
-                                                                 //       focusColor: Color(0xff031627),
-                                                                 //       border: OutlineInputBorder(
-                                                                 //         borderRadius: BorderRadius.circular(10.0),
-                                                                 //         borderSide: BorderSide(color: Colors.white),
-                                                                 //       ),
-                                                                 //     ),
-                                                                 //     controller: _time1,
-                                                                 //     style: TextStyle(
-                                                                 //       fontSize: 16
-                                                                 //   ),),
-                                                                 // ),
-
-                                                                 Text(_time1.text,
-                                                                   style: TextStyle(
-                                                                       fontSize: 16
-                                                                   ),),
-
-                                                                 GestureDetector(
-                                                                     onTap:(){
-                                                                       int currentValue = int.parse(_time1.text);
-                                                                       setState(() {
-                                                                         print("Setting state");
-                                                                         currentValue--;
-                                                                         _time1.text =
-                                                                             (currentValue > 1 ? currentValue : 1)
-                                                                                 .toString(); // decrementing value
-                                                                       });
-                                                                     },
-                                                                     child: Icon(Icons.keyboard_arrow_down, color: Color(0xff2980B9),))
-                                                               ],
-                                                             ),
-
-                                                             Text(":"),
-                                                             Column(
-                                                               children: [
-                                                                 GestureDetector(
-                                                                     onTap:(){
-                                                                       int currentValue = int.parse(_time2.text);
-                                                                       setState(() {
-                                                                         currentValue++;
-                                                                         _time2.text = (currentValue < 59? currentValue : 59)
-                                                                             .toString(); // incrementing value
-                                                                       });
-                                                                     },
-                                                                     child: Icon(Icons.keyboard_arrow_up,
-                                                                       color: Color(0xff2980B9),)),
-                                                                 // Container(
-                                                                 //   height:40,
-                                                                 //   width: 50,
-                                                                 //   child: TextFormField(
-                                                                 //     keyboardType: TextInputType.numberWithOptions(
-                                                                 //       decimal: false,
-                                                                 //       signed: true,
-                                                                 //     ),
-                                                                 //
-                                                                 //     textAlign: TextAlign.center,
-                                                                 //     decoration: InputDecoration(
-                                                                 //       contentPadding: EdgeInsets.all(4.0),
-                                                                 //       enabledBorder: OutlineInputBorder(
-                                                                 //         borderSide: BorderSide(color: Colors.white),
-                                                                 //       ),
-                                                                 //       focusedBorder: OutlineInputBorder(
-                                                                 //         borderSide: BorderSide(color: Colors.white),
-                                                                 //       ),
-                                                                 //       focusColor: Color(0xff031627),
-                                                                 //       border: OutlineInputBorder(
-                                                                 //         borderRadius: BorderRadius.circular(10.0),
-                                                                 //         borderSide: BorderSide(color: Colors.white),
-                                                                 //       ),
-                                                                 //     ),
-                                                                 //     controller: _time1,
-                                                                 //     style: TextStyle(
-                                                                 //       fontSize: 16
-                                                                 //   ),),
-                                                                 // ),
-
-                                                                 Text(_time2.text,
-                                                                   style: TextStyle(
-                                                                       fontSize: 16
-                                                                   ),),
-
-                                                                 GestureDetector(
-                                                                     onTap:(){
-                                                                       int currentValue = int.parse(_time2.text);
-                                                                       setState(() {
-                                                                         print("Setting state");
-                                                                         currentValue--;
-                                                                         _time2.text =
-                                                                             (currentValue >  00? currentValue : 00)
-                                                                                 .toString(); // decrementing value
-                                                                       });
-                                                                     },
-                                                                     child: Icon(Icons.keyboard_arrow_down,
-                                                                       color: Color(0xff2980B9),))
-                                                               ],
-                                                             ),
-                                                           ],
-                                                         ),
-
-                                                         Row(
-                                                           children: [
-                                                             ...List.generate(
-                                                               buttonText.length,
-                                                                   (index) => button(
-                                                                 index: index,
-                                                                 text: buttonText[index],
-                                                               ),
-                                                             )
-                                                           ],
-                                                         ),
-                                                       ],
-                                                     )
-                                                   ],
-                                                 ),
-
-                                                 SizedBox(height:20),
-                                                 GestureDetector(
-                                                   onTap:(){},
-                                                   child: Text("Click to confirm "
-                                                       "change", style: TextStyle(
-                                                     color: Color(0xff00A3FF),
-                                                     decoration: TextDecoration.underline,
-                                                   ),),
-                                                 ),
-
-                                               ],
-                                             ):
-
-                                             Column(
-                                              children: [
-                                                SizedBox(height:20),
-                                                Text("${Storage.get_attendanceMark() == "0"?
-                                                "You had been marked absent" : 
-                                                    "You had been marked present"
-                                                }"),
-                                                SizedBox(height:10),
-                                                GestureDetector(
-                                                  onTap:(){},
-                                                  child: Text("Click to confirm "
-                                                      "change to 'Present'", style: TextStyle(
-                                                    color: Color(0xff00A3FF),
-                                                    decoration: TextDecoration.underline,
-                                                  ),),
-                                                ),
-
-                                                SizedBox(height:10),
-                                                Image.asset("assets/images/check.jpg")
-                                              ],
-                                            )
-
-                                          ],
-                                        )
+                                        // Column(
+                                        //   children: [
+                                        //     Container(
+                                        //       child: Row(
+                                        //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        //         children: choices.map((data) =>
+                                        //         SizedBox(
+                                        //           width:160,
+                                        //           child:  RadioListTile(
+                                        //               title: Text("${data.choice}", style: TextStyle(
+                                        //                 fontSize: 15,
+                                        //               ),),
+                                        //               activeColor: Colors.blue,
+                                        //               contentPadding: EdgeInsets.all(0),
+                                        //               value: data.index,
+                                        //               groupValue: default_index,
+                                        //               onChanged: (value){
+                                        //                 setState((){
+                                        //                   default_choice = data.choice;
+                                        //                   default_index = data.index;
+                                        //
+                                        //                 });
+                                        //               },
+                                        //             toggleable: true,
+                                        //           ),
+                                        //         )
+                                        //         ).toList(),
+                                        //       ),
+                                        //     ),
+                                        //
+                                        //      (default_choice == "Time") ?
+                                        //
+                                        //      Column(
+                                        //        children: [
+                                        //          SizedBox(height:20),
+                                        //          Text("Choose the time to regularize"),
+                                        //          SizedBox(height: 10),
+                                        //          Container(
+                                        //              decoration: BoxDecoration(
+                                        //                  borderRadius: BorderRadius.circular(10),
+                                        //                  border: Border.all(color: Color(0xffF3F3F3))
+                                        //              ),
+                                        //              height:MediaQuery.of(context).size.height * 0.2,
+                                        //              child: Scrollbar(
+                                        //                scrollbarOrientation: ScrollbarOrientation.left,
+                                        //                radius: Radius.circular(10),
+                                        //                controller: _scrollController,
+                                        //                child: ListView.separated(
+                                        //                  controller: _scrollController,
+                                        //                  separatorBuilder: (BuildContext context, int index){
+                                        //                    return Divider();
+                                        //                  },
+                                        //                  itemCount: 10,
+                                        //                  itemBuilder: (BuildContext context, int index){
+                                        //                    return ListTile(
+                                        //                      onTap: (){
+                                        //                        print(index);
+                                        //                      },
+                                        //                      contentPadding: EdgeInsets.only(left: 20, top: 0, bottom: 0),
+                                        //                      selectedTileColor: Colors.blue,
+                                        //                      trailing: IconButton(
+                                        //                        icon: Icon(Icons.arrow_forward_ios),
+                                        //                        iconSize: 15,
+                                        //                        onPressed: (){
+                                        //                          print(index);
+                                        //                        },
+                                        //                      ),
+                                        //                      title : Text('Item $index', style: TextStyle(
+                                        //                          fontSize: 15
+                                        //                      ),),
+                                        //
+                                        //                    );
+                                        //                  },
+                                        //                ),
+                                        //              )
+                                        //          ),
+                                        //
+                                        //
+                                        //
+                                        //
+                                        //          SizedBox(height:30),
+                                        //
+                                        //
+                                        //          Text("change 08:59 AM"),
+                                        //          SizedBox(height: 10,),
+                                        //          Text("to", style: TextStyle(
+                                        //              fontWeight: FontWeight.bold, fontSize: 15
+                                        //          ),),
+                                        //          SizedBox(height:10),
+                                        //
+                                        //
+                                        //
+                                        //          Column(
+                                        //            children: [
+                                        //
+                                        //              Row(
+                                        //                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        //                children: [
+                                        //                  Row(
+                                        //                    children: [
+                                        //                      Column(
+                                        //                        children:  [
+                                        //                          GestureDetector(
+                                        //                              onTap:(){
+                                        //                                int currentValue = int.parse(_time1.text);
+                                        //                                setState(() {
+                                        //                                  currentValue++;
+                                        //                                  _time1.text = (currentValue < 12? currentValue : 12)
+                                        //                                      .toString(); // incrementing value
+                                        //                                });
+                                        //                              },
+                                        //                              child: Icon(Icons.keyboard_arrow_up,
+                                        //                                color: Color(0xff2980B9),)),
+                                        //                          // Container(
+                                        //                          //   height:40,
+                                        //                          //   width: 50,
+                                        //                          //   child: TextFormField(
+                                        //                          //     keyboardType: TextInputType.numberWithOptions(
+                                        //                          //       decimal: false,
+                                        //                          //       signed: true,
+                                        //                          //     ),
+                                        //                          //
+                                        //                          //     textAlign: TextAlign.center,
+                                        //                          //     decoration: InputDecoration(
+                                        //                          //       contentPadding: EdgeInsets.all(4.0),
+                                        //                          //       enabledBorder: OutlineInputBorder(
+                                        //                          //         borderSide: BorderSide(color: Colors.white),
+                                        //                          //       ),
+                                        //                          //       focusedBorder: OutlineInputBorder(
+                                        //                          //         borderSide: BorderSide(color: Colors.white),
+                                        //                          //       ),
+                                        //                          //       focusColor: Color(0xff031627),
+                                        //                          //       border: OutlineInputBorder(
+                                        //                          //         borderRadius: BorderRadius.circular(10.0),
+                                        //                          //         borderSide: BorderSide(color: Colors.white),
+                                        //                          //       ),
+                                        //                          //     ),
+                                        //                          //     controller: _time1,
+                                        //                          //     style: TextStyle(
+                                        //                          //       fontSize: 16
+                                        //                          //   ),),
+                                        //                          // ),
+                                        //
+                                        //                          Text(_time1.text,
+                                        //                            style: TextStyle(
+                                        //                                fontSize: 16
+                                        //                            ),),
+                                        //
+                                        //                          GestureDetector(
+                                        //                              onTap:(){
+                                        //                                int currentValue = int.parse(_time1.text);
+                                        //                                setState(() {
+                                        //                                  print("Setting state");
+                                        //                                  currentValue--;
+                                        //                                  _time1.text =
+                                        //                                      (currentValue > 1 ? currentValue : 1)
+                                        //                                          .toString(); // decrementing value
+                                        //                                });
+                                        //                              },
+                                        //                              child: Icon(Icons.keyboard_arrow_down, color: Color(0xff2980B9),))
+                                        //                        ],
+                                        //                      ),
+                                        //
+                                        //                      Text(":"),
+                                        //                      Column(
+                                        //                        children: [
+                                        //                          GestureDetector(
+                                        //                              onTap:(){
+                                        //                                int currentValue = int.parse(_time2.text);
+                                        //                                setState(() {
+                                        //                                  currentValue++;
+                                        //                                  _time2.text = (currentValue < 59? currentValue : 59)
+                                        //                                      .toString(); // incrementing value
+                                        //                                });
+                                        //                              },
+                                        //                              child: Icon(Icons.keyboard_arrow_up,
+                                        //                                color: Color(0xff2980B9),)),
+                                        //                          // Container(
+                                        //                          //   height:40,
+                                        //                          //   width: 50,
+                                        //                          //   child: TextFormField(
+                                        //                          //     keyboardType: TextInputType.numberWithOptions(
+                                        //                          //       decimal: false,
+                                        //                          //       signed: true,
+                                        //                          //     ),
+                                        //                          //
+                                        //                          //     textAlign: TextAlign.center,
+                                        //                          //     decoration: InputDecoration(
+                                        //                          //       contentPadding: EdgeInsets.all(4.0),
+                                        //                          //       enabledBorder: OutlineInputBorder(
+                                        //                          //         borderSide: BorderSide(color: Colors.white),
+                                        //                          //       ),
+                                        //                          //       focusedBorder: OutlineInputBorder(
+                                        //                          //         borderSide: BorderSide(color: Colors.white),
+                                        //                          //       ),
+                                        //                          //       focusColor: Color(0xff031627),
+                                        //                          //       border: OutlineInputBorder(
+                                        //                          //         borderRadius: BorderRadius.circular(10.0),
+                                        //                          //         borderSide: BorderSide(color: Colors.white),
+                                        //                          //       ),
+                                        //                          //     ),
+                                        //                          //     controller: _time1,
+                                        //                          //     style: TextStyle(
+                                        //                          //       fontSize: 16
+                                        //                          //   ),),
+                                        //                          // ),
+                                        //
+                                        //                          Text(_time2.text,
+                                        //                            style: TextStyle(
+                                        //                                fontSize: 16
+                                        //                            ),),
+                                        //
+                                        //                          GestureDetector(
+                                        //                              onTap:(){
+                                        //                                int currentValue = int.parse(_time2.text);
+                                        //                                setState(() {
+                                        //                                  print("Setting state");
+                                        //                                  currentValue--;
+                                        //                                  _time2.text =
+                                        //                                      (currentValue >  00? currentValue : 00)
+                                        //                                          .toString(); // decrementing value
+                                        //                                });
+                                        //                              },
+                                        //                              child: Icon(Icons.keyboard_arrow_down,
+                                        //                                color: Color(0xff2980B9),))
+                                        //                        ],
+                                        //                      ),
+                                        //                    ],
+                                        //                  ),
+                                        //
+                                        //                  Row(
+                                        //                    children: [
+                                        //                      ...List.generate(
+                                        //                        buttonText.length,
+                                        //                            (index) => button(
+                                        //                          index: index,
+                                        //                          text: buttonText[index],
+                                        //                        ),
+                                        //                      )
+                                        //                    ],
+                                        //                  ),
+                                        //                ],
+                                        //              )
+                                        //            ],
+                                        //          ),
+                                        //
+                                        //          SizedBox(height:20),
+                                        //          GestureDetector(
+                                        //            onTap:(){},
+                                        //            child: Text("Click to confirm "
+                                        //                "change", style: TextStyle(
+                                        //              color: Color(0xff00A3FF),
+                                        //              decoration: TextDecoration.underline,
+                                        //            ),),
+                                        //          ),
+                                        //
+                                        //        ],
+                                        //      ):
+                                        //
+                                        //      Column(
+                                        //       children: [
+                                        //         SizedBox(height:20),
+                                        //         Text("${Storage.get_attendanceMark() == "0"?
+                                        //         "You had been marked absent" :
+                                        //             "You had been marked present"
+                                        //         }"),
+                                        //         SizedBox(height:10),
+                                        //         GestureDetector(
+                                        //           onTap:(){},
+                                        //           child: Text("Click to confirm "
+                                        //               "change to 'Present'", style: TextStyle(
+                                        //             color: Color(0xff00A3FF),
+                                        //             decoration: TextDecoration.underline,
+                                        //           ),),
+                                        //         ),
+                                        //
+                                        //         SizedBox(height:10),
+                                        //         Image.asset("assets/images/check.jpg")
+                                        //       ],
+                                        //     )
+                                        //
+                                        //   ],
+                                        // )
                                         // Row(
                                         //   children: [
                                         //
@@ -671,7 +673,9 @@ class _regularizationRequestState extends State<regularizationRequest> {
                                 ),
 
 
-                                SizedBox(height: 50,),
+                                // SizedBox(height: 50,),
+
+                                SizedBox(height: 20,),
 
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10, left: 10),
@@ -688,6 +692,7 @@ class _regularizationRequestState extends State<regularizationRequest> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: TextFormField(
+                                      autofocus: false,
                                       controller: reasonController,
                                       textInputAction: TextInputAction.newline,
                                       keyboardType: TextInputType.multiline,
@@ -716,78 +721,97 @@ class _regularizationRequestState extends State<regularizationRequest> {
 
                                 SizedBox(height: 30,),
                                 Container(
-                                  // decoration: BoxDecoration(
-                                  //   color: Color(0xffFF0000)
-                                  // ),
                                   height: MediaQuery.of(context).size.width*0.14,
                                   width: MediaQuery.of(context).size.width,
                                   child: ElevatedButton(
                                     onPressed: (){
-                                      var df =  DateFormat("h:mma");
-                                      var dt = df.parse("${_time1.text}:${_time2.text}${_selectedValueIndex==0?"AM":"PM"}");
-                                      print(DateFormat('H:m:s').format(dt));
-                                      print(default_choice);
-                                      print(Storage.get_attendanceId());
+                                      // var df =  DateFormat("h:mma");
+                                      // var dt = df.parse("${_time1.text}:${_time2.text}${_selectedValueIndex==0?"AM":"PM"}");
+                                      // print(DateFormat('H:m:s').format(dt));
+                                      // print(default_choice);
+                                      print("attendance id: ${Storage.get_attendanceId()}");
                                       print(reasonController.text);
                                      if(reasonController.text.isNotEmpty){
-                                       if(default_choice=="Attendance") {
-                                         access().empRegularizationAttend(
-                                             Storage.get_attendanceId().toString(), reasonController.text)
-                                             .then((value){
-                                           if(value["success"]){
-                                             setState((){
-                                               Navigator.push(context,MaterialPageRoute(builder: (context)=>requestSuccess()));
-                                               reasonController.clear();
-                                             });
-                                           } else{
-                                             Fluttertoast.showToast(
-                                                 msg: "${"Error submitting request. Try after sometime"}",
-                                                 toastLength: Toast.LENGTH_SHORT,
-                                                 gravity: ToastGravity.BOTTOM,
-                                                 timeInSecForIosWeb: 1,
-                                                 backgroundColor: Colors.red.shade300,
-                                                 textColor: Colors.white,
-                                                 fontSize: 16.0);
-                                             setState((){
-                                               reasonController.clear();
-                                             });
-                                           }
-                                         });
-                                       }
-
-                                       if(default_choice == "Time") {
-                                         access().empRegularizationTime(
-                                             Storage.get_attendanceId().toString(),
-                                             "${DateFormat('H:m:s').format(dt)}",
-                                             reasonController.text).then((value){
-                                               print(value);
-                                           if(value["success"]){
-                                             setState((){
-                                               reasonController.clear();
-                                               Navigator.push(context,MaterialPageRoute(builder: (context)=>requestSuccess()));
-                                             });
-                                           } else{
-                                             Fluttertoast.showToast(
-                                                 msg: "${"Error submitting request. Try after sometime"}",
-                                                 toastLength: Toast.LENGTH_SHORT,
-                                                 gravity: ToastGravity.BOTTOM,
-                                                 timeInSecForIosWeb: 1,
-                                                 backgroundColor: Colors.red.shade300,
-                                                 textColor: Colors.white,
-                                                 fontSize: 16.0);
-                                             setState((){
-                                               reasonController.clear();
-                                             });
-                                           }
-                                         });
-                                       }
+                                       access().empRegularizationAttend(
+                                           Storage.get_attendanceId().toString(), reasonController.text)
+                                           .then((value){
+                                         if(value["success"]){
+                                           setState((){
+                                             Navigator.push(context,MaterialPageRoute(builder: (context)=>requestSuccess()));
+                                             reasonController.clear();
+                                           });
+                                         } else{
+                                           Fluttertoast.showToast(
+                                               msg: "${"Error submitting request. Try after sometime"}",
+                                               toastLength: Toast.LENGTH_SHORT,
+                                               gravity: ToastGravity.BOTTOM,
+                                               timeInSecForIosWeb: 1,
+                                               backgroundColor: Colors.red.shade300,
+                                               textColor: Colors.white,
+                                               fontSize: 16.0);
+                                           setState((){
+                                             reasonController.clear();
+                                           });
+                                         }
+                                       });
+                                       // if(default_choice=="Attendance") {
+                                       //   access().empRegularizationAttend(
+                                       //       Storage.get_attendanceId().toString(), reasonController.text)
+                                       //       .then((value){
+                                       //     if(value["success"]){
+                                       //       setState((){
+                                       //         Navigator.push(context,MaterialPageRoute(builder: (context)=>requestSuccess()));
+                                       //         reasonController.clear();
+                                       //       });
+                                       //     } else{
+                                       //       Fluttertoast.showToast(
+                                       //           msg: "${"Error submitting request. Try after sometime"}",
+                                       //           toastLength: Toast.LENGTH_SHORT,
+                                       //           gravity: ToastGravity.BOTTOM,
+                                       //           timeInSecForIosWeb: 1,
+                                       //           backgroundColor: Colors.red.shade300,
+                                       //           textColor: Colors.white,
+                                       //           fontSize: 16.0);
+                                       //       setState((){
+                                       //         reasonController.clear();
+                                       //       });
+                                       //     }
+                                       //   });
+                                       // }
+                                       //
+                                       // if(default_choice == "Time") {
+                                       //   access().empRegularizationTime(
+                                       //       Storage.get_attendanceId().toString(),
+                                       //       "${DateFormat('H:m:s').format(dt)}",
+                                       //       reasonController.text).then((value){
+                                       //         print(value);
+                                       //     if(value["success"]){
+                                       //       setState((){
+                                       //         reasonController.clear();
+                                       //         Navigator.push(context,MaterialPageRoute(builder: (context)=>requestSuccess()));
+                                       //       });
+                                       //     } else{
+                                       //       Fluttertoast.showToast(
+                                       //           msg: "${"Error submitting request. Try after sometime"}",
+                                       //           toastLength: Toast.LENGTH_SHORT,
+                                       //           gravity: ToastGravity.BOTTOM,
+                                       //           timeInSecForIosWeb: 1,
+                                       //           backgroundColor: Colors.red.shade300,
+                                       //           textColor: Colors.white,
+                                       //           fontSize: 16.0);
+                                       //       setState((){
+                                       //         reasonController.clear();
+                                       //       });
+                                       //     }
+                                       //   });
+                                       // }
                                      } else{
                                        Fluttertoast.showToast(
                                            msg: "${"Fields cannot be empty"}",
                                            toastLength: Toast.LENGTH_SHORT,
                                            gravity: ToastGravity.BOTTOM,
                                            timeInSecForIosWeb: 1,
-                                           backgroundColor: Colors.grey,
+                                           backgroundColor: Colors.red,
                                            textColor: Colors.white,
                                            fontSize: 16.0);
                                      }

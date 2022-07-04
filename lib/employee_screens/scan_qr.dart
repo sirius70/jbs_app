@@ -13,9 +13,11 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:mobile_scanner/mobile_scanner.dart' as scanner;
 
+import '../admin/admin_scanQr.dart';
 import 'employee_welcome_1.dart';
 import 'guest_register_2.dart';
 import 'my_attendance.dart';
+import 'my_scan_qr.dart';
 
 class scanQr extends StatefulWidget {
   const scanQr({Key? key}) : super(key: key);
@@ -108,7 +110,7 @@ class _scanQrState extends State<scanQr> {
                               Navigator
                                   .of(context)
                                   .push(MaterialPageRoute(builder:
-                                  (BuildContext context) => scanQr()));
+                                  (BuildContext context) => profileQr()));
                             },
                             icon: Icon(CupertinoIcons.qrcode_viewfinder,  size: 40,
                                 color: Color(0xff717171))),
@@ -156,150 +158,152 @@ class _scanQrState extends State<scanQr> {
               ),
             )
         ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: ElevatedButton.icon(
-                        icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 15,),
-                        onPressed: (){
-                          Navigator.pop(context);
-                        },
-                        label: Text("Cancel", style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16
-                        ),),
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(25),
-                                    side: BorderSide(color: Color(0xff005993))
-                                )
-                            ),
-                            backgroundColor: MaterialStateProperty.all(Color(0xff005993),)
+        body: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: ElevatedButton.icon(
+                          icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 15,),
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                          label: Text("Cancel", style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16
+                          ),),
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                      side: BorderSide(color: Color(0xff005993))
+                                  )
+                              ),
+                              backgroundColor: MaterialStateProperty.all(Color(0xff005993),)
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(top: 120, bottom: 120, left: 20, right: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Scan QR", textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff005993)
-                        ),),
-
-                      SizedBox(height: 10,),
-
-                      Text("Point camera on a QR", textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xff00A3FF)
-                        ),),
-
-                      SizedBox(height: 50,),
-
-                  Center(
-                    child: Stack(
-                      children: [
-                        Container(
-                          child: CustomPaint(
-                            foregroundPainter: BorderPainter(),
-                            child: Container(
-                              height: MediaQuery.of(context).size.width*0.6,
-                              width: MediaQuery.of(context).size.width*0.6,
-                            ),
-                          ),
-                        ),
-
-
-                        Positioned(
-                          top: 20,
-                          left: 20,
-                          child: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child:Container(
-                                    height: MediaQuery.of(context).size.width*0.5,
-                                    width: MediaQuery.of(context).size.width*0.5,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(25)
-                                    ),
-                                    child: MobileScanner(
-                                        allowDuplicates: false,
-                                        onDetect: (barcode, args) {
-                                          if (barcode.rawValue == null) {
-                                            debugPrint('Failed to scan Barcode');
-                                          } else {
-                                            final String code = barcode.rawValue!;
-                                            Navigator
-                                                .of(context)
-                                                .pushReplacement(MaterialPageRoute(builder:
-                                                (BuildContext context) => employeeWelcome()));
-                                            debugPrint('Barcode found! $code');
-                                          }
-                                        }),
-                                    //   child: QRViewExample(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                      // SizedBox(height: 10,),
-                      //
-                      //
-                      // Center(
-                      //   child: ClipRRect(
-                      //       borderRadius: BorderRadius.circular(20),
-                      //       child:Container(
-                      //         height: MediaQuery.of(context).size.width*0.6,
-                      //         width: MediaQuery.of(context).size.width*0.6,
-                      //         decoration: BoxDecoration(
-                      //             borderRadius: BorderRadius.circular(25)
-                      //         ),
-                      //         child: MobileScanner(
-                      //             allowDuplicates: false,
-                      //             onDetect: (barcode, args) {
-                      //               if (barcode.rawValue == null) {
-                      //                 debugPrint('Failed to scan Barcode');
-                      //               } else {
-                      //                 final String code = barcode.rawValue!;
-                      //                 Navigator
-                      //                     .of(context)
-                      //                     .pushReplacement(MaterialPageRoute(builder:
-                      //                     (BuildContext context) => employeeWelcome()));
-                      //                 debugPrint('Barcode found! $code');
-                      //               }
-                      //             }),
-                      //         //   child: QRViewExample(),
-                      //       ),
-                      //   ),
-                      // ),
-
                     ],
                   ),
-                )
-              ],
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 120, bottom: 120, left: 20, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Scan QR", textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 35,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff005993)
+                          ),),
+
+                        SizedBox(height: 10,),
+
+                        Text("Point camera on a QR", textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xff00A3FF)
+                          ),),
+
+                        SizedBox(height: 50,),
+
+                    Center(
+                      child: Stack(
+                        children: [
+                          Container(
+                            child: CustomPaint(
+                              foregroundPainter: BorderPainter(),
+                              child: Container(
+                                height: MediaQuery.of(context).size.width*0.6,
+                                width: MediaQuery.of(context).size.width*0.6,
+                              ),
+                            ),
+                          ),
+
+
+                          Positioned(
+                            top: 20,
+                            left: 20,
+                            child: Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child:Container(
+                                      height: MediaQuery.of(context).size.width*0.5,
+                                      width: MediaQuery.of(context).size.width*0.5,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(25)
+                                      ),
+                                      child: MobileScanner(
+                                          allowDuplicates: false,
+                                          onDetect: (barcode, args) {
+                                            if (barcode.rawValue == null) {
+                                              debugPrint('Failed to scan Barcode');
+                                            } else {
+                                              final String code = barcode.rawValue!;
+                                              Navigator
+                                                  .of(context)
+                                                  .pushReplacement(MaterialPageRoute(builder:
+                                                  (BuildContext context) => employeeWelcome()));
+                                              debugPrint('Barcode found! $code');
+                                            }
+                                          }),
+                                      //   child: QRViewExample(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                        // SizedBox(height: 10,),
+                        //
+                        //
+                        // Center(
+                        //   child: ClipRRect(
+                        //       borderRadius: BorderRadius.circular(20),
+                        //       child:Container(
+                        //         height: MediaQuery.of(context).size.width*0.6,
+                        //         width: MediaQuery.of(context).size.width*0.6,
+                        //         decoration: BoxDecoration(
+                        //             borderRadius: BorderRadius.circular(25)
+                        //         ),
+                        //         child: MobileScanner(
+                        //             allowDuplicates: false,
+                        //             onDetect: (barcode, args) {
+                        //               if (barcode.rawValue == null) {
+                        //                 debugPrint('Failed to scan Barcode');
+                        //               } else {
+                        //                 final String code = barcode.rawValue!;
+                        //                 Navigator
+                        //                     .of(context)
+                        //                     .pushReplacement(MaterialPageRoute(builder:
+                        //                     (BuildContext context) => employeeWelcome()));
+                        //                 debugPrint('Barcode found! $code');
+                        //               }
+                        //             }),
+                        //         //   child: QRViewExample(),
+                        //       ),
+                        //   ),
+                        // ),
+
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

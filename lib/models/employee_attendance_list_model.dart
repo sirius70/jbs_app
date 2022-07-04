@@ -1,13 +1,3 @@
-// To parse this JSON data, do
-//
-//     final userListAttendanceApi = userListAttendanceApiFromJson(jsonString);
-
-import 'dart:convert';
-
-UserListAttendanceApi userListAttendanceApiFromJson(String str) => UserListAttendanceApi.fromJson(json.decode(str));
-
-String userListAttendanceApiToJson(UserListAttendanceApi data) => json.encode(data.toJson());
-
 class UserListAttendanceApi {
   UserListAttendanceApi({
     required this.status,
@@ -16,42 +6,61 @@ class UserListAttendanceApi {
     required this.present,
     required this.absent,
   });
+  late final String status;
+  late final bool success;
+  late final String message;
+  late final List<Present> present;
+  late final List<Absent> absent;
 
-  String status;
-  bool success;
-  String message;
-  List<Sent> present;
-  List<Sent> absent;
+  UserListAttendanceApi.fromJson(Map<String, dynamic> json){
+    status = json['status'];
+    success = json['success'];
+    message = json['message'];
+    present = List.from(json['present']).map((e)=>Present.fromJson(e)).toList();
+    absent = List.from(json['absent']).map((e)=>Absent.fromJson(e)).toList();
+  }
 
-  factory UserListAttendanceApi.fromJson(Map<String, dynamic> json) => UserListAttendanceApi(
-    status: json["status"],
-    success: json["success"],
-    message: json["message"],
-    present: List<Sent>.from(json["present"].map((x) => Sent.fromJson(x))),
-    absent: List<Sent>.from(json["absent"].map((x) => Sent.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "status": status,
-    "success": success,
-    "message": message,
-    "present": List<dynamic>.from(present.map((x) => x.toJson())),
-    "absent": List<dynamic>.from(absent.map((x) => x.toJson())),
-  };
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['status'] = status;
+    _data['success'] = success;
+    _data['message'] = message;
+    _data['present'] = present.map((e)=>e.toJson()).toList();
+    _data['absent'] = absent.map((e)=>e.toJson()).toList();
+    return _data;
+  }
 }
 
-class Sent {
-  Sent({
-    required this.countMarked,
+class Present {
+  Present({
+    required this.COUNT,
   });
+  late final int COUNT;
 
-  int countMarked;
+  Present.fromJson(Map<String, dynamic> json){
+    COUNT = json['COUNT(marked)'];
+  }
 
-  factory Sent.fromJson(Map<String, dynamic> json) => Sent(
-    countMarked: json["COUNT(marked)"],
-  );
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['COUNT(marked)'] = COUNT;
+    return _data;
+  }
+}
 
-  Map<String, dynamic> toJson() => {
-    "COUNT(marked)": countMarked,
-  };
+class Absent {
+  Absent({
+    required this.COUNT,
+  });
+  late final int COUNT;
+
+  Absent.fromJson(Map<String, dynamic> json){
+    COUNT = json['COUNT(marked)'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['COUNT(marked)'] = COUNT;
+    return _data;
+  }
 }

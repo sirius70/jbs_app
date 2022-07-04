@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:jbs_app/employee_screens/profile_page_3.dart';
 import 'package:jbs_app/employee_screens/scan_qr.dart';
@@ -10,6 +12,7 @@ import '../api/access.dart';
 import '../storage.dart';
 import 'employee_welcome_1.dart';
 import 'my_attendance.dart';
+import 'my_scan_qr.dart';
 
 class guestRegister extends StatefulWidget {
   const guestRegister({Key? key}) : super(key: key);
@@ -132,7 +135,7 @@ class _guestRegisterState extends State<guestRegister> {
                               Navigator
                                   .of(context)
                                   .push(MaterialPageRoute(builder:
-                                  (BuildContext context) => const scanQr()));
+                                  (BuildContext context) => const profileQr()));
                             },
                             icon: const Icon(CupertinoIcons.qrcode_viewfinder,  size: 40,
                                 color: Color(0xff717171))),
@@ -192,6 +195,8 @@ class _guestRegisterState extends State<guestRegister> {
                 ElevatedButton.icon(
                   icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 15,),
                   onPressed: (){
+                    Get.back();
+                    // Navigator.pop(context, "refresh");
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context)=>otpVerify()));
                   },
@@ -268,9 +273,10 @@ class _guestRegisterState extends State<guestRegister> {
                                       Text("Name"),
                                       Flexible(
                                         child: Container(
-                                          height: 35,
-                                          width: 200,
+                                          height: MediaQuery.of(context).size.width*0.1,
+                                          width: MediaQuery.of(context).size.width*0.5,
                                           child: TextFormField(
+                                            autofocus: false,
                                             controller: nameController,
                                             cursorColor: Color(0xff031627),
                                             decoration: InputDecoration(
@@ -302,9 +308,10 @@ class _guestRegisterState extends State<guestRegister> {
                                       Text("Company"),
                                       Flexible(
                                         child: Container(
-                                          height: 35,
-                                          width: 200,
+                                          height: MediaQuery.of(context).size.width*0.1,
+                                          width: MediaQuery.of(context).size.width*0.5,
                                           child: TextFormField(
+                                            autofocus: false,
                                             controller: companyName,
                                             cursorColor: Color(0xff031627),
                                             decoration: InputDecoration(
@@ -358,9 +365,10 @@ class _guestRegisterState extends State<guestRegister> {
                                       Text("Phone"),
                                       Flexible(
                                         child: Container(
-                                          height: 35,
-                                          width: 200,
+                                          height: MediaQuery.of(context).size.width*0.1,
+                                          width: MediaQuery.of(context).size.width*0.5,
                                           child: TextFormField(
+                                            autofocus: false,
                                             controller: phoneController,
                                             cursorColor: Color(0xff031627),
                                             decoration: InputDecoration(
@@ -404,9 +412,10 @@ class _guestRegisterState extends State<guestRegister> {
                                       Text("Email"),
                                       Flexible(
                                         child: Container(
-                                          height: 35,
-                                          width: 200,
+                                          height: MediaQuery.of(context).size.width*0.1,
+                                          width: MediaQuery.of(context).size.width*0.5,
                                           child: TextFormField(
+                                            autofocus: false,
                                             controller: emailController,
                                             cursorColor: Color(0xff031627),
                                             decoration: InputDecoration(
@@ -457,17 +466,17 @@ class _guestRegisterState extends State<guestRegister> {
                             ),
 
 
-                                SizedBox(height: 20,),
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'Add more +', textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Color(0xff00A3FF),
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                  ),
-                                ),
+                                // SizedBox(height: 20,),
+                                // Container(
+                                //   alignment: Alignment.center,
+                                //   child: Text(
+                                //     'Add more +', textAlign: TextAlign.center,
+                                //     style: TextStyle(
+                                //       color: Color(0xff00A3FF),
+                                //       decoration: TextDecoration.underline,
+                                //     ),
+                                //   ),
+                                // ),
                                 SizedBox(height: 20,),
                                 
                                 Padding(
@@ -492,7 +501,7 @@ class _guestRegisterState extends State<guestRegister> {
                       child: Column(
                         children: [
                           MyHomePage(title: "hello"),
-                          SizedBox(height: 20,),
+                          SizedBox(height: 10,),
 
                           Padding(
                             padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
@@ -677,45 +686,45 @@ class _guestRegisterState extends State<guestRegister> {
                                   height: 20,
                                 ),
 
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10, left: 10),
-                                  child: Text("Purpose of visit", style:
-                                  TextStyle(
-                                      color: Color(0xff000388)
-                                  ),),
-                                ),
-
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: TextField(
-                                      textInputAction: TextInputAction.newline,
-                                      keyboardType: TextInputType.multiline,
-                                      minLines: null,
-                                      maxLines: 6,
-                                      cursorColor: Color(0xff031627),
-                                      decoration: InputDecoration(
-                                        contentPadding: const EdgeInsets.all(10.0),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: Colors.grey),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: Colors.grey),
-                                        ),
-                                        focusColor: Color(0xff031627),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(20.0),
-                                         borderSide: BorderSide(color: Colors.grey),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(top: 10, left: 10),
+                                //   child: Text("Purpose of visit", style:
+                                //   TextStyle(
+                                //       color: Color(0xff000388)
+                                //   ),),
+                                // ),
+                                //
+                                // Padding(
+                                //   padding: const EdgeInsets.all(8.0),
+                                //   child: Container(
+                                //     decoration: BoxDecoration(
+                                //       borderRadius: BorderRadius.circular(20),
+                                //     ),
+                                //     child: TextField(
+                                //       textInputAction: TextInputAction.newline,
+                                //       keyboardType: TextInputType.multiline,
+                                //       minLines: null,
+                                //       maxLines: 6,
+                                //       cursorColor: Color(0xff031627),
+                                //       decoration: InputDecoration(
+                                //         contentPadding: const EdgeInsets.all(10.0),
+                                //         enabledBorder: OutlineInputBorder(
+                                //           borderSide: BorderSide(color: Colors.grey),
+                                //         ),
+                                //         focusedBorder: OutlineInputBorder(
+                                //           borderSide: BorderSide(color: Colors.grey),
+                                //         ),
+                                //         focusColor: Color(0xff031627),
+                                //         border: OutlineInputBorder(
+                                //           borderRadius: BorderRadius.circular(20.0),
+                                //          borderSide: BorderSide(color: Colors.grey),
+                                //         ),
+                                //         filled: true,
+                                //         fillColor: Colors.white,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
 
                               ],
                             ),
@@ -801,7 +810,7 @@ class _guestRegisterState extends State<guestRegister> {
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.BOTTOM,
                             timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.grey,
+                            backgroundColor: Colors.red,
                             textColor: Colors.white,
                             fontSize: 16.0);
                       }

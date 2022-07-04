@@ -30,6 +30,7 @@ class AdminIssuesList {
 class Data {
   Data({
     required this.issueLevel,
+    required this.id,
     required this.EMPLOYEEID,
     required this.issueElaboration,
     required this.name,
@@ -38,6 +39,7 @@ class Data {
     required this.phoneNumber,
   });
   late final int issueLevel;
+  late final int id;
   late final int EMPLOYEEID;
   late final String issueElaboration;
   late final String name;
@@ -47,6 +49,7 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json){
     issueLevel = json['issue_Level'];
+    id = json['id'];
     EMPLOYEEID = json['EMPLOYEE_ID'];
     issueElaboration = json['issue_Elaboration'];
     name = json['name'];
@@ -58,6 +61,7 @@ class Data {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['issue_Level'] = issueLevel;
+    _data['id'] = id;
     _data['EMPLOYEE_ID'] = EMPLOYEEID;
     _data['issue_Elaboration'] = issueElaboration;
     _data['name'] = name;

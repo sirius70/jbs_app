@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:jbs_app/models/login_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,6 +25,8 @@ class Storage{
   static const _isManager = "ismanager";
   static const _attId = "attId";
   static const _attMark = "attMark";
+  static const _startDateVisitor = "startDateVisitor";
+  static const _endDateVisitor = "endDateVisitor";
 
   static Future init() async{
     sharedPreferences = await SharedPreferences.getInstance();
@@ -92,6 +95,12 @@ class Storage{
 
   static Future set_attendanceMark(String attMark)async=>await sharedPreferences!.setString(_attMark, attMark);
   static String? get_attendanceMark()=>sharedPreferences!.getString(_attMark)??"";
+
+  static Future set_startDateVisitor(String startDateVisitor)async=>await sharedPreferences!.setString(_startDateVisitor, DateFormat("yyyy-MM-dd").format(DateTime.now()));
+  static String? get_startDateVisitor()=>sharedPreferences!.getString(_startDateVisitor)??"";
+
+  static Future set_endDateVisitor(String endDateVisitor)async=>await sharedPreferences!.setString(_endDateVisitor, DateFormat("yyyy-MM-dd").format(DateTime.now()));
+  static String? get_endDateVisitor()=>sharedPreferences!.getString(_endDateVisitor)??"";
 
 }
 
